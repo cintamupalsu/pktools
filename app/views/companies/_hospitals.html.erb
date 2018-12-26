@@ -1,0 +1,16 @@
+<div class="row" id="innertab">
+  <div class="col-md-12 bg-white">
+    <br/>
+    <%= will_paginate(@hospitals, :param_name => 'hospital_page', :params => {:tab => 1}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+    <ul class="companies">
+      <% @hospitals.each do |hospital| %>
+        <li>
+          <%= link_to hospital.name, hospital %>
+        </li>
+      <% end %>
+    </ul>
+    <br/>
+    <%= will_paginate(@hospitals, :param_name => 'hospital_page', :params => {:tab => 1}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+  </div>
+</div>
+<%=@paramkocok %>

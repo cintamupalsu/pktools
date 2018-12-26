@@ -1,0 +1,27 @@
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="company">
+      <div class="card-header">
+        <strong><%= @company.name %></strong>
+      </div>
+      <div class="card-body">
+        <%= @company.address %>
+        <br/>
+        関係：
+        <% if Hospital.where("company_id = ?", @company.id).count>0 %>
+          <span class="badge badge-info">病院</span>
+        <% end %>
+        <% if Vendor.where("company_id = ?", @company.id).count>0 %>
+          <span class="badge badge-info">ベンダー</span>
+        <% end %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "編集", edit_company_path(@company), class: "btn btn-success", role: "button" %>
+        <%= link_to "削除", @company, class: "btn btn-danger", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+// Place all the styles related to the Yokyu controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+$gray-medium-light: #eaeaea;
+$gray-lighter: #d3d3d3;
+
+#yokyu_icon{
+  margin-right: 1px;
+  margin-left: 1px;
+  padding-left: 1px;
+}
+.card-body{
+  border-top: 1px solid $gray-medium-light;
+}
+.card-header{
+  border-top: 1px solid $gray-medium-light;
+}
+
+.nav-tabs{
+  margin-left: 5px;
+}
+#innertab {
+
+    border-bottom: 1px solid $gray-lighter;
+    border-left: 1px solid $gray-lighter;
+    border-right: 1px solid $gray-lighter;
+    margin-left: 5px;
+    margin-right: 0px;
+
+    #layout{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+    }
+}
+
+#company{
+  margin-left: 5px;
+}

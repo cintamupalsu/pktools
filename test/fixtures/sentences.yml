@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  file_manager: one
+  question: 1
+  answer: 1
+  hospital: 1
+  vendor: 1
+  user: one
+
+two:
+  content: MyText
+  file_manager: two
+  question: 1
+  answer: 1
+  hospital: 1
+  vendor: 1
+  user: two

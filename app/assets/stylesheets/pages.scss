@@ -2,3 +2,55 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "bootstrap";
+$gray-medium-light: #eaeaea;
+$gray-darker: #a9a9a9;
+$gray-light: #d3d3d3;
+$gray: #808080;
+
+#sbs_logo{
+  float: left;
+	margin-right: 10px;
+  margin-left: 10px;
+  margin-bottom: 0px;
+}
+
+footer{
+   margin-top: 5px;
+   padding-top: 5px;
+   border-top: 1px solid #8aacb8;
+   color: $gray-light;
+   a{
+      color: $gray;
+   }
+   &:hover{
+      color: $gray-darker;   
+   }
+   small{
+      float: left;      
+   }
+   ul{
+      float: right;
+      list-style: none;
+      li{
+         float: left;
+         margin-left: 15px;
+      }
+   }
+}
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+/* miscellaneous */
+
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box_sizing;
+}
+

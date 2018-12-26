@@ -1,0 +1,15 @@
+<div class="row" id="innertab">
+  <div class="col-md-12 bg-white">
+    <br/>
+    <%= will_paginate(@vendors, :param_name => 'vendor_page', :params => {:tab => 2}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+    <ul class="companies">
+      <% @vendors.each do |vendor| %>
+        <li>
+          <%= link_to vendor.name, vendor %>
+        </li>
+      <% end %>
+    </ul>
+    <br/>
+    <%= will_paginate(@vendors, :param_name => 'vendor_page', :params => {:tab => 2}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+  </div>
+</div>

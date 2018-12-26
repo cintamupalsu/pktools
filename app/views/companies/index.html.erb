@@ -1,0 +1,57 @@
+<% provide(:title, "顧客管理") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <% if @tab == 0 %>
+          <a class="nav-link active" id="companies-tab" data-toggle="tab" href="#companies" role="tab" aria-controls="torikumi" aria-selected="true">全顧客</a>
+        <% else %>
+          <a class="nav-link" id="companies-tab" data-toggle="tab" href="#companies" role="tab" aria-controls="torikumi" aria-selected="true">全顧客</a>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <% if @tab == 1 %>
+          <a class="nav-link active" id="hospitals-tab" data-toggle="tab" href="#hospitals" role="tab" aria-controls="hospitals" aria-selected="false">病院</a>
+        <% else %>
+          <a class="nav-link" id="hospitals-tab" data-toggle="tab" href="#hospitals" role="tab" aria-controls="hospitals" aria-selected="false">病院</a>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <% if @tab == 2 %>
+          <a class="nav-link active" id="vendors-tab" data-toggle="tab" href="#vendors" role="tab" aria-controls="vendors" aria-selected="false">ベンダー</a>
+        <% else %>
+          <a class="nav-link" id="vendors-tab" data-toggle="tab" href="#vendors" role="tab" aria-controls="vendors" aria-selected="false">ベンダー</a>
+        <% end %>
+      </li>
+    </ul>
+    
+    <div class="tab-content" id="myTabContent">
+      <% if @tab == 0 %>
+        <div class="tab-pane fade show active" id="companies" role="tabpanel" aria-labelledby="companies-tab">
+      <% else %>
+        <div class="tab-pane fade " id="companies" role="tabpanel" aria-labelledby="companies-tab">
+      <% end %>
+          <%= render 'companies' %>
+      </div>
+      <% if @tab == 1 %>
+        <div class="tab-pane fade show active" id="hospitals" role="tabpanel" aria-labelledby="hospitals-tab">
+      <% else %>
+        <div class="tab-pane fade" id="hospitals" role="tabpanel" aria-labelledby="hospitals-tab">
+      <% end %>
+          <%= render 'hospitals' %>
+      </div>
+      <% if @tab == 2 %>
+        <div class="tab-pane fade show active" id="vendors" role="tabpanel" aria-labelledby="vendors-tab">
+      <% else %>
+        <div class="tab-pane fade" id="vendors" role="tabpanel" aria-labelledby="vendors-tab">
+      <% end %>
+          <%= render 'vendors' %>
+      </div>
+    </div>
+  </div>
+</div>
+<%= @paramkocok %>
+

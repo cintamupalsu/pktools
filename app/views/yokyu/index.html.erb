@@ -1,0 +1,26 @@
+<% provide(:title,"要求仕様書") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="torikumi-tab" data-toggle="tab" href="#torikomi" role="tab" aria-controls="torikumi" aria-selected="true">仕様書取込</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="sakusei-tab" data-toggle="tab" href="#sakusei" role="tab" aria-controls="sakusei" aria-selected="false">仕様書作成</a>
+      </li>
+    </ul>
+    
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="torikomi" role="tabpanel" aria-labelledby="torikomi-tab">
+          <%= render 'learn' %>
+      </div>
+      <div class="tab-pane fade" id="sakusei" role="tabpanel" aria-labelledby="sakusei-tab">
+          <%= render 'answer' %>
+      </div>
+    </div>
+    
+  </div>
+</div>

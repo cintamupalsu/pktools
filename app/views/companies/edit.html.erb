@@ -1,0 +1,43 @@
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="company">
+      <div class="card-header">
+        <strong>編集</strong>
+      </div>
+      <div class="card-body">
+        <%= form_for(:company, url: companies_update_path) do |f| %>
+           
+          <%= f.hidden_field :id, value: @get_company.id %>
+          <%= f.label :name, "名前" %>
+          <%= f.text_field :name, :value => @get_company.name , class: 'form-control'  %>
+          </br>
+          <%= f.label :address, "住所" %>
+          <%= f.text_area :address, :value => @get_company.address , class: 'form-control'  %>
+          </br>
+          関係
+          <%= f.label :hospital, class: "form-check form-check-inline ml-3" do %>
+            <% if Hospital.where("company_id = ?",@get_company.id).count>0 %>
+              <%= f.check_box :hospital, {checked: true}, true, false %> 
+            <% else %>
+              <%= f.check_box :hospital, {}, true, false %> 
+            <% end %>
+            <span class="text-left ml-2">病院</span>
+          <% end %>
+          <%= f.label :vendor, class: "form-check form-check-inline ml-5" do %>
+            <% if Vendor.where("company_id = ?",@get_company.id).count>0 %>
+              <%= f.check_box :vendor, {checked: true}, true, false %> 
+            <% else %>
+              <%= f.check_box :vendor, {}, true, false %> 
+            <% end %>
+            <span class="text-left ml-2">ベンダー</span>
+          <% end %>
+          </br>
+            <%= f.submit '登録', class: "btn btn-success fluid" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

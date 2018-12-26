@@ -1,0 +1,36 @@
+<% provide(:title, "新顧客様") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="company">
+      <div class="card-header text-center">
+        <strong>新顧客様</strong>
+      </div>
+      <div class="card-body">
+        <%= form_for(:company, url: companies_new_path) do |f| %>
+     
+          <%= f.label :name, "名前" %>
+          <%= f.text_field :name, placeholder: "○○株式会社" , class: 'form-control'  %>
+          </br>
+          <%= f.label :address, "住所" %>
+          <%= f.text_area :address,  placeholder: "郵便番号、県、市、…" , class: 'form-control'  %>
+          </br>
+          関係
+          <%= f.label :hospital, class: "form-check form-check-inline ml-3" do %>
+            <%= f.check_box :hospital, {}, true, false %> 
+            <span class="text-left ml-2">病院</span>
+          <% end %>
+          <%= f.label :vendor, class: "form-check form-check-inline ml-5" do %>
+            <%= f.check_box :vendor, {}, true, false %> 
+            <span class="text-left ml-2">ベンダー</span>
+          <% end %>
+          </br>
+            <%= f.submit '登録', class: "btn btn-success fluid" %>
+        <% end %>
+      </div>
+    </div>
+    
+  </div>
+</div>

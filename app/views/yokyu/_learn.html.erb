@@ -1,0 +1,13 @@
+<div class="row bg-white" id="innertab">
+  <div class="col-xl-12 " id="layout">
+    
+    <%= form_for(:learning, url: learn_path) do |f| %>
+    
+      <%= f.label :filename, "仕様書ファイル" %>
+      <%= f.file_field :filename, class: 'form-control' %>
+    
+      <%= f.submit "作成", class: "btn btn-primary" %>
+      
+    <% end %>
+  </div>
+</div>

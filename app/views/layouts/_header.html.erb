@@ -1,0 +1,42 @@
+<header class="navbar navbar-light  bg-light navbar-fixed-top shadow p-1 mb-3 rounded">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <%= image_tag("sbs_logo.png", alt:"sbs logo", size: "40x27", id: "sbs_logo") %>
+    </a>
+    <nav>
+      <ul class="nav">
+        <% if user_signed_in? %>
+          <li class="nav-item mr-1"><%= link_to "ホーム", root_path, class: "nav-link" %></li>
+          <li class="dropdown nav-link">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Tools <%= content_tag :span, 2, class: 'badge badge-pill badge-danger' %><b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="nav-link" href="<%= companies_path %>">顧客管理</a>
+                <a class="nav-link" href="<%= yokyu_path %>">要求仕様書 <%= content_tag :span, 2, class: 'badge badge-pill badge-danger' %></a>
+                <a class="nav-link" href="#">Next Project </a>
+              </li>
+            </ul>
+          </li>
+          
+          <li class="dropdown nav-link">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              Profile<b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu">
+              <li><%= link_to "未定", '#', class: "nav-link" %></li>
+              <li class="dropdown-divider"></li>
+              <li><%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %> </li>
+            </ul>
+          </li>
+          
+        <% else %>
+          <li class="nav-item"><%= link_to "申し込み", new_user_registration_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "ログアウト", destroy_user_session_path, method: :delete %> </li>
+          <li class="nav-item"><%= link_to "ログイン", new_user_session_path, class: "nav-link" %></li>
+        <% end %>
+      </ul>
+    </nav>
+  </div>
+</header>
