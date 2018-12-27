@@ -1,0 +1,26 @@
+<% provide(:title, "要求編集") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="question">
+      <div class="card-header text-center">
+        <strong>要求編集</strong>
+      </div>
+      <div class="card-body">
+        <%= form_for(:question, url: question_edit_path) do |f| %>
+     
+          <%= f.hidden_field :id, value: @question.id %>
+          <%= f.label :name, "名前" %>
+          <%= f.text_field :name, class: 'form-control'  %>
+          </br>
+          <%= f.label :column, "列" %>
+          <%= f.text_field :column, class: 'form-control'  %>
+          </br>
+            <%= f.submit 'Update', class: "btn btn-success fluid" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

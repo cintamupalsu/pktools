@@ -1,0 +1,29 @@
+<div class="col-md-12 bg-white">
+  <br/>
+  <ul class="questions">
+    <% @questions.each do |question| %>
+      <div class="row">
+        <div class="col-md-10">
+          <li>
+          <% if question.mark==1 %>
+            <strong><%= link_to question.name, question_path(:id => question.id) %></strong>
+            <span class="badge badge-pill badge-primary">Default</span>
+          <% else %>
+            <%= link_to question.name, question_path(:id => question.id) %>
+          <% end %>
+          </li>
+        </div>
+        <% if question.mark==0 %>
+          <div class="col-md-2">
+            <%= link_to "Set as Default", question_default_path(:id => question.id), class: "btn btn-outline-primary btn-sm", role: "button" %>
+          </div>
+        <% else %>
+          <div class="col-md-2">
+            <%= link_to "Set as Default", question_default_path(:id => question.id), class: "btn btn-outline-primary btn-sm disabled", role: "button" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </ul>
+  <br/>
+</div>

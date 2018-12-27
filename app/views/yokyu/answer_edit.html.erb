@@ -1,0 +1,28 @@
+<% provide(:title, "新規回答") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="question">
+      <div class="card-header text-center">
+        <strong>新規回答 </strong>(<%= link_to @question.name, question_path(:id => @question.id) %>)
+      </div>
+      <div class="card-body">
+        <%= form_for(:answer, url: answer_edit_path) do |f| %>
+     
+          <%= f.hidden_field :id, value: @answer.id %>
+          
+          <%= f.label :name, "名前" %>
+          <%= f.text_field :name, placeholder: "回答" , class: 'form-control'  %>
+          </br>
+          <%= f.label :column, "列" %>
+          <%= f.text_field :column,  placeholder: "A" , class: 'form-control'  %>
+          
+          </br>
+            <%= f.submit 'Update', class: "btn btn-success fluid" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,7 +4,7 @@ class CreateQuestions < ActiveRecord::Migration[5.2]
       t.string :name
       t.string :column
       t.references :user, foreign_key: true
-      t.integer :default
+      t.integer :mark
 
       t.timestamps
     end

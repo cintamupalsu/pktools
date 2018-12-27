@@ -1,0 +1,23 @@
+<% provide(:title,"列管理") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="question">
+      <div class="card-header">
+        列管理
+      </div>
+      <div class="card-body">
+        <% if @questions!=nil %>
+        <%= render 'question_items' %>
+        <% else %>
+          No Question!
+        <% end %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "要求追加", question_new_path(@question), class: "btn btn-success", role: "button" %>
+      </div>
+    </div>
+  </div>
+</div>

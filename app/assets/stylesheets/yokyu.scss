@@ -38,3 +38,27 @@ $gray-lighter: #d3d3d3;
 #company{
   margin-left: 5px;
 }
+
+#question{
+  margin-left: 5px;
+}
+
+.questions {
+    list-style: none;
+    margin: 0;
+    li{
+        overflow: auto;
+        padding: 10px 0;
+        border-bottom: 1px solid #aaa;
+    }
+}
+
+.answers {
+    list-style: none;
+    margin: 0;
+    li{
+        overflow: auto;
+        padding: 10px 0;
+        border-bottom: 1px solid #aaa;
+    }
+}
