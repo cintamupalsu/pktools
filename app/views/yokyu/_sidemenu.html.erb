@@ -25,12 +25,24 @@
   </a>
 
   <% if @selected_item==3 %>
-    <a href="#" class="card-header pl-2 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="要求確認">
+    <% if @sentence_count>0 %>
+      <a href="<%= senconfirm_path %>" class="card-header pl-2 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="要求確認">
+    <% else %>
+      <a href="<%= senconfirm_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="要求確認">
+    <% end %>
   <% else %>
-    <a href="#" class="card-body pl-2 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="要求確認">
+    <% if @sentence_count>0 %>
+      <a href="<%= senconfirm_path %>" class="card-body pl-2 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="要求確認">
+    <% else %>
+      <a href="<%= senconfirm_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="要求確認">
+    <% end %>
   <% end %>
-    <%= content_tag :span, 2, class: 'badge badge-pill badge-danger float-right' %>
+  <% if @sentence_count>0 %>
+    <%= content_tag :span, @sentence_count, class: 'badge badge-pill badge-danger float-right' %>
     <%= image_tag("ico_check.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon", class: "float-left") %>
+  <% else %>
+    <%= image_tag("ico_check.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  <% end %>
   </a>
   
   <% if @selected_item==4 %>

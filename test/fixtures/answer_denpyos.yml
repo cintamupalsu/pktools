@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  content: MyText
+  watson_language_master: one
+  answer: one
+  hospital: one
+  vendor: one
+  user: one
+  file_manager: one
+
+two:
+  content: MyText
+  watson_language_master: two
+  answer: two
+  hospital: two
+  vendor: two
+  user: two
+  file_manager: two

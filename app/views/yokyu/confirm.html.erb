@@ -1,0 +1,45 @@
+<% provide(:title,"要求仕確認") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="sentence">
+      <div class="card-header text-center">
+        <strong>確認</strong>
+      </div>
+      <div class="card-body">
+        <% if @sentence_count>0 %>
+          <%= form_for(:kakunin, url: senconfirm_path) do |f| %>
+            <div class="row border-bottom">
+              <div class="col-1 text-center"><strong>№</strong></div>
+              <div class="col-10 text-center"><strong>文法</strong></div>
+              <div class="col-1 text-center"><strong>同</strong></div>
+            </div>
+            <% (0..@sentence_count-1).each do |i| %>
+              <div class="row border-bottom">
+                <div class="col-1 text-center"><%= (i+1).to_s %></div>
+                <small class="col-10 ">
+                  <p>元：<%= WatsonLanguageMaster.find_by(id: @sentences[i].wlu).content %></p>
+                  <p>新：<%=  @sentences[i].content %></p>
+                  <%= f.hidden_field :sentence_id, value: @sentences[i].id, multiple: true %>
+                </small>
+                <div class="col-1 text-center">
+                  <br/>
+                  <%= f.label :onaji, class: "checkbox" do %>
+                    <%= f.check_box :onaji, multiple: true %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+            <br/>
+            <%= f.submit "登録", class: "btn btn-primary btn-block" %>  
+          <% end %>
+        <% else %>
+          <h2>No action needed</h2>
+        <% end %>
+      </div>
+ 
+    </div>
+  </div>
+</div>

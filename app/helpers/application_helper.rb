@@ -7,4 +7,10 @@ module ApplicationHelper
       page_title+"|"+base_title
     end
   end
+  
+  def notices
+    @sentence_count = Sentence.where("user_id=?",current_user.id).count
+    @yok_notices = @sentence_count
+  end
+
 end

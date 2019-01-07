@@ -1,23 +1,70 @@
 class YokyuController < ApplicationController
+  before_action :notices
   def index
-    @selected_item=0;
+    init_index
   end
 
   def learn
-    if params[:learning]!=nil
-      t_learn = Thread.new{
-        read_file(learning_params)
-        similarity_check
-      }
-      flash[:info] = "取り込んでいます"
+    init_index
+    if learning_params['filename']!=nil
+      # check variables
+      ws_from = learning_params['worksheetfrom'].to_i
+      ws_to = learning_params['worksheetto'].to_i
+      hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
+      vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
+      if ws_from<=ws_to
+        natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+        backjob = Backjob.create(name: "Read XLS", status: 0)
+
+        threshold = 0.1
+        # check variables
+        ws_from = learning_params["worksheetfrom"].to_i-1
+        ws_to = learning_params['worksheetto'].to_i-1
+        question_col = backjob.string_to_col(learning_params['question'])
+        first_row = learning_params['first_row'].to_i-1
+        file_xls = learning_params['filename']
+        file_manager = FileManager.create(name: file_xls.path, user_id: current_user.id)
+        # read file
+        workbook = RubyXL::Parser.parse(file_xls.path)
+        (ws_from..ws_to).each do |ws|
+          worksheet = workbook[ws] 
+          question=Array.new(worksheet.count)
+          answer=Array.new(@question.answers.count)
+          answer_id=Array.new(@question.answers.count)
+          (0..@question.answers.count-1).each do |ans|
+            answer[ans]=Array.new(worksheet.count)
+            answer_id[ans]=learning_params['answer_id'][ans].to_i
+          end
+          
+          (first_row..worksheet.count-1).each do |row|
+            if worksheet[row][question_col]!=nil
+              question[row]=worksheet[row][question_col].value.to_s
+            end
+            (0..@question.answers.count-1).each do |ans|
+              answer_col = backjob.string_to_col(learning_params['answer'][ans])
+              if worksheet[row][answer_col]!= nil
+                answer[ans][row] = worksheet[row][answer_col].value.to_s
+              end
+            end
+          end
+          #learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id)
+          backjob.delay.learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id)
+        end
+        flash[:info] = "取り込んでいます"
+        
+      else
+        flash[:danger] = "Error!"
+      end
     else
       flash[:success] = "ファイルなし"
     end
-    @selected_item=0;
+    
     render 'index'
+
   end
   
   def write
+    
   end
 
   def answer
@@ -132,10 +179,32 @@ class YokyuController < ApplicationController
     redirect_to question_path(:id => question_id)
   end
   
+  def confirm
+    @selected_item = 3
+    @sentences = Sentence.where("user_id=?",current_user.id)
+  end
+  
+  def confirmed
+    onaji = check_box_bug(kakunin_params['onaji'])
+    (0..kakunin_params['sentence_id'].count-1).each do |i|
+      sentence = Sentence.find_by(id: kakunin_params['sentence_id'][i])
+      if onaji[i]==1 #if similar
+        wlm = WatsonLanguageMaster.find_by(id: sentence.watson_language_master_id)
+        wlm.update_attributes(anchor: sentence.wlu)
+        answers = AnswerDenpyo.where("watson_language_master_id=?", sentence.watson_language_master_id)
+        answers.each do |answer|
+          answer.update_attributes(watson_language_master_id: sentence.wlu)
+        end
+      end
+      sentence.destroy
+    end
+    redirect_to yokyu_path
+  end
+  
   private
   
   def learning_params
-    params.require(:learning).permit(:filename)    
+    params.require(:learning).permit(:filename, :question, :worksheetfrom, :worksheetto, :vendor, :hospital, :first_row, :answer=>[], :answer_id=>[])    
   end
   
   def company_params
@@ -150,19 +219,47 @@ class YokyuController < ApplicationController
     params.require(:answer).permit(:id, :name, :column, :question_id)
   end
   
-  def read_file(input_params)
-    # read excels
-    file_xls = input_params["filename"]
-    workbook = RubyXL::Parser.parse(file_xls.path)
-    
-    worksheet = workbook[0]
-    (4..6).each do |row|
-      WatsonLanguageMaster.create!(content: worksheet[row][3].value, user_id: current_user.id)
+  def kakunin_params
+    params.require(:kakunin).permit(:sentence_id=>[], :onaji=>[])
+  end
+  
+  def string_to_col(colname)
+    colname = colname.upcase
+    colnumber = 0
+    (1..colname.length).each do |i|
+      j=colname.length-i
+      ordval=colname[j].ord
+      if ordval<65 || ordval>90; return -1 end
+      colnumber += (ordval-65)*26**(i-1)
     end
+    colnumber
   end
   
-  def similarity_check
+  def init_index
+    @selected_item=0;
+    @hospital_ids = Hospital.where("user_id = ?", current_user.id).pluck(:company_id)
+    @vendor_ids = Vendor.where("user_id = ?", current_user.id).pluck(:company_id)
+    @question = Question.where("user_id = ? AND mark = 1", current_user.id).first
   end
   
+  def notices 
+    @sentence_count = Sentence.where("user_id=?",current_user.id).count
+  end
   
+  def check_box_bug(param_checkbox)
+    count_array=0
+    result={}
+    (0..param_checkbox.count-1).each do |i|
+      if param_checkbox[i]=='1'
+        count_array -= 1
+        result[count_array]=1
+        count_array += 1
+      else
+        result[count_array]=0
+        count_array += 1
+      end
+    end
+    return result
+  end
+
 end
