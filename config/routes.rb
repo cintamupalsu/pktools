@@ -26,6 +26,11 @@ Rails.application.routes.draw do
   post   '/senconfirm',        to: 'yokyu#confirmed'
   get    '/yokyufile',         to: 'yokyu#filelist'
   delete '/file',              to: 'yokyu#file_destroy'
+  get    '/manage_sentences',  to: 'yokyu#senmanage'
+  get    '/betsu',             to: 'yokyu#betsu'
+  get    '/attach',            to: 'yokyu#attach'
+  get    '/attached',          to: 'yokyu#attached'
+  delete '/betsu',             to: 'yokyu#delete_sentence'
 
   devise_for :users
   root 'pages#index'

@@ -26,7 +26,12 @@
               <% if file.status==0 %>
                 進行中
               <% else %>
-                <%= link_to "削除", file_path(:id => file.id), class: "btn btn-outline-danger btn-block mt-1", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+                <% disablebutton = @file_manager_ids.include? file.id %>
+                <% if disablebutton || @inprogress>0 %>
+                  <a href="<% file_path(:id => file.id) %>" class="btn btn-danger btn-lg disabled btn-block mt-1 pt-1 pb-1" tabindex="-1" role="button" aria-disabled="true">削除</a>
+                <% else %>
+                  <%= link_to "削除", file_path(:id => file.id), class: "btn btn-outline-danger btn-block mt-1", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+                <% end %>
               <% end %>
               </div>
             </div>

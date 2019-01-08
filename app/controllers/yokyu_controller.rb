@@ -12,8 +12,9 @@ class YokyuController < ApplicationController
       hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
       vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       if ws_from<=ws_to
-        natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
-        #backjob = Backjob.create(name: "Read XLS", status: 0)
+        natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+
+      #backjob = Backjob.create(name: "Read XLS", status: 0)
 
        
         # check variables
@@ -184,6 +185,7 @@ class YokyuController < ApplicationController
   def confirm
     @selected_item = 3
     @sentences = Sentence.where("user_id=?",current_user.id)
+    @check = params[:check].to_i
   end
   
   def confirmed
@@ -205,12 +207,15 @@ class YokyuController < ApplicationController
       end
       sentence.destroy
     end
-    redirect_to yokyu_path
+    redirect_to senconfirm_path
   end
 
   def filelist
     @selected_item=1
     @files = FileManager.where("user_id=?",current_user.id)
+    wlm_ids = Sentence.where("user_id = ?",current_user.id).pluck(:wlu)
+    @file_manager_ids = WatsonLanguageMaster.where("id IN (?)", wlm_ids).pluck(:file_manager_id)
+    @inprogress = FileManager.where("user_id =? AND status=0",current_user.id).count
   end
 
   def file_destroy
@@ -218,6 +223,50 @@ class YokyuController < ApplicationController
     file.destroy
     flash[:success] = "ファイルを削除しました"
     redirect_to yokyufile_path
+  end
+  
+  def senmanage
+    @selected_item=2
+    @watson_language_master = WatsonLanguageMaster.where("user_id=? AND anchor = -1", current_user.id)
+  end
+  
+  def betsu
+    wlm = WatsonLanguageMaster.find(params[:id])
+    wlm.update_attributes(anchor: -1)
+    flash[:primary] = "分を別となりました"
+    redirect_to manage_sentences_path
+  end
+  
+  def attach
+    @watson_language_master = WatsonLanguageMaster.find(params[:id])
+    @watson_language_masters = WatsonLanguageMaster.where("anchor = -1")
+    @selected_item=2
+  end
+  
+  def attached
+    source = WatsonLanguageMaster.find(params[:sid])
+    target_id = params[:id].to_i
+    source.update_attributes(anchor: target_id)
+    
+    attached_sentences = WatsonLanguageMaster.where("anchor = ?",source.id)
+    attached_sentences.each do |attached_sentence|
+      attached_sentence.update_attributes(anchor: target_id)
+    end
+    
+    answer_denpyos = AnswerDenpyo.where("watson_language_master_id = ?", source)
+    answer_denpyos.each do |answer_denpyo|
+      answer_denpyo.update_attributes(watson_language_master_id: target_id)
+    end
+    
+    flash[:primary] = "分を参照しました"
+    redirect_to manage_sentences_path
+  end
+  
+  def delete_sentence
+    wlm = WatsonLanguageMaster.find(params[:id])
+    wlm.destroy
+    flash[:warning] = "分を削除しました"
+    redirect_to manage_sentences_path
   end
   
   private

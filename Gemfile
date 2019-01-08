@@ -50,7 +50,7 @@ gem 'jquery-rails'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'delayed_job_active_record'
-
+# heroku run rake jobs:work
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -1,0 +1,77 @@
+<% provide(:title,"分管理") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="sentence">
+      <div class="card-header text-center">
+        <strong>分管理</strong>
+      </div>
+      <div class="card-body">
+        <div class="row border-bottom">
+          <div class="col-1 text-center"><strong>№</strong></div>
+          <div class="col-9 text-center"><strong>文法</strong></div>
+          <div class="col-2 text-center"><strong>操作</strong></div>
+        </div>  
+        <% counter=0 %>
+        <% @watson_language_master.each do |wlm| %>
+          <% counter+=1 %>
+          <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
+          <% simcount = similars.count %>
+          <% if simcount ==0 %>
+          <div class="row border-bottom">
+          <% else %>
+          <div class="row">
+          <% end %>
+            <div class="col-1 text-center"><%=counter%></div>
+            <div class="col-9 text-left">
+              <small><%= wlm.content %></small>
+            </div>
+            <div class="col-2 text-center">
+               <% if Sentence.where("wlu=?",wlm.id).count>0 || Sentence.where("watson_language_master_id=?",wlm.id).count>0 %>
+                 <%= link_to "添", attach_path(:id => wlm.id), class: "btn btn-info btn-sm disabled", role: "button" %>
+               <% else %>
+                 <%= link_to "添", attach_path(:id => wlm.id), class: "btn btn-outline-info btn-sm", role: "button" %>
+               <% end %>
+               <%= link_to "別", betsu_path(:id => wlm.id), class: "btn btn-warning btn-sm disabled", role: "button" %>
+               <% if simcount>0 || Sentence.where("wlu=?",wlm.id).count>0 %>
+                 <%= link_to "削", betsu_path(:id => wlm.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+               <% else %>
+                 <%= link_to "削", betsu_path(:id => wlm.id), class: "btn btn-outline-danger btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+               <% end %>
+            </div>
+          </div>
+          <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
+          <% counter_1 = 0 %>
+          <% similars.each do |similar| %>
+          <% counter_1+=1 %>
+          <% if counter_1==simcount %>
+            <div class="row border-bottom">
+          <% else %>
+            <div class="row">
+          <% end %>
+            <div class="col-1 text-center">-</div>
+            <div class="col-9 text-left">
+              <small><%= similar.content %></small>
+            </div>
+            <div class="col-2 text-center">
+               <% if Sentence.where("wlu=?",similar.id).count>0 || Sentence.where("watson_language_master_id=?",similar.id).count>0 %>
+                 <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-info btn-sm disabled", role: "button" %>
+                 <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-warning btn-sm disabled", role: "button" %>
+                 <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+               <% else %>
+                 <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-outline-info btn-sm", role: "button" %>
+                 <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-outline-warning btn-sm", role: "button" %>
+                 <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-outline-danger btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+               <% end %>
+            </div>
+          </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+               
