@@ -9,13 +9,13 @@
           </li>
         </div>
         <div class="col-md-1">
-            列: <%= answer.column %>
+            列所: <%= answer.column %>
         </div>
         <div class="col-md-2">
-          <%= link_to "回答編集", answer_edit_path(:id => answer.id), class: "btn btn-outline-success btn-block", role: "button" %>
+          <%= link_to "列所編集", answer_edit_path(:id => answer.id), class: "btn btn-outline-success btn-block", role: "button" %>
         </div>  
         <div class="col-md-2">
-          <%= link_to "回答削除", answer_path(:id => answer.id), class: "btn btn-outline-danger btn-block", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+          <%= link_to "列所削除", answer_path(:id => answer.id), class: "btn btn-outline-danger btn-block", role: "button", method: :delete, data: { confirm: "You sure?" } %>
         </div>
       </div>
     <% end %>

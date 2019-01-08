@@ -1,5 +1,4 @@
 class YokyuController < ApplicationController
-  before_action :notices
   def index
     init_index
   end
@@ -13,41 +12,45 @@ class YokyuController < ApplicationController
       hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
       vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       if ws_from<=ws_to
-        backjob = Backjob.create(name: "Read XLS", status: 0)
+        natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+        #backjob = Backjob.create(name: "Read XLS", status: 0)
 
-        threshold = 0.1
+       
         # check variables
         ws_from = learning_params["worksheetfrom"].to_i-1
         ws_to = learning_params['worksheetto'].to_i-1
-        question_col = backjob.string_to_col(learning_params['question'])
         first_row = learning_params['first_row'].to_i-1
         file_xls = learning_params['filename']
-        file_manager = FileManager.create(name: file_xls.path, user_id: current_user.id)
+        file_manager = FileManager.create(name: file_xls.original_filename, user_id: current_user.id, status:0)
+        question_col = file_manager.string_to_col(learning_params['question'])
+        answers_count = @question.answers.count
         # read file
         workbook = RubyXL::Parser.parse(file_xls.path)
         (ws_from..ws_to).each do |ws|
           worksheet = workbook[ws] 
           question=Array.new(worksheet.count)
-          answer=Array.new(@question.answers.count)
-          answer_id=Array.new(@question.answers.count)
-          (0..@question.answers.count-1).each do |ans|
+          answer=Array.new(answers_count)
+          answer_id=Array.new(answers_count)
+          (0..answers_count-1).each do |ans|
             answer[ans]=Array.new(worksheet.count)
             answer_id[ans]=learning_params['answer_id'][ans].to_i
           end
           
           (first_row..worksheet.count-1).each do |row|
             if worksheet[row][question_col]!=nil
+            if worksheet[row][question_col]!=""
               question[row]=worksheet[row][question_col].value.to_s
-            end
-            (0..@question.answers.count-1).each do |ans|
-              answer_col = backjob.string_to_col(learning_params['answer'][ans])
-              if worksheet[row][answer_col]!= nil
-                answer[ans][row] = worksheet[row][answer_col].value.to_s
+              (0..answers_count-1).each do |ans|
+                answer_col = file_manager.string_to_col(learning_params['answer'][ans])
+                if worksheet[row][answer_col]!= nil
+                  answer[ans][row] = worksheet[row][answer_col].value.to_s
+                end
               end
+            end
             end
           end
           #learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id)
-          backjob.delay.learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id)
+          file_manager.delay.learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id)
         end
         flash[:info] = "取り込んでいます"
         
@@ -189,15 +192,32 @@ class YokyuController < ApplicationController
       sentence = Sentence.find_by(id: kakunin_params['sentence_id'][i])
       if onaji[i]==1 #if similar
         wlm = WatsonLanguageMaster.find_by(id: sentence.watson_language_master_id)
-        wlm.update_attributes(anchor: sentence.wlu)
+        # check anchoring
+        wlm_anchor = WatsonLanguageMaster.find_by(id: sentence.wlu)
+        while wlm_anchor.anchor!=-1 do
+          wlm_anchor = WatsonLanguageMaster.find_by(id: wlm_anchor.anchor)
+        end
+        wlm.update_attributes(anchor: wlm_anchor.id)
         answers = AnswerDenpyo.where("watson_language_master_id=?", sentence.watson_language_master_id)
         answers.each do |answer|
-          answer.update_attributes(watson_language_master_id: sentence.wlu)
+          answer.update_attributes(watson_language_master_id: wlm_anchor.id)
         end
       end
       sentence.destroy
     end
     redirect_to yokyu_path
+  end
+
+  def filelist
+    @selected_item=1
+    @files = FileManager.where("user_id=?",current_user.id)
+  end
+
+  def file_destroy
+    file = FileManager.find(params[:id])
+    file.destroy
+    flash[:success] = "ファイルを削除しました"
+    redirect_to yokyufile_path
   end
   
   private
@@ -239,10 +259,6 @@ class YokyuController < ApplicationController
     @hospital_ids = Hospital.where("user_id = ?", current_user.id).pluck(:company_id)
     @vendor_ids = Vendor.where("user_id = ?", current_user.id).pluck(:company_id)
     @question = Question.where("user_id = ? AND mark = 1", current_user.id).first
-  end
-  
-  def notices 
-    @sentence_count = Sentence.where("user_id=?",current_user.id).count
   end
   
   def check_box_bug(param_checkbox)

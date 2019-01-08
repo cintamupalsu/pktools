@@ -6,6 +6,9 @@
     <nav>
       <ul class="nav">
         <% if user_signed_in? %>
+          <% @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
+          <% @file_inprogress = FileManager.where("user_id=? AND status=0", current_user.id).count %>
+          <% @yok_notices = @sentence_count+@file_inprogress %>
           <li class="nav-item mr-1"><%= link_to "ホーム", root_path, class: "nav-link" %></li>
           <li class="dropdown nav-link">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -1,4 +1,4 @@
-<% provide(:title,"要求") %>
+<% provide(:title,"列所") %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -11,13 +11,13 @@
             <%= @question.name %> 
           </div>
           <div class="col-md-2">
-            列：<%= @question.column %> 
+            列所：<%= @question.column %> 
           </div>
           <div class="col-md-2">
-            <%= link_to "要求編集", question_edit_path(:id => @question.id), class: "btn btn-success btn-block", role: "button" %>    
+            <%= link_to "列所編集", question_edit_path(:id => @question.id), class: "btn btn-success btn-block", role: "button" %>    
           </div>
           <div class="col-md-2">
-            <%= link_to "要求削除", question_path(:id => @question.id), class: "btn btn-danger btn-block", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+            <%= link_to "列所削除", question_path(:id => @question.id), class: "btn btn-danger btn-block", role: "button", method: :delete, data: { confirm: "You sure?" } %>
           </div>
         </div>
         
@@ -30,7 +30,7 @@
         <% end %>
       </div>
       <div class="card-footer">
-        <%= link_to "回答追加", answer_new_path(:id => @question.id), class: "btn btn-success", role: "button" %>
+        <%= link_to "列所追加", answer_new_path(:id => @question.id), class: "btn btn-success", role: "button" %>
       </div>
     </div>
   </div>

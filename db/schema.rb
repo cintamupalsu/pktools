@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_07_063725) do
+ActiveRecord::Schema.define(version: 2019_01_08_020150) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 2019_01_07_063725) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status"
     t.index ["user_id"], name: "index_file_managers_on_user_id"
   end
 
@@ -158,6 +159,8 @@ ActiveRecord::Schema.define(version: 2019_01_07_063725) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "file_manager_id"
+    t.index ["file_manager_id"], name: "index_watson_language_masters_on_file_manager_id"
     t.index ["user_id", "content"], name: "index_watson_language_masters_on_user_id_and_content"
     t.index ["user_id"], name: "index_watson_language_masters_on_user_id"
   end

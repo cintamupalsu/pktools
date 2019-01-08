@@ -19,11 +19,13 @@ Rails.application.routes.draw do
   post   '/answer/edit',       to: 'yokyu#answer_update'
   delete '/answer',            to: 'yokyu#answer_destroy'
   
-  get  '/yokyu',               to: 'yokyu#index'
-  post '/learn',               to: 'yokyu#learn'
-  post '/write',               to: 'yokyu#write'
-  get  '/senconfirm',          to: 'yokyu#confirm'
-  post '/senconfirm',          to: 'yokyu#confirmed'
+  get    '/yokyu',             to: 'yokyu#index'
+  post   '/learn',             to: 'yokyu#learn'
+  post   '/write',             to: 'yokyu#write'
+  get    '/senconfirm',        to: 'yokyu#confirm'
+  post   '/senconfirm',        to: 'yokyu#confirmed'
+  get    '/yokyufile',         to: 'yokyu#filelist'
+  delete '/file',              to: 'yokyu#file_destroy'
 
   devise_for :users
   root 'pages#index'

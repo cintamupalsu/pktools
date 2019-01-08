@@ -1,4 +1,4 @@
-<% provide(:title, "新規回答") %>
+<% provide(:title, "新規列所子") %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -14,12 +14,12 @@
           <%= f.label :name, "名前" %>
           <%= f.text_field :name, placeholder: "回答" , class: 'form-control'  %>
           </br>
-          <%= f.label :column, "列" %>
+          <%= f.label :column, "列所" %>
           <%= f.text_field :column,  placeholder: "A" , class: 'form-control'  %>
           
           <%= f.hidden_field :question_id, value: @question.id %>
           </br>
-            <%= f.submit '回答登録', class: "btn btn-success fluid" %>
+            <%= f.submit '列所登録', class: "btn btn-success fluid" %>
         <% end %>
       </div>
     </div>

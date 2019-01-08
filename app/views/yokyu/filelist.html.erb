@@ -1,0 +1,38 @@
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="file_list">
+      <div class="card-header text-center">
+        <strong>ファイル一覧</strong>
+      </div>
+      <div class="card-body">
+        <div class="row border-bottom">
+          <div class="col-1 text-center"><strong>№</strong></div>
+          <div class="col-6 text-center"><strong>ファイル</strong></div>
+          <div class="col-2 text-center"><strong>登録日</strong></div>
+          <div class="col-2 text-center"><strong>操作</strong></div>
+        </div>
+        <% if @files.count>0 %>
+          <% counter=0 %>
+          <% @files.each do |file| %>
+            <div class="row border-bottom">
+              <% counter+=1 %>
+              <div class="col-1 text-center"><%= counter %>.</div>
+              <div class="col-6 text-justify"><small><%=file.name %></small></div>
+              <div class="col-2 text-justify"><small><%=file.created_at%></small></div>
+              <div class="col-2 text-center">
+              <% if file.status==0 %>
+                進行中
+              <% else %>
+                <%= link_to "削除", file_path(:id => file.id), class: "btn btn-outline-danger btn-block mt-1", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+              <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
