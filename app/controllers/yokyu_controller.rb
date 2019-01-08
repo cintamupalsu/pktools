@@ -12,6 +12,7 @@ class YokyuController < ApplicationController
       hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
       vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       if ws_from<=ws_to
+        #natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
         natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
 
       #backjob = Backjob.create(name: "Read XLS", status: 0)
