@@ -6,7 +6,21 @@
   <div class="col-xl-11">
     <div class="card ml-1" id="sentence">
       <div class="card-header text-center">
-        <strong>確認</strong>
+        <div class="row">
+          <div class="col-1 text-center"></div>
+          <div class="col-10 text-center"><strong>確認</strong></div>
+          <div class="col-1 text-center">
+          <% if @sentence_count>0 %>
+          <% if @check==0 %>
+            <%= link_to "全✓", senconfirm_path(:check => 1), class: "btn btn-outline-info btn-sm", role: "button" %>
+          <% else %>
+            <%= link_to "全□", senconfirm_path(:check => 0), class: "btn btn-outline-info btn-sm", role: "button" %>          
+          <% end %>          
+          <% else %>
+            <%= link_to "全✓", senconfirm_path(:check => 1), class: "btn btn-info btn-sm disabled", role: "button" %>
+          <% end %>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <% if @sentence_count>0 %>
@@ -14,11 +28,7 @@
             <div class="row border-bottom">
               <div class="col-1 text-center"><strong>№</strong></div>
               <div class="col-9 text-center"><strong>文法</strong></div>
-              <% if @check==0 %>
-                <div class="col-2 text-center"><strong>同</strong><%= link_to "全✓", senconfirm_path(:check => 1), class: "btn btn-outline-info btn-sm", role: "button" %></div>
-              <% else %>
-                <div class="col-2 text-center"><strong>同</strong><%= link_to "全□", senconfirm_path(:check => 0), class: "btn btn-outline-info btn-sm", role: "button" %></div>
-              <% end %>
+              <div class="col-2 text-center"><strong>同</strong></div>
             </div>
             <% (0..@sentence_count-1).each do |i| %>
               <div class="row border-bottom">
