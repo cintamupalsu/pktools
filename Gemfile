@@ -77,6 +77,9 @@ end
 
 group :production do
   gem 'pg'
+  gem 'fog-aws'
+  # if error ovirt try:
+  # sudo apt-get install build-essential libcurl4-openssl-dev
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -3,6 +3,7 @@ class FileManager < ApplicationRecord
   has_many :answer_denpyos, dependent: :destroy
   has_many :sentences, dependent: :destroy
   has_many :watson_language_masters, dependent: :destroy
+
   
   def learning(natural_language_understanding, file_manager, question, answer, user, answer_id, hospital_id, vendor_id)
     threshold = 0.1
@@ -61,14 +62,17 @@ class FileManager < ApplicationRecord
             anchor=wlm.anchor
           end
           (0..answer.count-1).each do |ans|
-            AnswerDenpyo.create(user_id: user.id, 
-                                watson_language_master_id: anchor, 
-                                content: answer[ans][row],
-                                answer_id: answer_id[ans],
-                                hospital_id: hospital_id,
-                                vendor_id: vendor_id,
-                                file_manager_id: file_manager.id
-                                )
+            if answer[ans][row]=="" 
+            else
+              AnswerDenpyo.create(user_id: user.id, 
+                                  watson_language_master_id: anchor, 
+                                  content: answer[ans][row],
+                                  answer_id: answer_id[ans],
+                                  hospital_id: hospital_id,
+                                  vendor_id: vendor_id,
+                                  file_manager_id: file_manager.id
+                                  )
+            end
           end
           
           if find_similar!=-1
@@ -98,5 +102,45 @@ class FileManager < ApplicationRecord
     end
     colnumber
   end
-
+  
+  def uploaded_file(xls_field)
+    self.name         = base_part_of(xls_field.original_filename)
+    self.content_type = xls_field.content_type.chomp
+    self.data         = xls_field.read
+  end
+  
+  def base_part_of(file_name)
+    File.basename(file_name).gsub(/[^\w._-]/,'')
+  end
+  
+  def writing(ws_from, ws_to, hospital_id, vendor_id, first_row, question, question_col, answers_col, current_user)
+    if ws_from<=ws_to
+      workbook = RubyXL::Parser.parse_buffer(self.data)
+      (ws_from-1..ws_to-1).each do |ws|
+        worksheet = workbook[ws]
+        (first_row..worksheet.count-1).each do |row|
+          if worksheet[row][question_col]!= nil 
+          if worksheet[row][question_col].value!= ""
+            variant = worksheet[row][question_col].value.to_s.gsub(/。|、|\ |\.|,|　|\n/,'')
+            watson_language_master = WatsonLanguageMaster.where("user_id=? AND variant=?",current_user.id, variant).first
+            if watson_language_master!=nil 
+              if watson_language_master.anchor != -1
+                watson_language_master = WatsonLanguageMaster.find(watson_language_master.anchor)
+              end
+              (0..question.answers.count-1).each do |ans|
+                answer = AnswerDenpyo.where("user_id=? AND watson_language_master_id=? AND hospital_id=? AND vendor_id=? AND answer_id=?", current_user.id, watson_language_master.id, hospital_id, vendor_id, question.answers[ans].id).first
+                
+                #answer = AnswerDenpyo.where("user_id=? AND watson_language_master_id=? AND hospital_id=? AND vendor_id=?", current_user.id, watson_language_master.id, hospital_id, vendor_id).first                                
+                if answer!=nil
+                  worksheet[row][answers_col[ans]].change_contents(answer.content, worksheet[row][answers_col[ans]].formula)
+                end
+              end # answers_col
+            end #end if watson
+          end # end if
+          end # end if
+        end # worksheet count
+      end # ws
+      self.update_attributes(status: 1, data: workbook.stream.read)
+    end
+  end
 end

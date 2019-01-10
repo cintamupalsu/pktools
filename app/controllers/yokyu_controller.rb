@@ -3,24 +3,82 @@ class YokyuController < ApplicationController
     init_index
   end
 
+  def write
+    init_index
+    if writing_params['filename']!=nil
+      file_xls= writing_params['filename']
+      file_manager = FileManager.create!(name: file_xls.original_filename, 
+                                        content_type: file_xls.content_type.chomp, 
+                                        data: file_xls.read,
+                                        user_id: current_user.id,
+                                        status: 0)
+      
+      ws_from = writing_params['worksheetfrom'].to_i-1
+      ws_to = writing_params['worksheetto'].to_i-1
+      first_row = writing_params['first_row'].to_i-1
+      hospital_id = Hospital.where("company_id=?",writing_params['hospital'].to_i).first.id 
+      vendor_id = Vendor.where("company_id=?",writing_params['vendor'].to_i).first.id 
+      question_col = file_manager.string_to_col(writing_params['question'])
+      answers_col = Array.new(@question.answers.count)
+      (0..answers_col.count-1).each do |ans|
+        answers_col[ans] = file_manager.string_to_col(writing_params['answer'][ans])
+      end
+      file_manager.delay.writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user)
+      #question = @question
+      #if ws_from<=ws_to
+      #  workbook = RubyXL::Parser.parse_buffer(file_manager.data)
+      #  (ws_from-1..ws_to-1).each do |ws|
+      #    worksheet = workbook[ws]
+      #    (first_row..worksheet.count-1).each do |row|
+      #      if worksheet[row][question_col]!= nil 
+      #      if worksheet[row][question_col].value!= ""
+      #        variant = worksheet[row][question_col].value.to_s.gsub(/。|、|\ |\.|,|　|\n/,'')
+      #        watson_language_master = WatsonLanguageMaster.where("user_id=? AND variant=?",current_user.id,variant).first
+      #        if watson_language_master!=nil 
+      #          if watson_language_master.anchor != -1
+      #            watson_language_master = WatsonLanguageMaster.find(watson_language_master.anchor)
+      #          end
+      #          (0..question.answers.count-1).each do |ans|
+      #            answer = AnswerDenpyo.where("user_id=? AND watson_language_master_id=? AND hospital_id=? AND vendor_id=? AND answer_id=?", current_user.id, watson_language_master.id, hospital_id, vendor_id, question.answers[ans].id).first
+      #            
+      #            #answer = AnswerDenpyo.where("user_id=? AND watson_language_master_id=? AND hospital_id=? AND vendor_id=?", current_user.id, watson_language_master.id, hospital_id, vendor_id).first                                
+      #            if answer!=nil
+      #              worksheet[row][answers_col[ans]].change_contents(answer.content, worksheet[row][answers_col[ans]].formula)
+      #            end
+      #          end # answers_col
+      #        end #end if watson
+      #      end # end if
+      #      end # end if
+      #    end # worksheet count
+      #  end # ws
+      #  file_manager.update_attributes(status: 1, data: workbook.stream.read)
+      #  send_data( workbook.stream.read, :disposition => 'attachment', :type => 'application/excel', :filename => file_manager.name)
+      #end # end if
+    end
+    render 'index'
+    #workbook = RubyXL::Parser.parse_buffer(file_manager.data)
+    #worksheet = workbook[0]
+    #worksheet[5][5].change_contents("holil mugabe", worksheet[5][5].formula)
+    #send_data( workbook.stream.read, :disposition => 'attachment', :type => 'application/excel', :filename => file_manager.name)
+  end
+
   def learn
     init_index
     if learning_params['filename']!=nil
       # check variables
-      ws_from = learning_params['worksheetfrom'].to_i
-      ws_to = learning_params['worksheetto'].to_i
+      ws_from = learning_params['worksheetfrom'].to_i-1
+      ws_to = learning_params['worksheetto'].to_i-1
       hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
       vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       if ws_from<=ws_to
-        #natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
         natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
 
       #backjob = Backjob.create(name: "Read XLS", status: 0)
 
        
         # check variables
-        ws_from = learning_params["worksheetfrom"].to_i-1
-        ws_to = learning_params['worksheetto'].to_i-1
+        # ws_from = learning_params["worksheetfrom"].to_i-1
+        # ws_to = learning_params['worksheetto'].to_i-1
         first_row = learning_params['first_row'].to_i-1
         file_xls = learning_params['filename']
         file_manager = FileManager.create(name: file_xls.original_filename, user_id: current_user.id, status:0)
@@ -67,9 +125,6 @@ class YokyuController < ApplicationController
 
   end
   
-  def write
-    
-  end
 
   def answer
   end
@@ -213,17 +268,21 @@ class YokyuController < ApplicationController
 
   def filelist
     @selected_item=1
-    @files = FileManager.where("user_id=?",current_user.id)
+    @files = FileManager.where("user_id=? AND content_type IS NULL",current_user.id)
     wlm_ids = Sentence.where("user_id = ?",current_user.id).pluck(:wlu)
     @file_manager_ids = WatsonLanguageMaster.where("id IN (?)", wlm_ids).pluck(:file_manager_id)
-    @inprogress = FileManager.where("user_id =? AND status=0",current_user.id).count
+    @inprogress = FileManager.where("user_id =? AND status=0 AND content_type IS NULL",current_user.id).count
   end
 
   def file_destroy
     file = FileManager.find(params[:id])
     file.destroy
     flash[:success] = "ファイルを削除しました"
-    redirect_to yokyufile_path
+    if params[:download].to_i == 0
+      redirect_to yokyufile_path
+    else
+      redirect_to yokyu_download_path
+    end
   end
   
   def senmanage
@@ -270,10 +329,25 @@ class YokyuController < ApplicationController
     redirect_to manage_sentences_path
   end
   
+  def download
+    @selected_item=7
+    @files = FileManager.where("user_id=? AND content_type IS NOT NULL",current_user.id)
+  end
+  
+  def download_file
+    file = FileManager.find(params[:id])
+    send_data( file.data, :disposition => 'attachment', :type => 'application/excel', :filename => file.name)
+    #redirect_to yokyu_download_path
+  end
+  
   private
   
   def learning_params
     params.require(:learning).permit(:filename, :question, :worksheetfrom, :worksheetto, :vendor, :hospital, :first_row, :answer=>[], :answer_id=>[])    
+  end
+  
+  def writing_params
+    params.require(:writing).permit(:filename, :question, :worksheetfrom, :worksheetto, :vendor, :hospital, :first_row, :answer=>[], :answer_id=>[])    
   end
   
   def company_params

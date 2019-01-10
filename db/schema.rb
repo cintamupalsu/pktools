@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_020150) do
+ActiveRecord::Schema.define(version: 2019_01_09_044948) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -81,6 +81,10 @@ ActiveRecord::Schema.define(version: 2019_01_08_020150) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
+    t.string "picture"
+    t.binary "data"
+    t.string "comment"
+    t.string "content_type"
     t.index ["user_id"], name: "index_file_managers_on_user_id"
   end
 
