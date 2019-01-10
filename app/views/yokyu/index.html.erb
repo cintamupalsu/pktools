@@ -8,18 +8,22 @@
       <li class="nav-item">
         <a class="nav-link active" id="torikumi-tab" data-toggle="tab" href="#torikomi" role="tab" aria-controls="torikumi" aria-selected="true">仕様書取込</a>
       </li>
+      <% if @benkyo==0 %>
       <li class="nav-item">
         <a class="nav-link" id="sakusei-tab" data-toggle="tab" href="#sakusei" role="tab" aria-controls="sakusei" aria-selected="false">仕様書作成</a>
       </li>
+      <% end %>
     </ul>
     
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="torikomi" role="tabpanel" aria-labelledby="torikomi-tab">
           <%= render 'learn' %>
       </div>
-      <div class="tab-pane fade" id="sakusei" role="tabpanel" aria-labelledby="sakusei-tab">
-          <%= render 'write' %>
-      </div>
+      <% if @benkyo==0 %>
+        <div class="tab-pane fade" id="sakusei" role="tabpanel" aria-labelledby="sakusei-tab">
+            <%= render 'write' %>
+        </div>
+      <% end %>
     </div>
     
   </div>

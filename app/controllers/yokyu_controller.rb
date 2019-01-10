@@ -1,5 +1,11 @@
+# -----------------------------------------------------------
+# 01.01 2019/01/10 by Arief Maulana as Ota-san requrested
+# -----------------------------------------------------------
+# 01.01 2019/01/10 Yokyu sentence input is valid for all user
+# -----------------------------------------------------------
 class YokyuController < ApplicationController
   def index
+    @benkyo=params['benkyo'].to_i
     init_index
   end
 
@@ -24,42 +30,8 @@ class YokyuController < ApplicationController
         answers_col[ans] = file_manager.string_to_col(writing_params['answer'][ans])
       end
       file_manager.delay.writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user)
-      #question = @question
-      #if ws_from<=ws_to
-      #  workbook = RubyXL::Parser.parse_buffer(file_manager.data)
-      #  (ws_from-1..ws_to-1).each do |ws|
-      #    worksheet = workbook[ws]
-      #    (first_row..worksheet.count-1).each do |row|
-      #      if worksheet[row][question_col]!= nil 
-      #      if worksheet[row][question_col].value!= ""
-      #        variant = worksheet[row][question_col].value.to_s.gsub(/。|、|\ |\.|,|　|\n/,'')
-      #        watson_language_master = WatsonLanguageMaster.where("user_id=? AND variant=?",current_user.id,variant).first
-      #        if watson_language_master!=nil 
-      #          if watson_language_master.anchor != -1
-      #            watson_language_master = WatsonLanguageMaster.find(watson_language_master.anchor)
-      #          end
-      #          (0..question.answers.count-1).each do |ans|
-      #            answer = AnswerDenpyo.where("user_id=? AND watson_language_master_id=? AND hospital_id=? AND vendor_id=? AND answer_id=?", current_user.id, watson_language_master.id, hospital_id, vendor_id, question.answers[ans].id).first
-      #            
-      #            #answer = AnswerDenpyo.where("user_id=? AND watson_language_master_id=? AND hospital_id=? AND vendor_id=?", current_user.id, watson_language_master.id, hospital_id, vendor_id).first                                
-      #            if answer!=nil
-      #              worksheet[row][answers_col[ans]].change_contents(answer.content, worksheet[row][answers_col[ans]].formula)
-      #            end
-      #          end # answers_col
-      #        end #end if watson
-      #      end # end if
-      #      end # end if
-      #    end # worksheet count
-      #  end # ws
-      #  file_manager.update_attributes(status: 1, data: workbook.stream.read)
-      #  send_data( workbook.stream.read, :disposition => 'attachment', :type => 'application/excel', :filename => file_manager.name)
-      #end # end if
     end
-    render 'index'
-    #workbook = RubyXL::Parser.parse_buffer(file_manager.data)
-    #worksheet = workbook[0]
-    #worksheet[5][5].change_contents("holil mugabe", worksheet[5][5].formula)
-    #send_data( workbook.stream.read, :disposition => 'attachment', :type => 'application/excel', :filename => file_manager.name)
+    redirect_to yokyu_path(:benkyo => 0)
   end
 
   def learn
@@ -68,14 +40,17 @@ class YokyuController < ApplicationController
       # check variables
       ws_from = learning_params['worksheetfrom'].to_i-1
       ws_to = learning_params['worksheetto'].to_i-1
-      hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
-      vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
+      hospital_id = Hospital.first.id 
+      vendor_id = Vendor.first.id 
+      benkyo=learning_params['benkyo'].to_i
+      if benkyo==0
+        hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
+        vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
+      end
       if ws_from<=ws_to
-        natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+        natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+        # natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
 
-      #backjob = Backjob.create(name: "Read XLS", status: 0)
-
-       
         # check variables
         # ws_from = learning_params["worksheetfrom"].to_i-1
         # ws_to = learning_params['worksheetto'].to_i-1
@@ -93,7 +68,9 @@ class YokyuController < ApplicationController
           answer_id=Array.new(answers_count)
           (0..answers_count-1).each do |ans|
             answer[ans]=Array.new(worksheet.count)
-            answer_id[ans]=learning_params['answer_id'][ans].to_i
+            if benkyo==0
+              answer_id[ans]=learning_params['answer_id'][ans].to_i
+            end
           end
           
           (first_row..worksheet.count-1).each do |row|
@@ -101,16 +78,18 @@ class YokyuController < ApplicationController
             if worksheet[row][question_col]!=""
               question[row]=worksheet[row][question_col].value.to_s
               (0..answers_count-1).each do |ans|
-                answer_col = file_manager.string_to_col(learning_params['answer'][ans])
-                if worksheet[row][answer_col]!= nil
-                  answer[ans][row] = worksheet[row][answer_col].value.to_s
+                if benkyo==0
+                  answer_col = file_manager.string_to_col(learning_params['answer'][ans])
+                  if worksheet[row][answer_col]!= nil
+                    answer[ans][row] = worksheet[row][answer_col].value.to_s
+                  end
                 end
               end
             end
             end
           end
-          #learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id)
-          file_manager.delay.learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id)
+          #learning(natural_language_understanding, file_manager, question, answer, current_user, answer_id, hospital_id, vendor_id, learning_params['benkyo'].to_i)
+          file_manager.delay.learning(natural_language_understanding, question, answer, current_user, answer_id, hospital_id, vendor_id, learning_params['benkyo'].to_i)
         end
         flash[:info] = "取り込んでいます"
         
@@ -131,7 +110,15 @@ class YokyuController < ApplicationController
   
   def questions
     @selected_item=4;
-    @questions= Question.where("user_id=?", current_user.id)
+    # 01.01 2019/01/10 >>>
+    #@questions= Question.where("user_id=?", current_user.id)
+    @questions= Question.all
+    @setting = Setting.where("user_id=? AND shorui=1", current_user.id).first
+    if @setting==nil && Question.count>0
+      question= Question.first
+      @setting = Setting.create(user_id: current_user.id, shorui: 1, target: question.id)
+    end
+    # 01.01 2019/01/10 <<<
   end
   
   def question_show
@@ -148,12 +135,20 @@ class YokyuController < ApplicationController
   def question_create
     @question = Question.new(question_params)
     @question.user_id = current_user.id
-    if Question.where("user_id=?", current_user.id).count==0
-      @question.mark=1
-    else
-      @question.mark=0
-    end
+    # 01.01 2019/01/10 >>>
+    #if Question.where("user_id=?", current_user.id).count==0
+    #  @question.mark=1
+    #else
+    #  @question.mark=0
+    #end
+    # 01.01 2019/01/10 <<<
+
     if @question.save
+      # 01.01 2019/01/10 >>>
+      if Setting.where("shorui = 1 AND user_id=?", current_user.id).count == 0
+        Setting.create!(shorui: 1, user_id:1, target: @question.id)
+      end
+      # 01.01 2019/01/10 <<<
       flash[:info] = "要求を登録しました。"
       redirect_to question_path(:id => @question.id)
     else
@@ -176,23 +171,37 @@ class YokyuController < ApplicationController
   end
   
   def question_default
-    question = Question.where("user_id=? AND mark=?", current_user.id, 1).first
-    question.update_attributes(mark: 0)
-    question = Question.find(params[:id])
-    question.update_attributes(mark: 1)
+    # 01.01 2019/01/10 >>>
+    # question = Question.where("user_id=? AND mark=?", current_user.id, 1).first
+    # question.update_attributes(mark: 0)
+    # question = Question.find(params[:id])
+    # question.update_attributes(mark: 1)
+    setting = Setting.where("shorui = 1 AND user_id = ?",current_user.id).first
+    setting.update_attributes(target: params[:id].to_i)
+    # 01.01 2019/01/10 <<<
     redirect_to questions_url
   end  
   
   def question_destroy
     
     question = Question.find(params[:id])
+    # 01.01 2019/01/10 >>>
     if question.mark==1
       questions = Question.where("user_id=?",current_user)
       if questions.count>0
         questions[0].update_attributes(mark: 1)
       end
     end
+    # 01.01 2019/01/10 <<<
     question.destroy
+    if Question.count>0
+      question = Question.first
+      setting = Setting.where("user_id=? AND shorui=1", current_user.id).first
+      setting.update_attributes(target: question.id)
+    else
+      setting = Setting.where("user_id=? AND shorui=1", current_user.id).first
+      setting.destroy
+    end
     flash[:success] = "要求を削除しました"
     redirect_to questions_url
     
@@ -240,7 +249,10 @@ class YokyuController < ApplicationController
   
   def confirm
     @selected_item = 3
-    @sentences = Sentence.where("user_id=?",current_user.id)
+    # 01.01 2019/01/10 >>>
+    #@sentences = Sentence.where("user_id=?",current_user.id)
+    @sentences = Sentence.all
+    # 01.01 2019/01/10 <<<
     @check = params[:check].to_i
   end
   
@@ -268,10 +280,15 @@ class YokyuController < ApplicationController
 
   def filelist
     @selected_item=1
-    @files = FileManager.where("user_id=? AND content_type IS NULL",current_user.id)
-    wlm_ids = Sentence.where("user_id = ?",current_user.id).pluck(:wlu)
+    # 01.01 2019/01/10 >>>
+    #@files = FileManager.where("user_id=? AND content_type IS NULL",current_user.id)
+    @files = FileManager.where("content_type IS NULL")
+    #wlm_ids = Sentence.where("user_id = ?",current_user.id).pluck(:wlu)
+    wlm_ids = Sentence.all.pluck(:wlu)
     @file_manager_ids = WatsonLanguageMaster.where("id IN (?)", wlm_ids).pluck(:file_manager_id)
-    @inprogress = FileManager.where("user_id =? AND status=0 AND content_type IS NULL",current_user.id).count
+    #@inprogress = FileManager.where("user_id =? AND status=0 AND content_type IS NULL",current_user.id).count
+    @inprogress = FileManager.where("status=0 AND content_type IS NULL").count
+    # 01.01 2019/01/10 <<<
   end
 
   def file_destroy
@@ -287,7 +304,11 @@ class YokyuController < ApplicationController
   
   def senmanage
     @selected_item=2
-    @watson_language_master = WatsonLanguageMaster.where("user_id=? AND anchor = -1", current_user.id)
+    # 01.01 2019/01/01 >>>
+    #@watson_language_master = WatsonLanguageMaster.where("user_id=? AND anchor = -1", current_user.id)
+    @counter = params[:sentence_page].to_i
+    @watson_language_master = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 100)
+    # 01.01 2019/01/01 <<<
   end
   
   def betsu
@@ -343,7 +364,7 @@ class YokyuController < ApplicationController
   private
   
   def learning_params
-    params.require(:learning).permit(:filename, :question, :worksheetfrom, :worksheetto, :vendor, :hospital, :first_row, :answer=>[], :answer_id=>[])    
+    params.require(:learning).permit(:filename, :question, :worksheetfrom, :worksheetto, :vendor, :hospital, :first_row, :benkyo, :answer=>[], :answer_id=>[])    
   end
   
   def writing_params
@@ -380,9 +401,24 @@ class YokyuController < ApplicationController
   
   def init_index
     @selected_item=0;
-    @hospital_ids = Hospital.where("user_id = ?", current_user.id).pluck(:company_id)
-    @vendor_ids = Vendor.where("user_id = ?", current_user.id).pluck(:company_id)
-    @question = Question.where("user_id = ? AND mark = 1", current_user.id).first
+    if @benkyo==1
+      @selected_item=8
+    end
+    # 01.01 2019/01/10 >>>
+    #@hospital_ids = Hospital.where("user_id = ?", current_user.id).pluck(:company_id)
+    #@vendor_ids = Vendor.where("user_id = ?", current_user.id).pluck(:company_id)
+    @hospital_ids = Hospital.all.pluck(:company_id)
+    @vendor_ids = Vendor.all.pluck(:company_id)
+    if Question.count>0
+      setting = Setting.where("shorui=1 AND user_id=?", current_user.id).first
+      if setting==nil 
+        question= Question.first
+        setting = Setting.create(user_id: current_user.id, shorui: 1, target: question.id)
+      end
+      @question = Question.find(setting.target)
+    end
+    # @question = Question.where("user_id = ? AND mark = 1", current_user.id).first
+    # 01.01 2019/01/10 <<<
   end
   
   def check_box_bug(param_checkbox)

@@ -9,14 +9,15 @@
   </a>
   
   <% if @selected_item==8 %>
-    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="要求勉強">
+    <a href="<%= yokyu_path(:benkyo =>1) %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="要求勉強">
   <% else %>
-    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="要求勉強">
+    <a href="<%= yokyu_path(:benkyo =>1) %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="要求勉強">
   <% end %>
     <%= image_tag("ico_learn.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>
   
-  <% @file_inprogress = FileManager.where("status=0 AND user_id=? AND content_type IS NULL", current_user.id).count %>
+  <% #@file_inprogress = FileManager.where("status=0 AND user_id=? AND content_type IS NULL", current_user.id).count %>
+  <% @file_inprogress = FileManager.where("status=0 AND content_type IS NULL").count %>
   <% if @selected_item==1 %>
     <% if @file_inprogress>0 %>
       <a href="<%= yokyufile_path %>" class="card-header pl-2 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="ファイル管理">
@@ -69,7 +70,8 @@
     <%= image_tag("ico_detail.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>
 
-  <% @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
+  <% #@sentence_count = Sentence.where("user_id=?",current_user.id).count %>
+  <% @sentence_count = Sentence.count %>
   <% if @selected_item==3 %>
     <% if @sentence_count>0 %>
       <a href="<%= senconfirm_path %>" class="card-header pl-2 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="要求確認">

@@ -11,6 +11,6 @@ class CreateSentences < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    add_index :sentences, [:user_id, :file_manager_id, :question]
+    add_index :sentences, [:content, :user_id, :file_manager_id]
   end
 end

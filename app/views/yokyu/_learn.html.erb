@@ -21,50 +21,61 @@
         </div>
       </div>
       <br/>
-      <% if Company.where("user_id=?",current_user.id).count >0 %>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <%= f.label :vendor, "仕様元ベンダー", class:"input-group-text"  %>
+      <% if @benkyo == 0 %>
+        <% #if Company.where("user_id=?",current_user.id).count >0 %>
+        <% if Company.count >0 %>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <%= f.label :vendor, "仕様元ベンダー", class:"input-group-text"  %>
+              </div>
+              <%= f.select :vendor, Company.where("id IN (?)", @vendor_ids).collect { |p| [p.name, p.id] }, class: 'custom-select' %>
             </div>
-            <%= f.select :vendor, Company.where("id IN (?)", @vendor_ids).collect { |p| [p.name, p.id] }, class: 'custom-select' %>
+          </div>
+          <div class="col-md-6">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <%= f.label :hospital, "仕様元病院", class:"input-group-text"  %>
+              </div>
+              <%= f.select :hospital, Company.where("id IN (?)", @hospital_ids).collect { |p| [p.name, p.id] }, class: 'custom-select' %>
+            </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <%= f.label :hospital, "仕様元病院", class:"input-group-text"  %>
-            </div>
-            <%= f.select :hospital, Company.where("id IN (?)", @hospital_ids).collect { |p| [p.name, p.id] }, class: 'custom-select' %>
-          </div>
-        </div>
-      </div>
+        <% end %>
       <% end %>
       <% if @question!=nil %>
-      <div class="row">
-        <div class="col-md-3">
-          <%= f.label :question, @question.name %> 列：
-    　     <%= f.text_field :question,  value: @question.column , class: 'form-control'  %>
+        <div class="row">
+          <div class="col-md-3">
+            <%= f.label :question, @question.name %> 列：
+      　     <%= f.text_field :question,  value: @question.column , class: 'form-control'  %>
+          </div>
+          <div class="col-md-3">
+            <%= f.label :first_row, "最初行" %>
+            <%= f.text_field :first_row, placeholder: "1", class: 'form-control' %>
+          </div>
         </div>
-        <div class="col-md-3">
-          <%= f.label :first_row, "最初行" %>
-          <%= f.text_field :first_row, placeholder: "1", class: 'form-control' %>
-        </div>
-      </div>
-      <% @question.answers.each do |answer| %>
-      <div class="row">
-        <div class="col-md-3">
-          <%= f.label :answer, answer.name %> 列：
-          <%= f.text_field :answer, class: 'form-control', value: answer.column, multiple: true %>
-          <%= f.hidden_field :answer_id, value: answer.id, multiple: true %>
-        </div>
-      </div>
+        <% if @benkyo==0 %>
+          <% @question.answers.each do |answer| %>
+          <div class="row">
+            <div class="col-md-3">
+              <%= f.label :answer, answer.name %> 列：
+              <%= f.text_field :answer, class: 'form-control', value: answer.column, multiple: true %>
+              <%= f.hidden_field :answer_id, value: answer.id, multiple: true %>
+            </div>
+          </div>
+          <% end %>
+        <% end %>
       <% end %>
-      <% end %>
-      <br/>
-      <%= f.submit "作成", class: "btn btn-outline-primary btn-block" %>
       
+      <br/>
+      <% if @benkyo!=0 %>
+      <%= f.hidden_field :benkyo, value: 1 %>
+      <% end %>
+      <% if @question!=nil && Hospital.count>0 && Vendor.count>0 %>
+        <%= f.submit "作成", class: "btn btn-outline-primary btn-block" %>
+      <% end %>
+
     <% end %>
   </div>
 </div>

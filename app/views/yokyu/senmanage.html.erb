@@ -14,7 +14,7 @@
           <div class="col-9 text-center"><strong>文法</strong></div>
           <div class="col-2 text-center"><strong>操作</strong></div>
         </div>  
-        <% counter=0 %>
+        <% counter=0+(@counter*100) %>
         <% @watson_language_master.each do |wlm| %>
           <% counter+=1 %>
           <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
@@ -43,7 +43,7 @@
             </div>
           </div>
           <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
-          <% counter_1 = 0 %>
+          <% counter_1 = 0%>
           <% similars.each do |similar| %>
           <% counter_1+=1 %>
           <% if counter_1==simcount %>
@@ -70,6 +70,10 @@
           <% end %>
         <% end %>
       </div>
+      <div class="card-footer">
+        <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:tab => 0}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+      </div>
+
     </div>
   </div>
 </div>

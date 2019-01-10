@@ -20,7 +20,8 @@
         </div>
       </div>
       <br/>
-      <% if Company.where("user_id=?",current_user.id).count >0 %>
+      <% #if Company.where("user_id=?",current_user.id).count >0 %>
+      <% if Company.count >0 %>
         <div class="row">
           <div class="col-md-6">
             <div class="input-group mb-3">
@@ -63,7 +64,9 @@
         <% end %>
       <% end %>
       <br/>
-      <%= f.submit "作成", class: "btn btn-outline-primary btn-block" %>
+      <% if @question!=nil && Hospital.count>0 && Vendor.count>0 %>
+        <%= f.submit "作成", class: "btn btn-outline-primary btn-block" %>
+      <% end %>
     <% end %>
   </div>
 </div>

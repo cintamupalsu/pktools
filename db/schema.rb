@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_09_044948) do
+ActiveRecord::Schema.define(version: 2019_01_10_025552) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -41,13 +41,6 @@ ActiveRecord::Schema.define(version: 2019_01_09_044948) do
     t.index ["question_id", "user_id"], name: "index_answers_on_question_id_and_user_id"
     t.index ["question_id"], name: "index_answers_on_question_id"
     t.index ["user_id"], name: "index_answers_on_user_id"
-  end
-
-  create_table "backjobs", force: :cascade do |t|
-    t.integer "status"
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "companies", force: :cascade do |t|
@@ -81,7 +74,6 @@ ActiveRecord::Schema.define(version: 2019_01_09_044948) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
-    t.string "picture"
     t.binary "data"
     t.string "comment"
     t.string "content_type"
@@ -124,6 +116,15 @@ ActiveRecord::Schema.define(version: 2019_01_09_044948) do
     t.index ["user_id", "file_manager_id", "question"], name: "index_sentences_on_user_id_and_file_manager_id_and_question"
     t.index ["user_id"], name: "index_sentences_on_user_id"
     t.index ["watson_language_master_id"], name: "index_sentences_on_watson_language_master_id"
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer "shorui"
+    t.integer "user_id"
+    t.integer "target"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_settings_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
