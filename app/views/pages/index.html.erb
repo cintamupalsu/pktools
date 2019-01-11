@@ -1,5 +1,5 @@
 <% provide(:title,"Home") %>
-<div class="row center">
+<div class="row mt-1">
   <div class="col-4">
     <% @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
     <% @file_inprogress = FileManager.where("user_id=? AND status=0", current_user.id).count %>
@@ -92,3 +92,44 @@
   
 </div>
 
+<div class="row mt-1">
+  <div class="col-4">
+    <div class="card" id="yokyu_card">
+      <div class="card-header text-center">
+        <strong>Future Tool</strong>
+      </div>
+      <div class="card-body text-center">
+        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "未来", "#", class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+      </div>
+    </div>
+  </div>
+    <div class="col-4">
+    <div class="card" id="yokyu_card">
+      <div class="card-header text-center">
+        <strong>Future Tool</strong>
+      </div>
+      <div class="card-body text-center">
+        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "未来", "#", class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card" id="yokyu_card">
+      <div class="card-header text-center">
+        <strong>Future Tool</strong>
+      </div>
+      <div class="card-body text-center">
+        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "未来", "#", class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+      </div>
+    </div>
+  </div>
+</div>
