@@ -110,9 +110,9 @@
   </a>
 
   <% if @selected_item==9 %>
-    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="Documentation">
+    <a href="<%= yokyu_documentation_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="Documentation">
   <% else %>
-    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="Documentation">
+    <a href="<%= yokyu_documentation_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="Documentation">
   <% end %>
     <%= image_tag("ico_documentation.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>

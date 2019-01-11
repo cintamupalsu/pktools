@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   delete '/betsu',              to: 'yokyu#delete_sentence'
   get    '/yokyu_download',     to: 'yokyu#download'
   get    '/yokyu_download_file',to: 'yokyu#download_file'
+  get    '/yokyu/documentation',to: 'yokyu#documentation'
 
   devise_for :users
   root 'pages#index'

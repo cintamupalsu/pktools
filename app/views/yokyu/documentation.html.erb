@@ -1,0 +1,40 @@
+<% provide(:title,"分管理") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="sentence">
+      <div class="card-header text-center">
+        <strong>要求仕様書について</strong>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-12">
+            <h4>要求仕様書とは</h4>
+            <p>略で…</p>
+            <h4>ボタン機能</h4>
+            1. <%= image_tag("ico_doc.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>要求読み取り...</p>
+            2. <%= image_tag("ico_learn.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>要求勉強…</p>
+            3. <%= image_tag("ico_excel.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>ファイル管理…</p>
+            4. <%= image_tag("ico_download.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>ダウンロード…</p>
+            5. <%= image_tag("ico_detail.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>分管理…</p>
+            6. <%= image_tag("ico_check.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>分確認…</p>
+            7. <%= image_tag("ico_list.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>列所管理…</p>
+            8. <%= image_tag("ico_vendor.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+            <p>顧客管理…</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+      </div>
+    </div>
+  </div>
+</div>
