@@ -54,3 +54,11 @@ footer{
   @include box_sizing;
 }
 
+@font-face {
+  font-family: "HGP行書体";
+  src: url(/assets/fonts/HGRGY.TTC) format("truetype");
+}
+
+#card-title {
+  font-family: "HGP行書体";
+}

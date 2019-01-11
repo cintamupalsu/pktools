@@ -4,9 +4,9 @@
     <% @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
     <% @file_inprogress = FileManager.where("user_id=? AND status=0", current_user.id).count %>
     <% @yok_notices = @sentence_count+@file_inprogress %>
-    <div class="card shadow" id="yokyu_card">
-      <div class="card-header text-center">
-        <strong>要求仕様書</strong>
+    <div class="card shadow">
+      <div class="card-header text-center" id="card-title">
+        <h4>要求仕様書</h4>
       </div>
       <div class="card-body">
         <div class="row">
@@ -64,9 +64,9 @@
     </div>
   </div>
   <div class="col-4">
-    <div class="card shadow" id="yokyu_card">
-      <div class="card-header text-center">
-        <strong>Future Tool</strong>
+    <div class="card shadow">
+      <div class="card-header text-center" id="card-title">
+        <h4>Future Tool</h4>
       </div>
       <div class="card-body text-center">
         <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
@@ -77,9 +77,9 @@
     </div>
   </div>
   <div class="col-4">
-    <div class="card shadow" id="yokyu_card">
-      <div class="card-header text-center">
-        <strong>Future Tool</strong>
+    <div class="card shadow">
+      <div class="card-header text-center" id="card-title">
+        <h4>Future Tool</h4>
       </div>
       <div class="card-body text-center">
         <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
@@ -94,22 +94,9 @@
 
 <div class="row mt-1">
   <div class="col-4">
-    <div class="card shadow" id="yokyu_card">
-      <div class="card-header text-center">
-        <strong>Future Tool</strong>
-      </div>
-      <div class="card-body text-center">
-        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
-      </div>
-      <div class="card-footer">
-        <%= link_to "未来", "#", class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
-      </div>
-    </div>
-  </div>
-    <div class="col-4">
-    <div class="card shadow" id="yokyu_card">
-      <div class="card-header text-center shadow-sm">
-        <strong>Future Tool</strong>
+    <div class="card shadow">
+      <div class="card-header text-center" id="card-title">
+        <h4>Future Tool</h4>
       </div>
       <div class="card-body text-center">
         <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
@@ -120,9 +107,22 @@
     </div>
   </div>
   <div class="col-4">
-    <div class="card shadow" id="yokyu_card">
-      <div class="card-header text-center">
-        <strong>Future Tool</strong>
+    <div class="card shadow">
+      <div class="card-header text-center" id="card-title">
+        <h4>Future Tool</h4>
+      </div>
+      <div class="card-body text-center">
+        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "未来", "#", class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card shadow">
+      <div class="card-header text-center" id="card-title">
+        <h4>Future Tool</h4>
       </div>
       <div class="card-body text-center">
         <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
