@@ -4,7 +4,7 @@
     <% @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
     <% @file_inprogress = FileManager.where("user_id=? AND status=0", current_user.id).count %>
     <% @yok_notices = @sentence_count+@file_inprogress %>
-    <div class="card" id="yokyu_card">
+    <div class="card shadow" id="yokyu_card">
       <div class="card-header text-center">
         <strong>要求仕様書</strong>
       </div>
@@ -64,7 +64,7 @@
     </div>
   </div>
   <div class="col-4">
-    <div class="card" id="yokyu_card">
+    <div class="card shadow" id="yokyu_card">
       <div class="card-header text-center">
         <strong>Future Tool</strong>
       </div>
@@ -77,7 +77,7 @@
     </div>
   </div>
   <div class="col-4">
-    <div class="card" id="yokyu_card">
+    <div class="card shadow" id="yokyu_card">
       <div class="card-header text-center">
         <strong>Future Tool</strong>
       </div>
@@ -94,7 +94,7 @@
 
 <div class="row mt-1">
   <div class="col-4">
-    <div class="card" id="yokyu_card">
+    <div class="card shadow" id="yokyu_card">
       <div class="card-header text-center">
         <strong>Future Tool</strong>
       </div>
@@ -107,8 +107,8 @@
     </div>
   </div>
     <div class="col-4">
-    <div class="card" id="yokyu_card">
-      <div class="card-header text-center">
+    <div class="card shadow" id="yokyu_card">
+      <div class="card-header text-center shadow-sm">
         <strong>Future Tool</strong>
       </div>
       <div class="card-body text-center">
@@ -120,7 +120,7 @@
     </div>
   </div>
   <div class="col-4">
-    <div class="card" id="yokyu_card">
+    <div class="card shadow" id="yokyu_card">
       <div class="card-header text-center">
         <strong>Future Tool</strong>
       </div>
