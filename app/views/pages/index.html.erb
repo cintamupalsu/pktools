@@ -1,2 +1,94 @@
-<h1>Pages#index</h1>
-<p>Find me in app/views/pages/index.html.erb</p>
+<% provide(:title,"Home") %>
+<div class="row center">
+  <div class="col-4">
+    <% @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
+    <% @file_inprogress = FileManager.where("user_id=? AND status=0", current_user.id).count %>
+    <% @yok_notices = @sentence_count+@file_inprogress %>
+    <div class="card" id="yokyu_card">
+      <div class="card-header text-center">
+        <strong>要求仕様書</strong>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-8">
+            Notice
+          </div>
+          <div class="col-4 text-right">
+            <%= @yok_notices %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            Uploaded files
+          </div>
+          <div class="col-4 text-right">
+            <%= FileManager.count %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            Sentences
+          </div>
+          <div class="col-4 text-right">
+            <%= WatsonLanguageMaster.count %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            Confirmation Needed
+          </div>
+          <div class="col-4 text-right">
+            <%= Sentence.count %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            Question Versions
+          </div>
+          <div class="col-4 text-right">
+            <%= Question.count %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-8">
+            Answers
+          </div>
+          <div class="col-4 text-right">
+            <%= AnswerDenpyo.count %>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <%= link_to "要求", yokyu_path, class: "btn btn-outline-primary btn-sm btn-block", role: "button" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card" id="yokyu_card">
+      <div class="card-header text-center">
+        <strong>Future Tool</strong>
+      </div>
+      <div class="card-body text-center">
+        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "未来", "#", class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card" id="yokyu_card">
+      <div class="card-header text-center">
+        <strong>Future Tool</strong>
+      </div>
+      <div class="card-body text-center">
+        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "未来", "#", class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
