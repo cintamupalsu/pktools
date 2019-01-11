@@ -112,8 +112,8 @@ ActiveRecord::Schema.define(version: 2019_01_10_025552) do
     t.datetime "updated_at", null: false
     t.integer "watson_language_master_id"
     t.integer "wlu"
-    t.index ["content", "user_id", "file_manager_id"], name: "index_sentences_on_content_and_user_id_and_file_manager_id"
     t.index ["file_manager_id"], name: "index_sentences_on_file_manager_id"
+    t.index ["user_id", "file_manager_id", "question"], name: "index_sentences_on_user_id_and_file_manager_id_and_question"
     t.index ["user_id"], name: "index_sentences_on_user_id"
     t.index ["watson_language_master_id"], name: "index_sentences_on_watson_language_master_id"
   end

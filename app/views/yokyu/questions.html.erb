@@ -6,7 +6,7 @@
   <div class="col-xl-11">
     <div class="card" id="question">
       <div class="card-header">
-        列所管理
+        列情報管理
       </div>
       <div class="card-body">
         <% if @questions!=nil %>
@@ -16,7 +16,7 @@
         <% end %>
       </div>
       <div class="card-footer">
-        <%= link_to "列所追加", question_new_path(@question), class: "btn btn-outline-success", role: "button" %>
+        <%= link_to "列情報追加", question_new_path(@question), class: "btn btn-outline-success", role: "button" %>
       </div>
     </div>
   </div>

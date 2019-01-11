@@ -27,13 +27,12 @@ class CompaniesController < ApplicationController
   end
   
   def create
-  
     company= Company.create(name: company_params['name'], address: company_params['address'], user_id: current_user.id)
-    
-    if company_params['hospital']
+
+    if company_params['hospital']=="hospital"
       Hospital.create(company_id: company.id, user_id: current_user.id)   
     end
-    if company_params['vendor']
+    if company_params['hospital']=="vendor"
       Vendor.create(company_id: company.id, user_id: current_user.id)    
     end
     #@paramkocok= params
@@ -51,15 +50,14 @@ class CompaniesController < ApplicationController
   def update
     @company = Company.find(company_params['id'].to_i)
     if @company.update_attributes(name: company_params['name'], address: company_params['address'])
-      if company_params['hospital']
-
+    if company_params['hospital']=="hospital"
         if Hospital.where("company_id = ?", @company.id).count==0
             Hospital.create(company_id: @company.id, user_id: current_user.id)      
         end
       else
         Hospital.where("company_id = ?", @company.id).destroy_all
       end
-      if company_params['vendor']
+    if company_params['hospital']=="vendor"
         if Vendor.where("company_id = ?", @company.id).count==0
             Vendor.create(company_id: @company.id, user_id: current_user.id)      
         end

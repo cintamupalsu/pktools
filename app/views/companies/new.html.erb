@@ -17,14 +17,13 @@
           <%= f.label :address, "住所" %>
           <%= f.text_area :address,  placeholder: "郵便番号、県、市、…" , class: 'form-control'  %>
           </br>
-          関係
-          <%= f.label :hospital, class: "form-check form-check-inline ml-3" do %>
-            <%= f.check_box :hospital, {}, true, false %> 
-            <span class="text-left ml-2">病院</span>
-          <% end %>
-          <%= f.label :vendor, class: "form-check form-check-inline ml-5" do %>
-            <%= f.check_box :vendor, {}, true, false %> 
-            <span class="text-left ml-2">ベンダー</span>
+          区分：
+          <%= f.label :hospital, class: "form-check form-radio-inline ml-3" do %>
+            <%= f.radio_button :hospital, :hospital %> 
+            <%= f.label :病院, class: "hospital" %>
+            <br/>
+            <%= f.radio_button :hospital, :vendor %> 
+            <%= f.label :ベンダー, class: "vendor" %>
           <% end %>
           </br>
             <%= f.submit '登録', class: "btn btn-outline-success fluid" %>

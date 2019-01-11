@@ -19,8 +19,19 @@ class YokyuController < ApplicationController
                                         user_id: current_user.id,
                                         status: 0)
       
-      ws_from = writing_params['worksheetfrom'].to_i-1
-      ws_to = writing_params['worksheetto'].to_i-1
+      ws_from = writing_params['worksheetfrom'].to_i
+      ws_to = writing_params['worksheetto'].to_i
+      
+      noprocess=false
+      if ws_from==0
+        noprocess=true
+      end
+      if ws_to<ws_from
+        ws_to=ws_from
+      end
+      ws_to=ws_to-1
+      ws_from=ws_from-1
+
       first_row = writing_params['first_row'].to_i-1
       hospital_id = Hospital.where("company_id=?",writing_params['hospital'].to_i).first.id 
       vendor_id = Vendor.where("company_id=?",writing_params['vendor'].to_i).first.id 
@@ -29,7 +40,9 @@ class YokyuController < ApplicationController
       (0..answers_col.count-1).each do |ans|
         answers_col[ans] = file_manager.string_to_col(writing_params['answer'][ans])
       end
-      file_manager.delay.writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user)
+      if noprocess==false
+        file_manager.delay.writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user)
+      end
     end
     redirect_to yokyu_path(:benkyo => 0)
   end
@@ -38,8 +51,19 @@ class YokyuController < ApplicationController
     init_index
     if learning_params['filename']!=nil
       # check variables
-      ws_from = learning_params['worksheetfrom'].to_i-1
-      ws_to = learning_params['worksheetto'].to_i-1
+      ws_from = learning_params['worksheetfrom'].to_i
+      ws_to = learning_params['worksheetto'].to_i
+
+      noprocess=false
+      if ws_from==0
+        noprocess=true
+      end
+      if ws_to<ws_from
+        ws_to=ws_from
+      end
+      ws_to=ws_to-1
+      ws_from=ws_from-1
+      
       hospital_id = Hospital.first.id 
       vendor_id = Vendor.first.id 
       benkyo=learning_params['benkyo'].to_i
@@ -47,7 +71,7 @@ class YokyuController < ApplicationController
         hospital_id = Hospital.where("company_id=?",learning_params['hospital'].to_i).first.id 
         vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       end
-      if ws_from<=ws_to
+      if noprocess==false
         # natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
         natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
 

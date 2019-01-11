@@ -94,9 +94,9 @@
   </a>
   
   <% if @selected_item==4 %>
-    <a href= <%= questions_path %> class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="列所管理">
+    <a href= <%= questions_path %> class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="列情報管理">
   <% else %>
-    <a href= <%= questions_path %> class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="列所管理">
+    <a href= <%= questions_path %> class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="列情報管理">
   <% end %>
     <%= image_tag("ico_list.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>

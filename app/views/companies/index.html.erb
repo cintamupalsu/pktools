@@ -1,3 +1,10 @@
+<!--
+--------------------------------------------------------
+# 01.01 2019/01/11 by Arief Maulana as Ota san requested
+--------------------------------------------------------
+# 01.01 日本語を修正する
+--------------------------------------------------------
+-->
 <% provide(:title, "顧客管理") %>
 <div class="row">
   <aside class="col-xl-1">
@@ -5,13 +12,17 @@
   </aside>
   <div class="col-xl-11">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <!-- 01.01 2019/01/11 >>> -->
+      <!--
       <li class="nav-item">
-        <% if @tab == 0 %>
+        <%# if @tab == 0 %>
           <a class="nav-link active" id="companies-tab" data-toggle="tab" href="#companies" role="tab" aria-controls="torikumi" aria-selected="true">全顧客</a>
-        <% else %>
+        <%# else %>
           <a class="nav-link" id="companies-tab" data-toggle="tab" href="#companies" role="tab" aria-controls="torikumi" aria-selected="true">全顧客</a>
-        <% end %>
+        <%# end %>
       </li>
+      -->
+      <!-- 01.01 2019/01/11 <<< -->
       <li class="nav-item">
         <% if @tab == 1 %>
           <a class="nav-link active" id="hospitals-tab" data-toggle="tab" href="#hospitals" role="tab" aria-controls="hospitals" aria-selected="false">病院</a>
@@ -29,13 +40,17 @@
     </ul>
     
     <div class="tab-content" id="myTabContent">
-      <% if @tab == 0 %>
+      <!-- 01.01 2019/01/11 >>> -->
+      <!--
+      <%# if @tab == 0 %>
         <div class="tab-pane fade show active" id="companies" role="tabpanel" aria-labelledby="companies-tab">
-      <% else %>
+      <%# else %>
         <div class="tab-pane fade " id="companies" role="tabpanel" aria-labelledby="companies-tab">
-      <% end %>
-          <%= render 'companies' %>
+      <%# end %>
+          <%#= render 'companies' %>
       </div>
+      -->
+      <!-- 01.01 2019/01/11 <<< -->
       <% if @tab == 1 %>
         <div class="tab-pane fade show active" id="hospitals" role="tabpanel" aria-labelledby="hospitals-tab">
       <% else %>

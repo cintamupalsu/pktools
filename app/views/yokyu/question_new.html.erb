@@ -1,4 +1,4 @@
-<% provide(:title, "新規列所") %>
+<% provide(:title, "新規列情報") %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -6,18 +6,18 @@
   <div class="col-xl-11">
     <div class="card" id="question">
       <div class="card-header text-center">
-        <strong>新規列所</strong>
+        <strong>新規列情報登録</strong>
       </div>
       <div class="card-body">
         <%= form_for(:question, url: question_new_path) do |f| %>
      
-          <%= f.label :name, "名前" %>
-          <%= f.text_field :name, placeholder: "列所" , class: 'form-control'  %>
+          <%= f.label :name, "名称" %>
+          <%= f.text_field :name, placeholder: "要求仕様" , class: 'form-control'  %>
           </br>
-          <%= f.label :column, "列所" %>
+          <%= f.label :column, "列番号" %>
           <%= f.text_field :column,  placeholder: "A" , class: 'form-control'  %>
           </br>
-            <%= f.submit '列所登録', class: "btn btn-outline-success fluid" %>
+            <%= f.submit '列情報登録', class: "btn btn-outline-success fluid" %>
         <% end %>
       </div>
     </div>

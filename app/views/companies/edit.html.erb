@@ -17,22 +17,13 @@
           <%= f.label :address, "住所" %>
           <%= f.text_area :address, :value => @get_company.address , class: 'form-control'  %>
           </br>
-          関係
-          <%= f.label :hospital, class: "form-check form-check-inline ml-3" do %>
-            <% if Hospital.where("company_id = ?",@get_company.id).count>0 %>
-              <%= f.check_box :hospital, {checked: true}, true, false %> 
-            <% else %>
-              <%= f.check_box :hospital, {}, true, false %> 
-            <% end %>
-            <span class="text-left ml-2">病院</span>
-          <% end %>
-          <%= f.label :vendor, class: "form-check form-check-inline ml-5" do %>
-            <% if Vendor.where("company_id = ?",@get_company.id).count>0 %>
-              <%= f.check_box :vendor, {checked: true}, true, false %> 
-            <% else %>
-              <%= f.check_box :vendor, {}, true, false %> 
-            <% end %>
-            <span class="text-left ml-2">ベンダー</span>
+          区分：
+          <%= f.label :hospital, class: "form-check form-radio-inline ml-3" do %>
+            <%= f.radio_button :hospital, :hospital %> 
+            <%= f.label :病院, class: "hospital" %>
+            <br/>
+            <%= f.radio_button :hospital, :vendor %> 
+            <%= f.label :ベンダー, class: "vendor" %>
           <% end %>
           </br>
             <%= f.submit '登録', class: "btn btn-outline-success fluid" %>
