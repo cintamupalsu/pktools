@@ -1,0 +1,29 @@
+<% provide(:title,"分管理") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="sentence">
+      <div class="card-header">
+        <%= @sentence.content %>
+      </div>
+      <div class="card-body">
+        Variants: <br/>
+        <% @sentences.each do |sentence| %>
+          <% if sentence.id != @sentence.id %>
+            <%= sentence.content %><br/>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="card ml-1 mt-1" id="sentence">
+      <div class="card-header text-center">
+      </div>
+      <div class="card-body">
+        回答
+      </div>
+    </div>
+
+  </div>
+</div>

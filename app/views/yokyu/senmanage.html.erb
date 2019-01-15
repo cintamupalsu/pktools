@@ -26,7 +26,7 @@
           <% end %>
             <div class="col-1 text-center"><%=counter%></div>
             <div class="col-9 text-left">
-              <small><%= wlm.content %></small>
+              <small><%= link_to wlm.content, sentence_path(:id => wlm.id) %></small>
             </div>
             <div class="col-2 text-center">
                <% if Sentence.where("wlu=?",wlm.id).count>0 || Sentence.where("watson_language_master_id=?",wlm.id).count>0 %>
@@ -53,7 +53,7 @@
           <% end %>
             <div class="col-1 text-center">-</div>
             <div class="col-9 text-left">
-              <small><%= similar.content %></small>
+              <small><%= link_to similar.content, sentence_path(:id => similar.id) %></small>
             </div>
             <div class="col-2 text-center">
                <% if Sentence.where("wlu=?",similar.id).count>0 || Sentence.where("watson_language_master_id=?",similar.id).count>0 %>

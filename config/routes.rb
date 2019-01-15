@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   get    '/yokyu_download',     to: 'yokyu#download'
   get    '/yokyu_download_file',to: 'yokyu#download_file'
   get    '/yokyu/documentation',to: 'yokyu#documentation'
+  get    '/sentence',           to: 'yokyu#sentence'
+  post   '/watson_update_path', to: 'yokyu#watson_update'
 
   devise_for :users
   root 'pages#index'
