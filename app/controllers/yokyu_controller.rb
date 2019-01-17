@@ -289,7 +289,9 @@ class YokyuController < ApplicationController
       @counter=1
     end
     setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
-    @question = Question.find_by(id: setting.target)
+    if setting!= nil
+      @question = Question.find_by(id: setting.target)
+    end
     # 01.02 2019/01/17 <<<
   end
   
@@ -378,7 +380,9 @@ class YokyuController < ApplicationController
     # 01.01 2019/01/01 <<<
     # 01.02 2019/01/17 >>>
     setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
-    @question = Question.find_by(id: setting.target)
+    if setting!=nil 
+      @question = Question.find_by(id: setting.target)
+    end
     # 01.02 2019/01/17 <<<
     
   end

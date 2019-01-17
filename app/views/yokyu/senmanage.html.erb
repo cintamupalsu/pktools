@@ -1,6 +1,7 @@
 <% provide(:title,"分管理") %>
-<% answers_count = @question.answers.count %>
-
+<% if @question!=nil %>
+  <% answers_count = @question.answers.count %>
+<% end %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>

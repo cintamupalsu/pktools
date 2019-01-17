@@ -1,5 +1,7 @@
 <% provide(:title,"要求仕確認") %>
+<% if @question!=nil %>
 <% answers_count = @question.answers.count %>
+<% end %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
