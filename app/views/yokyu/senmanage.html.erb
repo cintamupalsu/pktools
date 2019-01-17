@@ -1,4 +1,4 @@
-<% provide(:title,"分管理") %>
+<% provide(:title,"文章管理") %>
 <% if @question!=nil %>
   <% answers_count = @question.answers.count %>
 <% end %>
@@ -14,7 +14,7 @@
             <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:tab => 0}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
           </div>          
           <div class="col-6">
-            <strong>分管理</strong>
+            <strong>文章管理</strong>
           </div>          
         </div>
       </div>

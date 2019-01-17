@@ -1,3 +1,4 @@
+<% provide(:title,"ファイル一覧") %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -24,7 +25,7 @@
               <div class="col-2 text-justify"><small><%=file.created_at%></small></div>
               <div class="col-2 text-center">
               <% if file.status==0 %>
-                進行中
+                <small>進行中</small><%= link_to "強制削除", file_path(:id => file.id), class: "btn btn-outline-warning", role: "button", method: :delete, data: { confirm: "You sure?　お祈り必要" } %>
               <% else %>
                 <% disablebutton = @file_manager_ids.include? file.id %>
                 <% if disablebutton || @inprogress>0 %>
