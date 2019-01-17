@@ -14,7 +14,7 @@
           <div class="col-9 text-center"><strong>文法</strong></div>
           <div class="col-2 text-center"><strong>操作</strong></div>
         </div>  
-        <% counter=0+(@counter*100) %>
+        <% counter=0+((@counter-1)*100) %>
         <% @watson_language_master.each do |wlm| %>
           <% counter+=1 %>
           <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>

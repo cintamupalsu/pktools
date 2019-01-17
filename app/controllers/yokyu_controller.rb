@@ -72,7 +72,7 @@ class YokyuController < ApplicationController
         vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       end
       if noprocess==false
-        # natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+        #natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
         natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
 
         # check variables
@@ -331,6 +331,9 @@ class YokyuController < ApplicationController
     # 01.01 2019/01/01 >>>
     #@watson_language_master = WatsonLanguageMaster.where("user_id=? AND anchor = -1", current_user.id)
     @counter = params[:sentence_page].to_i
+    if @counter==0
+      @counter=1
+    end
     @watson_language_master = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 100)
     # 01.01 2019/01/01 <<<
   end
