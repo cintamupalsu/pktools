@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   post   '/write',              to: 'yokyu#write'
   get    '/senconfirm',         to: 'yokyu#confirm'
   post   '/senconfirm',         to: 'yokyu#confirmed'
+  get    '/yokyu_onaji',        to: 'yokyu#onaji'
+  get    '/yokyu_chigau',       to: 'yokyu#chigau'
   get    '/yokyufile',          to: 'yokyu#filelist'
   delete '/file',               to: 'yokyu#file_destroy'
   get    '/manage_sentences',   to: 'yokyu#senmanage'

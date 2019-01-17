@@ -3,7 +3,7 @@
 # 01.02 2019/01/17 by Arief Maulana as Ota-san requested
 # -----------------------------------------------------------
 # 01.01 2019/01/10 Yokyu sentence input is valid for all user
-# 01.02 2019/01/17 Answers show on sentence list
+# 01.02 2019/01/17 Answers show on sentence list and confirm list
 # -----------------------------------------------------------
 class YokyuController < ApplicationController
   def index
@@ -13,7 +13,16 @@ class YokyuController < ApplicationController
 
   def write
     init_index
-    if writing_params['filename']!=nil
+    noprocess=false
+    ws_from = writing_params['worksheetfrom'].to_i
+    ws_to = writing_params['worksheetto'].to_i
+    if ws_from==0
+      noprocess=true
+    end
+    if ws_to<ws_from
+      ws_to=ws_from
+    end
+    if writing_params['filename']!=nil && noprocess == false
       file_xls= writing_params['filename']
       file_manager = FileManager.create!(name: file_xls.original_filename, 
                                         content_type: file_xls.content_type.chomp, 
@@ -21,16 +30,7 @@ class YokyuController < ApplicationController
                                         user_id: current_user.id,
                                         status: 0)
       
-      ws_from = writing_params['worksheetfrom'].to_i
-      ws_to = writing_params['worksheetto'].to_i
-      
-      noprocess=false
-      if ws_from==0
-        noprocess=true
-      end
-      if ws_to<ws_from
-        ws_to=ws_from
-      end
+
       ws_to=ws_to-1
       ws_from=ws_from-1
 
@@ -45,6 +45,9 @@ class YokyuController < ApplicationController
       if noprocess==false
         file_manager.delay.writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user)
       end
+      flash[:info] = "ファイルを登録しています"
+    else
+      flash[:warning] = "入力エラー"
     end
     redirect_to yokyu_path(:benkyo => 0)
   end
@@ -57,7 +60,7 @@ class YokyuController < ApplicationController
       ws_to = learning_params['worksheetto'].to_i
 
       noprocess=false
-      if ws_from==0
+      if ws_from==0 
         noprocess=true
       end
       if ws_to<ws_from
@@ -120,7 +123,7 @@ class YokyuController < ApplicationController
         flash[:info] = "取り込んでいます"
         
       else
-        flash[:danger] = "Error!"
+        flash[:warning] = "入力エラー"
       end
     else
       flash[:success] = "ファイルなし"
@@ -277,9 +280,17 @@ class YokyuController < ApplicationController
     @selected_item = 3
     # 01.01 2019/01/10 >>>
     #@sentences = Sentence.where("user_id=?",current_user.id)
-    @sentences = Sentence.all
+    @sentences = Sentence.all.paginate(:page => params[:sentence_page], :per_page => 10)
     # 01.01 2019/01/10 <<<
     @check = params[:check].to_i
+    # 01.02 2019/01/17 >>>
+    @counter = params[:sentence_page].to_i
+    if @counter==0
+      @counter=1
+    end
+    setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
+    @question = Question.find_by(id: setting.target)
+    # 01.02 2019/01/17 <<<
   end
   
   def confirmed
@@ -302,6 +313,33 @@ class YokyuController < ApplicationController
       sentence.destroy
     end
     redirect_to senconfirm_path
+  end
+  
+  def onaji
+    # 01.02 2019/01/17 >>>
+    sentence = Sentence.find_by(params[:id])
+    wlm = WatsonLanguageMaster.find_by(id: sentence.watson_language_master_id)
+    # check anchoring
+    wlm_anchor = WatsonLanguageMaster.find_by(id: sentence.wlu)
+    while wlm_anchor.anchor!=-1 do
+      wlm_anchor = WatsonLanguageMaster.find_by(id: wlm_anchor.anchor)
+    end
+    wlm.update_attributes(anchor: wlm_anchor.id)
+    answers = AnswerDenpyo.where("watson_language_master_id=?", sentence.watson_language_master_id)
+    answers.each do |answer|
+      answer.update_attributes(watson_language_master_id: wlm_anchor.id)
+    end
+    sentence.destroy
+    redirect_to senconfirm_path
+    # 01.02 2019/01/17 <<<
+  end
+  
+  def chigau
+    # 01.02 2019/01/17 >>>
+    sentence = Sentence.find_by(params[:id])
+    sentence.destroy
+    redirect_to senconfirm_path
+    # 01.02 2019/01/17 <<<
   end
 
   def filelist

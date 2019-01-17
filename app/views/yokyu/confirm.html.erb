@@ -1,4 +1,5 @@
 <% provide(:title,"要求仕確認") %>
+<% answers_count = @question.answers.count %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -7,57 +8,107 @@
     <div class="card ml-1" id="sentence">
       <div class="card-header text-center">
         <div class="row">
-          <div class="col-1 text-center"></div>
-          <div class="col-10 text-center"><strong>確認</strong></div>
-          <div class="col-1 text-center">
-          <% if @sentence_count>0 %>
-          <% if @check==0 %>
-            <%= link_to "全✓", senconfirm_path(:check => 1), class: "btn btn-outline-info btn-sm", role: "button" %>
-          <% else %>
-            <%= link_to "全□", senconfirm_path(:check => 0), class: "btn btn-outline-info btn-sm", role: "button" %>          
-          <% end %>          
-          <% else %>
-            <%= link_to "全✓", senconfirm_path(:check => 1), class: "btn btn-info btn-sm disabled", role: "button" %>
-          <% end %>
+          <div class="col-6 text-left">
+            <%= will_paginate(@sentences, :param_name => 'sentence_page', :params => {:tab => 0}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
           </div>
+          <div class="col-6 text-left"><h3>確認</h3></div>
         </div>
       </div>
       <div class="card-body">
-        <% if @sentence_count>0 %>
-          <%= form_for(:kakunin, url: senconfirm_path) do |f| %>
+        <% if @sentences.count>0 %>
             <div class="row border-bottom">
               <div class="col-1 text-center"><strong>№</strong></div>
-              <div class="col-9 text-center"><strong>文法</strong></div>
-              <div class="col-2 text-center"><strong>同</strong></div>
+              <div class="col-6 text-center"><strong>文章</strong></div>
+              <div class="col-3 text-center"><strong>回答</strong></div>
+              <div class="col-2 text-center"><strong>操作</strong></div>
             </div>
-            <% (0..@sentence_count-1).each do |i| %>
+            <% counter=1+(@counter-1)*10 %>
+            <% @sentences.each do |sentence| %>
               <div class="row border-bottom">
-                <div class="col-1 text-center"><%= (i+1).to_s %></div>
+                <div class="col-1 text-center"><%= counter %></div>
                 <small class="col-9 ">
-                  <p>元：<%= WatsonLanguageMaster.find_by(id: @sentences[i].wlu).content %></p>
-                  <p>新：<%=  @sentences[i].content %></p>
-                  <%= f.hidden_field :sentence_id, value: @sentences[i].id, multiple: true %>
+                  <div class="short-div border-bottom">
+                    <div class="row">
+                      <div class="col-8">
+                        元：<%= WatsonLanguageMaster.find_by(id: sentence.wlu).content %>
+                      </div>
+                      <div class="col-4">
+
+                        <% @answers = {} %>
+                        <% @answerdenpyoids = {} %>
+                        <% iteration_count=0 %>
+                        <% @question.answers.each do |answer| %>
+                          <div class="short-div">
+                          <% answerdenpyos= AnswerDenpyo.where("watson_language_master_id=? AND answer_id=?",sentence.wlu, answer.id) %>
+                          <% answerdenpyos.each do |ad| %>
+                            <% hashstring="#{ad.hospital_id}-#{ad.vendor_id}" %>
+                            <% if @answers[hashstring]==nil %>
+                              <% @answers[hashstring]=Array.new(answers_count) %>
+                              <% @answerdenpyoids[hashstring] = ad.id %>
+                            <% end %>
+                            <% if @answers[hashstring][iteration_count]==nil %>
+                              <% @answers[hashstring][iteration_count]=ad.content %>
+                              <%= ad.content %>
+                            <% end %>
+                          <% end %>
+                          <% iteration_count+=1 %>
+                          </div>
+                        <% end %>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <div class="short-div">
+                    <div class="row">
+                      <div class="col-8">
+                        新：<%= sentence.content %>
+                      </div>
+                      <div class="col-4">
+
+                        <% @answers = {} %>
+                        <% @answerdenpyoids = {} %>
+                        <% iteration_count=0 %>
+                        <% @question.answers.each do |answer| %>
+                          <div class="short-div">
+                          <% answerdenpyos= AnswerDenpyo.where("watson_language_master_id=? AND answer_id=?",sentence.watson_language_master_id, answer.id) %>
+                          <% answerdenpyos.each do |ad| %>
+                            <% hashstring="#{ad.hospital_id}-#{ad.vendor_id}" %>
+                            <% if @answers[hashstring]==nil %>
+                              <% @answers[hashstring]=Array.new(answers_count) %>
+                              <% @answerdenpyoids[hashstring] = ad.id %>
+                            <% end %>
+                            <% if @answers[hashstring][iteration_count]==nil %>
+                              <% @answers[hashstring][iteration_count]=ad.content %>
+                              <%= ad.content %>
+                            <% end %>
+                          <% end %>
+                          <% iteration_count+=1 %>
+                          </div>
+                        <% end %>
+
+                      </div>
+                    </div>
+                  </div>
                 </small>
                 <div class="col-2 text-center">
                   <br/>
-                  <%= f.label :onaji, class: "checkbox" do %>
-                    <% if @check==0 %>
-                      <%= f.check_box :onaji, multiple: true %>
-                    <% else %>
-                      <%= f.check_box :onaji, {multiple: true, checked: true} %>
-                    <% end %>
-                  <% end %>
+                  <%= link_to "同じ", yokyu_onaji_path(:id => sentence.id), class: "btn btn-outline-success btn-sm ", role: "button" %>
+                  <%= link_to "違う", yokyu_chigau_path(:id => sentence.id), class: "btn btn-outline-primary btn-sm ", role: "button" %>
                 </div>
               </div>
+              <% counter +=1 %>
             <% end %>
-            <br/>
-            <%= f.submit "登録", class: "btn btn-outline-primary btn-block" %>  
-          <% end %>
         <% else %>
           <h3>確認終了</h3>
         <% end %>
       </div>
- 
+      <div class="card-footer">
+        <div class="row">
+          <div class="col-12 mb-0 text-left">
+            <%= will_paginate(@sentences, :param_name => 'sentence_page', :params => {:tab => 0}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+          </div>
+        </div>  
+      </div>
     </div>
   </div>
 </div>

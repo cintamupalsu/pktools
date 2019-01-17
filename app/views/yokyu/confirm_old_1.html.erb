@@ -1,0 +1,63 @@
+<% provide(:title,"要求仕確認") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="sentence">
+      <div class="card-header text-center">
+        <div class="row">
+          <div class="col-1 text-center"></div>
+          <div class="col-10 text-center"><strong>確認</strong></div>
+          <div class="col-1 text-center">
+          <% if @sentence_count>0 %>
+          <% if @check==0 %>
+            <%= link_to "全✓", senconfirm_path(:check => 1), class: "btn btn-outline-info btn-sm", role: "button" %>
+          <% else %>
+            <%= link_to "全□", senconfirm_path(:check => 0), class: "btn btn-outline-info btn-sm", role: "button" %>          
+          <% end %>          
+          <% else %>
+            <%= link_to "全✓", senconfirm_path(:check => 1), class: "btn btn-info btn-sm disabled", role: "button" %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% if @sentence_count>0 %>
+          <%= form_for(:kakunin, url: senconfirm_path) do |f| %>
+            <div class="row border-bottom">
+              <div class="col-1 text-center"><strong>№</strong></div>
+              <div class="col-9 text-center"><strong>文法</strong></div>
+              <div class="col-2 text-center"><strong>同</strong></div>
+            </div>
+            <% (0..@sentence_count-1).each do |i| %>
+              <div class="row border-bottom">
+                <div class="col-1 text-center"><%= (i+1).to_s %></div>
+                <small class="col-9 ">
+                  <p>元：<%= WatsonLanguageMaster.find_by(id: @sentences[i].wlu).content %></p>
+                  <p>新：<%=  @sentences[i].content %></p>
+                  <%= f.hidden_field :sentence_id, value: @sentences[i].id, multiple: true %>
+                </small>
+                <div class="col-2 text-center">
+                  <br/>
+                  <%= f.label :onaji, class: "checkbox" do %>
+                    <% if @check==0 %>
+                      <%= f.check_box :onaji, multiple: true %>
+                    <% else %>
+                      <%= f.check_box :onaji, {multiple: true, checked: true} %>
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+            <br/>
+            <%= f.submit "登録", class: "btn btn-outline-primary btn-block" %>  
+          <% end %>
+        <% else %>
+          <h3>確認終了</h3>
+        <% end %>
+      </div>
+ 
+    </div>
+  </div>
+</div>
