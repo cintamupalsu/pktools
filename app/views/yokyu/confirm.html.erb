@@ -32,7 +32,7 @@
                   <div class="short-div border-bottom">
                     <div class="row">
                       <div class="col-8">
-                        元：<%= WatsonLanguageMaster.find_by(id: sentence.wlu).content %>
+                        元：<%= link_to WatsonLanguageMaster.find_by(id: sentence.wlu).content, sentence_path(:id => sentence.wlu) %>
                       </div>
                       <div class="col-4">
 
@@ -63,7 +63,7 @@
                   <div class="short-div">
                     <div class="row">
                       <div class="col-8">
-                        新：<%= sentence.content %>
+                        新：<%= link_to sentence.content, sentence_path(:id => sentence.watson_language_master_id) %>
                       </div>
                       <div class="col-4">
 
