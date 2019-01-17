@@ -1,7 +1,9 @@
 # -----------------------------------------------------------
-# 01.01 2019/01/10 by Arief Maulana as Ota-san requrested
+# 01.01 2019/01/10 by Arief Maulana as Ota-san requested
+# 01.02 2019/01/17 by Arief Maulana as Ota-san requested
 # -----------------------------------------------------------
 # 01.01 2019/01/10 Yokyu sentence input is valid for all user
+# 01.02 2019/01/17 Answers show on sentence list
 # -----------------------------------------------------------
 class YokyuController < ApplicationController
   def index
@@ -336,6 +338,11 @@ class YokyuController < ApplicationController
     end
     @watson_language_master = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 100)
     # 01.01 2019/01/01 <<<
+    # 01.02 2019/01/17 >>>
+    setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
+    @question = Question.find_by(id: setting.target)
+    # 01.02 2019/01/17 <<<
+    
   end
   
   def sentence
@@ -349,10 +356,6 @@ class YokyuController < ApplicationController
     setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
     @question = Question.find_by(id: setting.target)
     answers_count = @question.answers.count
-    #@answers= Array.new(question.answers.count)
-    #(0..@answers.count-1).each do |i|
-    #  @answers[i]=Hash.new
-    #end
     @answers = {}
     @answerdenpyoids = {}
     iteration_count=0
@@ -378,7 +381,7 @@ class YokyuController < ApplicationController
   def betsu
     wlm = WatsonLanguageMaster.find(params[:id])
     wlm.update_attributes(anchor: -1)
-    flash[:primary] = "分を別となりました"
+    flash[:primary] = "文章を分けました"
     redirect_to manage_sentences_path
   end
   
