@@ -72,6 +72,7 @@ class YokyuController < ApplicationController
         vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       end
       if noprocess==false
+        # natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
         natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
 
         # check variables
@@ -343,21 +344,28 @@ class YokyuController < ApplicationController
     end
     @sentences = WatsonLanguageMaster.where("anchor = ? OR id = ?",anchor_id, anchor_id)
     setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
-    question = Question.find_by(id: setting.target)
-    @answers= Array.new(question.answers.count)
-    (0..@answers.count-1).each do |i|
-      @answers[i]=Hash.new
-    end
-    question.answers.each do |answer|
+    @question = Question.find_by(id: setting.target)
+    answers_count = @question.answers.count
+    #@answers= Array.new(question.answers.count)
+    #(0..@answers.count-1).each do |i|
+    #  @answers[i]=Hash.new
+    #end
+    @answers = {}
+    @answerdenpyoids = {}
+    iteration_count=0
+    @question.answers.each do |answer|
       answerdenpyos= AnswerDenpyo.where("watson_language_master_id=? AND answer_id=?",anchor_id, answer.id)
-      answer_counter=0
       answerdenpyos.each do |ad|
         hashstring="#{ad.hospital_id}-#{ad.vendor_id}"
-        if @answers[answer_counter][hashstring]==nil
-          @answers[answer_counter][hashstring] = ad.content
+        if @answers[hashstring]==nil
+          @answers[hashstring]=Array.new(answers_count)
+          @answerdenpyoids[hashstring] = ad.id
         end
-        answer_counter+=1
+        if @answers[hashstring][iteration_count]==nil
+          @answers[hashstring][iteration_count]=ad.content
+        end
       end
+      iteration_count+=1
     end
   end
   
