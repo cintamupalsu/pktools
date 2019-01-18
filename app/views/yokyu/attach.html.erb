@@ -5,8 +5,25 @@
   </aside>
   <div class="col-xl-11">
     <div class="card ml-1" id="sentence">
-      <div class="card-header text-left">
-        <strong><small><%= @watson_language_master.content %></small></strong>
+      <div class="card-header">
+        <div class="row">
+          <div class="col-12">
+            <strong><small><%= @watson_language_master.content %></small></strong>
+          </div>
+        </div>
+        <div class="row text-right">
+          <div class="col-12">
+          <%= form_for(:words, url: sentence_filter_path) do |f| %>
+            <% if @keywords==nil %>
+              <%= f.text_field :sentence, placeholder: "言葉、文章" %>
+            <% else %>
+              <%= f.text_field :sentence, :value => @keywords, placeholder: "言葉、文章" %>
+            <% end %>
+            <%= f.hidden_field :watson_id, value: @watson_language_master.id %>
+            <%= f.submit "フィルター", class: "btn btn-outline-secondary" %>
+          <% end %>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <% @watson_language_masters.each do |wlm| %>
@@ -20,6 +37,13 @@
             </div>
           </div>
           <% end %>
+        <% end %>
+      </div>
+      <div class="card-footer">
+        <% if @keywords==nil %>
+          <%= will_paginate(@watson_language_masters, :param_name => 'sentence_page', :params => {:id => @watson_language_master.id}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+        <% else %>
+          <%= will_paginate(@watson_language_masters, :param_name => 'sentence_page', :params => {:keywords => @keywords, :id => @watson_language_master.id}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
         <% end %>
       </div>
     </div>

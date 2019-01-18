@@ -10,12 +10,21 @@
     <div class="card ml-1" id="sentence">
       <div class="card-header text-left">
         <div class="row">
-          <div class="col-6">
-            <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:tab => 0}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+          <div class="col-4">
           </div>          
-          <div class="col-6">
+          <div class="col-4 text-center">
             <strong>文章管理</strong>
           </div>          
+          <div class="col-4 text-right">
+            <%= form_for(:words, url: sentence_search_path) do |f| %>
+              <% if @search_mode==false %>
+                <%= f.text_field :sentence, placeholder: "言葉、文章" %>
+              <% else %>
+                <%= f.text_field :sentence, :value => @keywords, placeholder: "言葉、文章" %>
+              <% end %>
+              <%= f.submit "探索", class: "btn btn-outline-secondary" %>
+            <% end %>
+          </div>
         </div>
       </div>
       <div class="card-body">
@@ -25,7 +34,7 @@
           <div class="col-6 text-center"><strong>文法</strong></div>
           <div class="col-3 text-center"><strong>回答</strong></div>
         </div>  
-        <% counter=0+((@counter-1)*100) %>
+        <% counter=0+((@counter-1)*10) %>
         <% @watson_language_master.each do |wlm| %>
           <% counter+=1 %>
           <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
@@ -103,7 +112,11 @@
         <% end %>
       </div>
       <div class="card-footer">
-        <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:tab => 0}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+        <% if @search_mode==false %>
+          <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+        <% else %>
+          <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:keywords => @keywords}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+        <% end %>
       </div>
 
     </div>

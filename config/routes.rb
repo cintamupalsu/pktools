@@ -32,12 +32,16 @@ Rails.application.routes.draw do
   get    '/betsu',              to: 'yokyu#betsu'
   get    '/attach',             to: 'yokyu#attach'
   get    '/attached',           to: 'yokyu#attached'
+  post   '/sentence_filter',    to: 'yokyu#sentence_filter'
+  get    '/sentence_filter',    to: 'yokyu#attach'
   delete '/betsu',              to: 'yokyu#delete_sentence'
   get    '/yokyu_download',     to: 'yokyu#download'
   get    '/yokyu_download_file',to: 'yokyu#download_file'
   get    '/yokyu/documentation',to: 'yokyu#documentation'
   get    '/sentence',           to: 'yokyu#sentence'
   post   '/watson_update_path', to: 'yokyu#watson_update'
+  post   '/sentence_search',    to: 'yokyu#sentence_search'
+  get    '/sentence_search',    to: 'yokyu#senmanage'
 
   devise_for :users
   root 'pages#index'

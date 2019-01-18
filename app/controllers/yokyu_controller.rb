@@ -376,7 +376,15 @@ class YokyuController < ApplicationController
     if @counter==0
       @counter=1
     end
-    @watson_language_master = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 100)
+    if params[:keywords]!=nil
+      keywords= "%"+params[:keywords]+"%"
+      @keywords=params[:keywords]
+      @watson_language_master = WatsonLanguageMaster.where("anchor = -1 AND content LIKE ?",keywords).paginate(:page => params[:sentence_page], :per_page => 10)
+      @search_mode= true
+    else
+      @watson_language_master = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 10)
+      @search_mode= false
+    end
     # 01.01 2019/01/01 <<<
     # 01.02 2019/01/17 >>>
     setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
@@ -384,7 +392,33 @@ class YokyuController < ApplicationController
       @question = Question.find_by(id: setting.target)
     end
     # 01.02 2019/01/17 <<<
-    
+  
+  end
+
+  def sentence_search
+    @search_mode= true
+    @selected_item=2
+    # 01.01 2019/01/01 >>>
+    #@watson_language_master = WatsonLanguageMaster.where("user_id=? AND anchor = -1", current_user.id)
+    @counter = params[:sentence_page].to_i
+    if @counter==0
+      @counter=1
+    end
+    keywords= "%"+params[:words][:sentence]+"%"
+    @keywords=params[:words][:sentence]
+    if params[:words][:sentence] == ''
+      @watson_language_master = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 10)
+      @search_mode= false
+    else
+      @watson_language_master = WatsonLanguageMaster.where("anchor = -1 AND content LIKE ?",keywords).paginate(:page => params[:sentence_page], :per_page => 10)
+    end
+    # 01.01 2019/01/01 <<<
+    # 01.02 2019/01/17 >>>
+    setting =Setting.where("shorui=1 AND user_id=?", current_user.id).first
+    if setting!=nil 
+      @question = Question.find_by(id: setting.target)
+    end
+    render 'senmanage'
   end
   
   def sentence
@@ -417,6 +451,7 @@ class YokyuController < ApplicationController
     end
   end
   
+
   def watson_update
   end
   
@@ -429,8 +464,28 @@ class YokyuController < ApplicationController
   
   def attach
     @watson_language_master = WatsonLanguageMaster.find(params[:id])
-    @watson_language_masters = WatsonLanguageMaster.where("anchor = -1")
+    if params[:keywords]!=nil
+      keywords= "%"+params[:keywords]+"%"
+      @keywords=params[:keywords]
+      @watson_language_masters = WatsonLanguageMaster.where("anchor = -1 AND content LIKE ?",keywords).paginate(:page => params[:sentence_page], :per_page => 10)
+    else
+      @watson_language_masters = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 10)
+    end
     @selected_item=2
+  end
+
+  def sentence_filter
+    @watson_language_master = WatsonLanguageMaster.find(params[:words][:watson_id].to_i)
+    keywords= "%"+params[:words][:sentence]+"%"
+    @keywords=params[:words][:sentence]
+    if params[:words][:sentence] != ''
+      @watson_language_masters = WatsonLanguageMaster.where("anchor = -1 AND content LIKE ?",keywords).paginate(:page => params[:sentence_page], :per_page => 10)
+    else
+      @watson_language_masters = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 10)
+      @keywords=nil
+    end
+    @selected_item=2
+    render 'attach'
   end
   
   def attached
