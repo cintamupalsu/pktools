@@ -17,12 +17,16 @@
           </div>          
           <div class="col-4 text-right">
             <%= form_for(:words, url: sentence_search_path) do |f| %>
-              <% if @search_mode==false %>
-                <%= f.text_field :sentence, placeholder: "言葉、文章" %>
-              <% else %>
-                <%= f.text_field :sentence, :value => @keywords, placeholder: "言葉、文章" %>
-              <% end %>
-              <%= f.submit "探索", class: "btn btn-outline-secondary btn-sm" %>
+              <div class="input-group">
+                <% if @search_mode==false %>
+                  <%= f.text_field :sentence, placeholder: "言葉、文章", class: 'form-control' %>
+                <% else %>
+                  <%= f.text_field :sentence, placeholder: "言葉、文章", :value => @keywords, class: 'form-control' %>
+                <% end %>
+                <div class="input-group-append">
+                  <%= f.submit "探索", class: "btn btn-outline-secondary btn-sm " %>
+                </div>
+              </div>
             <% end %>
           </div>
         </div>

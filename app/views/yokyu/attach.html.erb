@@ -7,23 +7,30 @@
     <div class="card ml-1" id="sentence">
       <div class="card-header">
         <div class="row">
+          <div class="col-6">
+          </div>
+          <div class="col-6">
+          <%= form_for(:words, url: sentence_filter_path) do |f| %>
+            <div class="input-group mb-2">
+              <% if @keywords==nil %>
+                <%= f.text_field :sentence, placeholder: "言葉、文章", class: "form-control" %>
+              <% else %>
+                <%= f.text_field :sentence, :value => @keywords, class: "form-control" %>
+              <% end %>
+              <%= f.hidden_field :watson_id, value: @watson_language_master.id %>
+              <div class="input-group-append">
+                <%= f.submit "フィルター", class: "btn btn-outline-secondary btn-sm" %>
+              </div>
+            </div>
+          <% end %>
+          </div>
+        </div>
+        <div class="row">
           <div class="col-12">
             <%= @watson_language_master.content %>
           </div>
         </div>
-        <div class="row text-right">
-          <div class="col-12">
-          <%= form_for(:words, url: sentence_filter_path) do |f| %>
-            <% if @keywords==nil %>
-              <%= f.text_field :sentence, placeholder: "言葉、文章" %>
-            <% else %>
-              <%= f.text_field :sentence, :value => @keywords, placeholder: "言葉、文章" %>
-            <% end %>
-            <%= f.hidden_field :watson_id, value: @watson_language_master.id %>
-            <%= f.submit "フィルター", class: "btn btn-outline-secondary btn-sm" %>
-          <% end %>
-          </div>
-        </div>
+
       </div>
       <div class="card-body">
         <% @watson_language_masters.each do |wlm| %>
