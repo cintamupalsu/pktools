@@ -10,10 +10,11 @@
     <div class="card ml-1" id="sentence">
       <div class="card-header text-center">
         <div class="row">
-          <div class="col-6 text-left">
-            <%= will_paginate(@sentences, :param_name => 'sentence_page', :params => {:tab => 0}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+          <div class="col-4 text-left">
           </div>
-          <div class="col-6 text-left"><h3>確認</h3></div>
+          <div class="col-4 text-center"><h3>文章確認</h3></div>
+          <div class="col-4 text-left">
+          </div>
         </div>
       </div>
       <div class="card-body">

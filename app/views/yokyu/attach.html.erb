@@ -8,7 +8,7 @@
       <div class="card-header">
         <div class="row">
           <div class="col-12">
-            <strong><small><%= @watson_language_master.content %></small></strong>
+            <strong><small><%= link_to @watson_language_master.content, sentence_path(:id => @watson_language_master.id) %></small></strong>
           </div>
         </div>
         <div class="row text-right">
@@ -33,7 +33,7 @@
               <%= link_to "参照", attached_path(:id => wlm.id, :sid => @watson_language_master.id), class: "btn btn-outline-info btn-sm", role: "button" %>
             </div>  
             <div class="col-11">
-              <small><%= wlm.content %></small>
+              <small><%= link_to wlm.content, sentence_path(:id => wlm.id) %></small>
             </div>
           </div>
           <% end %>
