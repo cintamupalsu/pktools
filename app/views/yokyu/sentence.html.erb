@@ -9,7 +9,7 @@
         <%= @sentence.content %>
       </div>
       <div class="card-body">
-        Variants: <br/>
+        異形: <br/>
         <% @sentences.each do |sentence| %>
           <% if sentence.id != @sentence.id %>
             <%= sentence.content %><br/>
