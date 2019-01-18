@@ -2,9 +2,8 @@
   <div class="col-xl-12 " id="layout">
     
     <%= form_for(:learning, url: learn_path) do |f| %>
-    
       <%= f.label :filename, "仕様書ファイル" %>
-      <%= f.file_field :filename, class: 'form-control' %>
+      <%= f.file_field :filename, class: 'form-control mb-1' %>
       <br/>
       <div class="row">
         <div class="col-md-3">
@@ -30,7 +29,7 @@
               <div class="input-group-prepend">
                 <%= f.label :vendor, "仕様元ベンダー", class:"input-group-text"  %>
               </div>
-              <%= f.select :vendor, Company.where("id IN (?)", @vendor_ids).collect { |p| [p.name, p.id] }, class: 'custom-select' %>
+              <%= f.select :vendor, Company.where("id IN (?)", @vendor_ids).collect { |p| [p.name, p.id] }, {}, {class: 'custom-select'} %>
             </div>
           </div>
           <div class="col-md-6">
@@ -38,7 +37,7 @@
               <div class="input-group-prepend">
                 <%= f.label :hospital, "仕様元病院", class:"input-group-text"  %>
               </div>
-              <%= f.select :hospital, Company.where("id IN (?)", @hospital_ids).collect { |p| [p.name, p.id] }, class: 'custom-select' %>
+              <%= f.select :hospital, Company.where("id IN (?)", @hospital_ids).collect { |p| [p.name, p.id] }, {}, {class: 'custom-select'} %>
             </div>
           </div>
         </div>

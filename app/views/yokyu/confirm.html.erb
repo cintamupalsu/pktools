@@ -36,7 +36,6 @@
                         元：<%= link_to WatsonLanguageMaster.find_by(id: sentence.wlu).content, sentence_path(:id => sentence.wlu) %>
                       </div>
                       <div class="col-4">
-
                         <% @answers = {} %>
                         <% @answerdenpyoids = {} %>
                         <% iteration_count=0 %>
@@ -57,7 +56,6 @@
                           <% iteration_count+=1 %>
                           </div>
                         <% end %>
-                        
                       </div>
                     </div>
                   </div>
@@ -88,7 +86,6 @@
                           <% iteration_count+=1 %>
                           </div>
                         <% end %>
-
                       </div>
                     </div>
                   </div>
