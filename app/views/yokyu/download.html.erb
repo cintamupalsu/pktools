@@ -27,7 +27,7 @@
                 <% if file.status==0 %>
                   進行中
                 <% else %>
-                  <%= link_to "ダウンロード", yokyu_download_file_path(:id => file.id), class: "btn btn-outline-primary mt-1 btn-sm", role: "button" %>
+                  <%= link_to "ダウンロード", yokyu_download_file_path(:id => file.id), class: "btn btn-outline-success mt-1 btn-sm", role: "button" %>
                   <%= link_to "削除", file_path(:id => file.id, :download => 1), class: "btn btn-outline-danger mt-1 btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
                 <% end %>
               </div>

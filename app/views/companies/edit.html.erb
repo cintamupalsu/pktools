@@ -19,14 +19,15 @@
           </br>
           区分：
           <%= f.label :hospital, class: "form-check form-radio-inline ml-3" do %>
-            <%= f.radio_button :hospital, :hospital %> 
+            
+            <%= f.radio_button :hospital, :hospital, :checked => (Hospital.find_by(company_id: @get_company.id)!=nil)  %> 
             <%= f.label :病院, class: "hospital" %>
             <br/>
-            <%= f.radio_button :hospital, :vendor %> 
+            <%= f.radio_button :hospital, :vendor, :checked => (Vendor.find_by(company_id: @get_company.id)!=nil) %> 
             <%= f.label :ベンダー, class: "vendor" %>
           <% end %>
           </br>
-            <%= f.submit '登録', class: "btn btn-outline-success fluid" %>
+            <%= f.submit '登録', class: "btn btn-outline-primary fluid" %>
         <% end %>
       </div>
     </div>

@@ -13,7 +13,7 @@
           <% if wlm.id != @watson_language_master.id && wlm.id != @watson_language_master.anchor %>
           <div class="row border-bottom">
             <div class="col-1">
-              <%= link_to "参照", attached_path(:id => wlm.id, :sid => @watson_language_master.id), class: "btn btn-outline-primary btn-sm", role: "button" %>
+              <%= link_to "参照", attached_path(:id => wlm.id, :sid => @watson_language_master.id), class: "btn btn-outline-info btn-sm", role: "button" %>
             </div>  
             <div class="col-11">
               <small><%= wlm.content %></small>
