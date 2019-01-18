@@ -54,7 +54,7 @@
                    <% else %>
                      <%= link_to "添", attach_path(:id => wlm.id), class: "btn btn-outline-info btn-sm", role: "button" %>
                    <% end %>
-                   <%= link_to "別", betsu_path(:id => wlm.id), class: "btn btn-warning btn-sm disabled", role: "button" %>
+                   <%= link_to "別", betsu_path(:id => wlm.id), class: "btn btn-dark btn-sm disabled", role: "button" %>
                    <% if simcount>0 || Sentence.where("wlu=?",wlm.id).count>0 %>
                      <%= link_to "削", betsu_path(:id => wlm.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
                    <% else %>
@@ -75,11 +75,11 @@
                   <div class="col-3 text-center">
                    <% if Sentence.where("wlu=?",similar.id).count>0 || Sentence.where("watson_language_master_id=?",similar.id).count>0 %>
                      <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-info btn-sm disabled", role: "button" %>
-                     <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-warning btn-sm disabled", role: "button" %>
+                     <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-dark btn-sm disabled", role: "button" %>
                      <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
                    <% else %>
                      <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-outline-info btn-sm", role: "button" %>
-                     <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-outline-warning btn-sm", role: "button" %>
+                     <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-outline-dark btn-sm", role: "button" %>
                      <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-outline-danger btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
                    <% end %>
                   </div>
