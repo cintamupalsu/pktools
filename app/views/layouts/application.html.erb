@@ -10,7 +10,15 @@
     <%= render 'layouts/header' %>
     <div class="container">
       <%= render 'layouts/alertmsg' %>
-      <%= yield %>
+      <% if current_user != nil %>
+        <% if current_user.activated %>
+          <%= yield %>
+        <% else %>
+          Please contact the administrator to activate your account.
+        <% end %>
+      <% else %>
+        <%= yield %>
+      <% end %>
       <%= render 'layouts/footer' %>
       <%= debug(params) if Rails.env.development? %>
 

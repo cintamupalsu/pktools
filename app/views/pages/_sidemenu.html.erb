@@ -1,0 +1,9 @@
+<div class="card" style="width: 6rem;">
+  <% if @selected_item==0 %>
+    <a href="<%= user_management_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="ユーザー管理">
+  <% else %>
+    <a href="<%= user_management_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="ユーザー管理">
+  <% end %>
+    <%= image_tag("ico_users.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+</div>

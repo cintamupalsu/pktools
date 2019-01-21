@@ -43,6 +43,12 @@ Rails.application.routes.draw do
   post   '/sentence_search',    to: 'yokyu#sentence_search'
   get    '/sentence_search',    to: 'yokyu#senmanage'
 
+  get    '/user_management',    to: 'pages#user_management'
+  get    '/downgrade',          to: 'pages#downgrade'
+  get    '/detach',             to: 'pages#detach'
+  get    '/activate',           to: 'pages#activate'
+  get    '/promote',            to: 'pages#promote'
+
   devise_for :users
   root 'pages#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

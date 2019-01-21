@@ -1,0 +1,26 @@
+<% provide(:title,"ユーザー管理") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="users">
+      <div class="card-header text-center">
+          <h4>ユーザー管理</h4>
+      </div>
+      <div class="card-body">
+        <div class="row border-bottom">
+          <div class="col-1 text-center"><strong>№</strong></div>
+          <div class="col-7 text-center"><strong>E-Mail</strong></div>
+          <div class="col-2 text-center"><strong>Admin</strong></div>
+          <div class="col-2 text-center"><strong>Active</strong></div>
+        </div>  
+        <% if current_user.marshal %>
+          <%= render 'user' %>
+        <% end %>
+      </div>
+      <div class="card-footer">
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_10_025552) do
+ActiveRecord::Schema.define(version: 2019_01_21_000114) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -135,6 +135,8 @@ ActiveRecord::Schema.define(version: 2019_01_10_025552) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "marshal"
+    t.boolean "activated"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

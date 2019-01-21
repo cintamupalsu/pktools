@@ -503,7 +503,7 @@ class YokyuController < ApplicationController
       answer_denpyo.update_attributes(watson_language_master_id: target_id)
     end
     
-    flash[:primary] = "分を参照しました"
+    flash[:primary] = "文章を参照しました"
     redirect_to manage_sentences_path
   end
   
@@ -520,9 +520,12 @@ class YokyuController < ApplicationController
   end
   
   def download_file
+    #@selected_item=7
+    #@files = FileManager.where("user_id=? AND content_type IS NOT NULL",current_user.id)
     file = FileManager.find(params[:id])
     send_data( file.data, :disposition => 'attachment', :type => 'application/excel', :filename => file.name)
-    #redirect_to yokyu_download_path
+    # redirect_to yokyu_download_path
+    
   end
   
   def documentation
