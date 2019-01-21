@@ -14,7 +14,7 @@
         <% if current_user.activated %>
           <%= yield %>
         <% else %>
-          Please contact the administrator to activate your account.
+          <%= render 'layouts/carousel' %>
         <% end %>
       <% else %>
         <%= yield %>

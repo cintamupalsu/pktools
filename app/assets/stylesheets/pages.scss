@@ -56,7 +56,10 @@ body{
   @include box_sizing;
 }
 
-
+.carousel-caption {
+   position: absolute;
+   top: 0px
+}
 
 #card-title {
   font-family: "HGP行書体";
