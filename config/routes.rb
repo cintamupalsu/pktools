@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   get    '/sentence_search',    to: 'yokyu#senmanage'
 
   get    '/user_management',    to: 'pages#user_management'
+  get    '/user_statistic',     to: 'pages#user_statistic'
   get    '/downgrade',          to: 'pages#downgrade'
   get    '/detach',             to: 'pages#detach'
   get    '/activate',           to: 'pages#activate'

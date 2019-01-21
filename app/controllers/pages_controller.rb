@@ -52,4 +52,8 @@ class PagesController < ApplicationController
     redirect_to user_management_path
   end
   
+  def user_statistic
+    @selected_item=1
+  end
+  
 end
