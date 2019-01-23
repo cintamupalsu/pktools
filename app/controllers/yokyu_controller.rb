@@ -319,7 +319,7 @@ class YokyuController < ApplicationController
   
   def onaji
     # 01.02 2019/01/17 >>>
-    sentence = Sentence.find_by(params[:id])
+    sentence = Sentence.find(params[:id])
     wlm = WatsonLanguageMaster.find_by(id: sentence.watson_language_master_id)
     # check anchoring
     wlm_anchor = WatsonLanguageMaster.find_by(id: sentence.wlu)
@@ -338,7 +338,7 @@ class YokyuController < ApplicationController
   
   def chigau
     # 01.02 2019/01/17 >>>
-    sentence = Sentence.find_by(params[:id])
+    sentence = Sentence.find(params[:id])
     sentence.destroy
     redirect_to senconfirm_path
     # 01.02 2019/01/17 <<<
