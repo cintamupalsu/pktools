@@ -26,8 +26,8 @@ class YokyuController < ApplicationController
     end
     if writing_params['filename']!=nil && noprocess == false
       file_xls= writing_params['filename']
-      ws_to=ws_to-1
-      ws_from=ws_from-1
+      ws_to=ws_to
+      ws_from=ws_from
       first_row = writing_params['first_row'].to_i-1
       hospital_id = Hospital.where("company_id=?",writing_params['hospital'].to_i).first.id 
       vendor_id = Vendor.where("company_id=?",writing_params['vendor'].to_i).first.id 
