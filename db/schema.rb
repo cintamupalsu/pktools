@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_21_000114) do
+ActiveRecord::Schema.define(version: 2019_01_24_072629) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -77,7 +77,18 @@ ActiveRecord::Schema.define(version: 2019_01_21_000114) do
     t.binary "data"
     t.string "comment"
     t.string "content_type"
+    t.integer "ws_from"
+    t.integer "ws_to"
+    t.integer "hospital_id"
+    t.integer "vendor_id"
+    t.integer "question_id"
+    t.integer "first_row"
+    t.integer "question_col"
+    t.string "answer_col"
+    t.index ["hospital_id"], name: "index_file_managers_on_hospital_id"
+    t.index ["question_id"], name: "index_file_managers_on_question_id"
     t.index ["user_id"], name: "index_file_managers_on_user_id"
+    t.index ["vendor_id"], name: "index_file_managers_on_vendor_id"
   end
 
   create_table "hospitals", force: :cascade do |t|

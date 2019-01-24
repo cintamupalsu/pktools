@@ -16,6 +16,17 @@
           <% end %>
         <% end %>
       </div>
+      <div class="card-footer">
+        <% file = FileManager.find(@sentence.file_manager_id) %>
+        <div class="row">
+          <div class="col-8 text-left">
+            ファイル: <%= file.name %>
+          </div>            
+          <div class="col-4 text-left">
+            登録日: <%= file.created_at %>
+          </div>            
+        </div>
+      </div>        
     </div>
     <% @answers.each do |key, values| %>
       <% hosvenid= key.split('-') %>

@@ -8,7 +8,16 @@
         <% if user_signed_in? %>
           <% @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
           <% @file_inprogress = FileManager.where("user_id=? AND status=0", current_user.id).count %>
-          <% @yok_notices = @sentence_count+@file_inprogress %>
+          
+          <% in_sentence_array=[] %>
+          <% wlms = WatsonLanguageMaster.where("anchor = -1") %>
+          <% wlms.each do |wlm| %>
+            <% if Sentence.find_by(watson_language_master_id: wlm.id) == nil && AnswerDenpyo.where("watson_language_master_id = ?",wlm.id).first == nil %>
+              <% in_sentence_array.push(wlm.id) %>
+            <% end %>
+          <% end %>
+
+          <% @yok_notices = @sentence_count+@file_inprogress+in_sentence_array.count %>
           <li class="nav-item mr-1"><%= link_to "ホーム", root_path, class: "nav-link" %></li>
           <li class="dropdown nav-link">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">

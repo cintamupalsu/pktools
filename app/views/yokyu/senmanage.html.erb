@@ -11,6 +11,11 @@
       <div class="card-header text-left">
         <div class="row">
           <div class="col-4">
+              <% if @in_sentence_array.count>0 %>
+                  <small><%= link_to "答えがない文書は", manage_sentences_path(:noanswer => 1) %></small>
+                  <%= content_tag :span, @in_sentence_array.count, class: 'badge badge-pill badge-danger' %>
+                  <small><%= link_to "があります", manage_sentences_path(:noanswer => 1) %></small>
+              <% end %>
           </div>          
           <div class="col-4 text-center">
             <h3>文章管理</h3>
@@ -40,89 +45,92 @@
         </div>  
         <% counter=0+((@counter-1)*10) %>
         <% @watson_language_master.each do |wlm| %>
-          <% counter+=1 %>
-          <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
-          <% simcount = similars.count %>
-          <div class="row border-bottom">
-            <div class="col-1 text-center"><%=counter%></div>
-            <div class="col-8 text-left">
-              <div class="short-div">
-                <div class="row">
-                  <div class="col-3 text-center">
-                   <% if Sentence.where("wlu=?",wlm.id).count>0 || Sentence.where("watson_language_master_id=?",wlm.id).count>0 %>
-                     <%= link_to "添", attach_path(:id => wlm.id), class: "btn btn-info btn-sm disabled", role: "button" %>
-                   <% else %>
-                     <%= link_to "添", attach_path(:id => wlm.id), class: "btn btn-outline-info btn-sm", role: "button" %>
-                   <% end %>
-                   <%= link_to "別", betsu_path(:id => wlm.id), class: "btn btn-dark btn-sm disabled", role: "button" %>
-                   <% if simcount>0 || Sentence.where("wlu=?",wlm.id).count>0 %>
-                     <%= link_to "削", betsu_path(:id => wlm.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
-                   <% else %>
-                     <%= link_to "削", betsu_path(:id => wlm.id), class: "btn btn-outline-danger btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
-                   <% end %>
-                  </div>
-                  <div class="col-9">
-                    <small><%= link_to wlm.content, sentence_path(:id => wlm.id) %></small>
-                  </div>
-                </div>
-              </div>
-              <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
-              <% counter_1 = 0%>
-              <% similars.each do |similar| %>
-              <% counter_1+=1 %>
-              <div class="short-div">
-                <div class="row">
-                  <div class="col-3 text-center">
-                   <% if Sentence.where("wlu=?",similar.id).count>0 || Sentence.where("watson_language_master_id=?",similar.id).count>0 %>
-                     <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-info btn-sm disabled", role: "button" %>
-                     <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-dark btn-sm disabled", role: "button" %>
-                     <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
-                   <% else %>
-                     <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-outline-info btn-sm", role: "button" %>
-                     <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-outline-dark btn-sm", role: "button" %>
-                     <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-outline-danger btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
-                   <% end %>
-                  </div>
-                  <div class="col-9">
-                    <small><%= link_to similar.content, sentence_path(:id => similar.id) %></small>
-                  </div>
-                </div>
-              </div>
-              <% end %>
-            </div>
-            <div class="col-3 text-left">
-              <% @answers = {} %>
-              <% @answerdenpyoids = {} %>
-              <% iteration_count=0 %>
-              <% @question.answers.each do |answer| %>
+          <% if Sentence.where("watson_language_master_id=?",wlm.id).count==0 %>
+            <% counter+=1 %>
+            <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
+            <% simcount = similars.count %>
+            <div class="row border-bottom">
+              <div class="col-1 text-center"><%=counter%></div>
+              <div class="col-8 text-left">
                 <div class="short-div">
-                <% answerdenpyos= AnswerDenpyo.where("watson_language_master_id=? AND answer_id=?",wlm.id, answer.id) %>
-                <% answerdenpyos.each do |ad| %>
-                  <% hashstring="#{ad.hospital_id}-#{ad.vendor_id}" %>
-                  <% if @answers[hashstring]==nil %>
-                    <% @answers[hashstring]=Array.new(answers_count) %>
-                    <% @answerdenpyoids[hashstring] = ad.id %>
-                  <% end %>
-                  <% if @answers[hashstring][iteration_count]==nil %>
-                    <% @answers[hashstring][iteration_count]=ad.content %>
-                    <small><%= ad.content %></small>
-                  <% end %>
-                <% end %>
-                <% iteration_count+=1 %>
+                  <div class="row">
+                    <div class="col-3 text-center">
+                     <% if Sentence.where("wlu=?",wlm.id).count>0 || Sentence.where("watson_language_master_id=?",wlm.id).count>0 %>
+                       <%= link_to "添", attach_path(:id => wlm.id), class: "btn btn-info btn-sm disabled", role: "button" %>
+                     <% else %>
+                       <%= link_to "添", attach_path(:id => wlm.id), class: "btn btn-outline-info btn-sm", role: "button" %>
+                     <% end %>
+                     <%= link_to "別", betsu_path(:id => wlm.id), class: "btn btn-dark btn-sm disabled", role: "button" %>
+                     <% if simcount>0 || Sentence.where("wlu=?",wlm.id).count>0 %>
+                       <%= link_to "削", betsu_path(:id => wlm.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+                     <% else %>
+                       <%= link_to "削", betsu_path(:id => wlm.id), class: "btn btn-outline-danger btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+                     <% end %>
+                    </div>
+                    <div class="col-9">
+                      <small><%= link_to wlm.content, sentence_path(:id => wlm.id) %></small>
+                    </div>
+                  </div>
                 </div>
-              <% end %>
+                <% similars = WatsonLanguageMaster.where("anchor = ?", wlm.id) %>
+                <% counter_1 = 0%>
+                <% similars.each do |similar| %>
+                <% counter_1+=1 %>
+                <div class="short-div">
+                  <div class="row">
+                    <div class="col-3 text-center">
+                     <% if Sentence.where("wlu=?",similar.id).count>0 || Sentence.where("watson_language_master_id=?",similar.id).count>0 %>
+                       <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-info btn-sm disabled", role: "button" %>
+                       <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-dark btn-sm disabled", role: "button" %>
+                       <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-danger btn-sm disabled", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+                     <% else %>
+                       <%= link_to "添", attach_path(:id => similar.id), class: "btn btn-outline-info btn-sm", role: "button" %>
+                       <%= link_to "別", betsu_path(:id => similar.id), class: "btn btn-outline-dark btn-sm", role: "button" %>
+                       <%= link_to "削", betsu_path(:id => similar.id), class: "btn btn-outline-danger btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+                     <% end %>
+                    </div>
+                    <div class="col-9">
+                      <small><%= link_to similar.content, sentence_path(:id => similar.id) %></small>
+                    </div>
+                  </div>
+                </div>
+                <% end %>
+              </div>
+              <div class="col-3 text-left">
+                <% @answers = {} %>
+                <% @answerdenpyoids = {} %>
+                <% iteration_count=0 %>
+                <% @question.answers.each do |answer| %>
+                  <div class="short-div">
+                  <% answerdenpyos= AnswerDenpyo.where("watson_language_master_id=? AND answer_id=?",wlm.id, answer.id) %>
+                  <% answerdenpyos.each do |ad| %>
+                    <% hashstring="#{ad.hospital_id}-#{ad.vendor_id}" %>
+                    <% if @answers[hashstring]==nil %>
+                      <% @answers[hashstring]=Array.new(answers_count) %>
+                      <% @answerdenpyoids[hashstring] = ad.id %>
+                    <% end %>
+                    <% if @answers[hashstring][iteration_count]==nil %>
+                      <% @answers[hashstring][iteration_count]=ad.content %>
+                      <small><%= ad.content %></small>
+                    <% end %>
+                  <% end %>
+                  <% iteration_count+=1 %>
+                  </div>
+                <% end %>
+              </div>
             </div>
-          </div>
+          <% end %>
         <% end %>
       </div>
       <div class="card-footer">
-        <% if @search_mode==false %>
+        <% if @search_mode==0 %>
           <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
-        <% else %>
+        <% elsif @search_mode==1 %>
           <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:keywords => @keywords}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+        <% else %>
+          <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:noanswer => 1}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
         <% end %>
       </div>
-
     </div>
   </div>
 </div>

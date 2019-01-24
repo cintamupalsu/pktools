@@ -21,13 +21,30 @@
             <div class="row border-bottom">
               <% counter+=1 %>
               <div class="col-1 text-center"><%= counter %>.</div>
-              <div class="col-5 text-justify"><small><%=file.name %></small></div>
+              <div class="col-5 text-justify">
+                <small><%=file.name %></small>
+                <% in_sentence_array=[] %>
+                <% wlms = WatsonLanguageMaster.where("anchor = -1 AND file_manager_id = ?", file.id) %>
+                <% wlms.each do |wlm| %>
+                  <% if Sentence.find_by(watson_language_master_id: wlm.id) == nil && AnswerDenpyo.where("watson_language_master_id = ?",wlm.id).first == nil %>
+                    <% in_sentence_array.push(wlm.id) %>
+                  <% end %>
+                <% end %>
+                <% if in_sentence_array.count>0 %>
+                  <br/>
+                  <small>答えがない文書は</small>
+                  <%= content_tag :span, in_sentence_array.count, class: 'badge badge-pill badge-warning' %>
+                  <small>があります</small>
+                <% end %>
+
+              </div>
               <div class="col-2 text-justify"><small><%=file.created_at%></small></div>
               <div class="col-3 text-center">
                 <% if file.status==0 %>
                   進行中
                 <% else %>
                   <%= link_to "ダウンロード", yokyu_download_file_path(:id => file.id), class: "btn btn-outline-success mt-1 btn-sm", role: "button" %>
+                  <%= link_to "再作成", yokyu_rewrite_path(:id => file.id), class: "btn btn-outline-primary mt-1 btn-sm", role: "button" %>
                   <%= link_to "削除", file_path(:id => file.id, :download => 1), class: "btn btn-outline-danger mt-1 btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
                 <% end %>
               </div>

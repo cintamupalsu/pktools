@@ -12,6 +12,8 @@ class YokyuController < ApplicationController
   end
 
   def write
+    natural_language_understanding = ibmwatson(0)
+    
     init_index
     noprocess=false
     ws_from = writing_params['worksheetfrom'].to_i
@@ -24,32 +26,62 @@ class YokyuController < ApplicationController
     end
     if writing_params['filename']!=nil && noprocess == false
       file_xls= writing_params['filename']
+      ws_to=ws_to-1
+      ws_from=ws_from-1
+      first_row = writing_params['first_row'].to_i-1
+      hospital_id = Hospital.where("company_id=?",writing_params['hospital'].to_i).first.id 
+      vendor_id = Vendor.where("company_id=?",writing_params['vendor'].to_i).first.id 
+
       file_manager = FileManager.create!(name: file_xls.original_filename, 
                                         content_type: file_xls.content_type.chomp, 
                                         data: file_xls.read,
                                         user_id: current_user.id,
-                                        status: 0)
-      
+                                        status: 0,
+                                        hospital_id: hospital_id,
+                                        vendor_id: vendor_id,
+                                        question_id: @question.id)
 
-      ws_to=ws_to-1
-      ws_from=ws_from-1
-
-      first_row = writing_params['first_row'].to_i-1
-      hospital_id = Hospital.where("company_id=?",writing_params['hospital'].to_i).first.id 
-      vendor_id = Vendor.where("company_id=?",writing_params['vendor'].to_i).first.id 
       question_col = file_manager.string_to_col(writing_params['question'])
       answers_col = Array.new(@question.answers.count)
+
       (0..answers_col.count-1).each do |ans|
         answers_col[ans] = file_manager.string_to_col(writing_params['answer'][ans])
       end
       if noprocess==false
-        file_manager.delay.writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user)
+        file_manager.delay.writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user, natural_language_understanding)
       end
       flash[:info] = "ファイルを登録しています"
     else
       flash[:warning] = "入力エラー"
     end
-    redirect_to yokyu_path(:benkyo => 0)
+    #redirect_to yokyu_path(:benkyo => 0)
+    redirect_to yokyu_download_path
+  end
+  
+  def rewrite
+    natural_language_understanding = ibmwatson(0)
+
+    init_index
+    file_manager = FileManager.find(params[:id])
+    #ws_from = file_manager.ws_from-1
+    #ws_to = file_manager.ws_to-1
+    #hospital_id = file_manager.hospital_id
+    #vendor_id = file_manager.vendor_id
+    #first_row = file_manager.first_row
+    @question= Question.find(file_manager.question_id)
+    #question_col =file_manager.question_col
+    ans_col=file_manager.answer_col.split(',')
+    answers_col = Array.new(@question.answers.count)
+    (0..ans_col.count-1).each do |i|
+      answers_col[i]=ans_col[i].to_i
+    end
+    file_manager.update_attributes(status: 0)
+    file_manager.delay.writing(file_manager.ws_from, file_manager.ws_to, file_manager.hospital_id, file_manager.vendor_id, file_manager.first_row, @question, file_manager.question_col, answers_col, current_user, natural_language_understanding)
+    #writing(ws_from, ws_to, hospital_id, vendor_id, first_row, @question, question_col, answers_col, current_user, natural_language_understanding, file_manager)
+    
+    
+      
+    redirect_to yokyu_download_path
   end
 
   def learn
@@ -77,17 +109,26 @@ class YokyuController < ApplicationController
         vendor_id = Vendor.where("company_id=?",learning_params['vendor'].to_i).first.id 
       end
       if noprocess==false
-        # natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
-        natural_language_understanding = IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+        natural_language_understanding = ibmwatson(0)
 
         # check variables
         # ws_from = learning_params["worksheetfrom"].to_i-1
         # ws_to = learning_params['worksheetto'].to_i-1
         first_row = learning_params['first_row'].to_i-1
         file_xls = learning_params['filename']
-        file_manager = FileManager.create(name: file_xls.original_filename, user_id: current_user.id, status:0)
+
+
+        file_manager = FileManager.create!(name: file_xls.original_filename, 
+                                  data: file_xls.read,
+                                  user_id: current_user.id,
+                                  status: 0,
+                                  hospital_id: hospital_id,
+                                  vendor_id: vendor_id,
+                                  question_id: @question.id)
+
         question_col = file_manager.string_to_col(learning_params['question'])
         answers_count = @question.answers.count
+
         # read file
         workbook = RubyXL::Parser.parse(file_xls.path)
         (ws_from..ws_to).each do |ws|
@@ -128,9 +169,8 @@ class YokyuController < ApplicationController
     else
       flash[:success] = "ファイルなし"
     end
-    
-    render 'index'
-
+    redirect_to yokyufile_path
+    #render 'index'
   end
   
 
@@ -373,6 +413,14 @@ class YokyuController < ApplicationController
     # 01.01 2019/01/01 >>>
     #@watson_language_master = WatsonLanguageMaster.where("user_id=? AND anchor = -1", current_user.id)
     @counter = params[:sentence_page].to_i
+    @in_sentence_array=[]
+    wlms = WatsonLanguageMaster.where("anchor = -1")
+    wlms.each do |wlm|
+      if Sentence.find_by(watson_language_master_id: wlm.id) == nil && AnswerDenpyo.where("watson_language_master_id = ?",wlm.id).first == nil
+        @in_sentence_array.push(wlm.id)
+      end
+    end
+    
     if @counter==0
       @counter=1
     end
@@ -380,10 +428,13 @@ class YokyuController < ApplicationController
       keywords= "%"+params[:keywords]+"%"
       @keywords=params[:keywords]
       @watson_language_master = WatsonLanguageMaster.where("anchor = -1 AND content LIKE ?",keywords).paginate(:page => params[:sentence_page], :per_page => 10)
-      @search_mode= true
+      @search_mode= 1
+    elsif params[:noanswer]!=nil
+      @watson_language_master = WatsonLanguageMaster.where("anchor = -1 AND id IN (?)", @in_sentence_array).paginate(:page => params[:sentence_page], :per_page => 10)
+      @search_mode= 2
     else
       @watson_language_master = WatsonLanguageMaster.where("anchor = -1").paginate(:page => params[:sentence_page], :per_page => 10)
-      @search_mode= false
+      @search_mode= 0
     end
     # 01.01 2019/01/01 <<<
     # 01.02 2019/01/17 >>>
@@ -392,14 +443,23 @@ class YokyuController < ApplicationController
       @question = Question.find_by(id: setting.target)
     end
     # 01.02 2019/01/17 <<<
-  
   end
+  
 
   def sentence_search
     @search_mode= true
     @selected_item=2
     # 01.01 2019/01/01 >>>
     #@watson_language_master = WatsonLanguageMaster.where("user_id=? AND anchor = -1", current_user.id)
+ 
+    @in_sentence_array=[]
+    wlms = WatsonLanguageMaster.where("anchor = -1")
+    wlms.each do |wlm|
+      if Sentence.find_by(watson_language_master_id: wlm.id) == nil && AnswerDenpyo.where("watson_language_master_id = ?",wlm.id).first == nil
+        @in_sentence_array.push(wlm.id)
+      end
+    end
+ 
     @counter = params[:sentence_page].to_i
     if @counter==0
       @counter=1
@@ -606,5 +666,14 @@ class YokyuController < ApplicationController
     end
     return result
   end
+  
+  def ibmwatson(indexing)
+    if indexing==0
+      # IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+      IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+    end
+  end
+  
+
 
 end

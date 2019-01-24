@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   post   '/watson_update_path', to: 'yokyu#watson_update'
   post   '/sentence_search',    to: 'yokyu#sentence_search'
   get    '/sentence_search',    to: 'yokyu#senmanage'
+  get    '/yokyu_rewrite', to: 'yokyu#rewrite'
 
   get    '/user_management',    to: 'pages#user_management'
   get    '/user_statistic',     to: 'pages#user_statistic'
