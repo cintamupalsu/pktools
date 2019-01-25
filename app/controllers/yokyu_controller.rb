@@ -471,6 +471,7 @@ class YokyuController < ApplicationController
       @search_mode= false
     else
       @watson_language_master = WatsonLanguageMaster.where("anchor = -1 AND content LIKE ?",keywords).paginate(:page => params[:sentence_page], :per_page => 10)
+      @search_mode= 1
     end
     # 01.01 2019/01/01 <<<
     # 01.02 2019/01/17 >>>

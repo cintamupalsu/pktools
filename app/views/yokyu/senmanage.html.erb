@@ -126,7 +126,7 @@
         <% if @search_mode==0 %>
           <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
         <% elsif @search_mode==1 %>
-          <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:keywords => @keywords}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
+          <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:keywords => @keywords, :noanswer => nil}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
         <% else %>
           <%= will_paginate(@watson_language_master, :param_name => 'sentence_page', :params => {:noanswer => 1}, :renderer => WillPaginate::ActionView::Bootstrap4LinkRenderer) %>
         <% end %>
