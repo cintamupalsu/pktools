@@ -41,7 +41,7 @@
               <div class="col-2 text-justify"><small><%=file.created_at%></small></div>
               <div class="col-3 text-center">
                 <% if file.status==0 %>
-                  進行中
+                  進行中<%= link_to "強制削除", file_path(:id => file.id, :download => 1), class: "btn btn-outline-warning", role: "button", method: :delete, data: { confirm: "You sure?　お祈り必要" } %>
                 <% else %>
                   <%= link_to "ダウンロード", yokyu_download_file_path(:id => file.id), class: "btn btn-outline-success mt-1 btn-sm", role: "button" %>
                   <%= link_to "再作成", yokyu_rewrite_path(:id => file.id), class: "btn btn-outline-primary mt-1 btn-sm", role: "button" %>
