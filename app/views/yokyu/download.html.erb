@@ -26,15 +26,16 @@
                 <% in_sentence_array=[] %>
                 <% wlms = WatsonLanguageMaster.where("anchor = -1 AND file_manager_id = ?", file.id) %>
                 <% wlms.each do |wlm| %>
-                  <% if Sentence.find_by(watson_language_master_id: wlm.id) == nil && AnswerDenpyo.where("watson_language_master_id = ?",wlm.id).first == nil %>
+                  <%# if Sentence.find_by(watson_language_master_id: wlm.id) == nil && AnswerDenpyo.where("watson_language_master_id = ?",wlm.id).first == nil %>
+                  <% if AnswerDenpyo.where("watson_language_master_id = ?",wlm.id).first == nil %>
                     <% in_sentence_array.push(wlm.id) %>
                   <% end %>
                 <% end %>
                 <% if in_sentence_array.count>0 %>
                   <br/>
-                  <small>答えがない文書は</small>
+                  <small>答えがない文章は</small>
                   <%= content_tag :span, in_sentence_array.count, class: 'badge badge-pill badge-warning' %>
-                  <small>があります</small>
+                  <small>文があります</small>
                 <% end %>
 
               </div>
