@@ -60,7 +60,16 @@
         <div id="container_5" ></div>
       </div>
     </div>
-
+    
+    <div class="card ml-1 mt-1" id="file">
+      <div class="card-header text-center">
+          <h4>信頼性</h4>
+      </div>
+      <div class="card-body">
+  
+        <div id="container_6" ></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -400,6 +409,113 @@ Highcharts.chart('container_5', {
         tooltip: {
             valueSuffix: ' km/h'
         }
+    }]
+
+});
+
+Highcharts.chart('container_6', {
+
+    chart: {
+        type: 'gauge',
+        plotBorderWidth: 1,
+        plotBackgroundColor: {
+            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+            stops: [
+                [0, '#FFF4C6'],
+                [0.3, '#FFFFFF'],
+                [1, '#FFF4C6']
+            ]
+        },
+        plotBackgroundImage: null,
+        height: 200
+    },
+
+    title: {
+        text: '文章条件'
+    },
+
+    pane: [{
+        startAngle: -45,
+        endAngle: 45,
+        background: null,
+        center: ['25%', '145%'],
+        size: 300
+    }, {
+        startAngle: -45,
+        endAngle: 45,
+        background: null,
+        center: ['75%', '145%'],
+        size: 300
+    }],
+
+    tooltip: {
+        enabled: false
+    },
+
+    yAxis: [{
+        min: -10,
+        max: 10,
+        minorTickPosition: 'outside',
+        tickPosition: 'outside',
+        labels: {
+            rotation: 'auto',
+            distance: 20
+        },
+        plotBands: [{
+            from: -10,
+            to: 6,
+            color: '#C02316',
+            innerRadius: '100%',
+            outerRadius: '105%'
+        }],
+        pane: 0,
+        title: {
+            text: '<%=@noanswer.to_i%><br/><span style="font-size:8px">回答なし</span>',
+            y: -40
+        }
+    }, {
+        min: -10,
+        max: 10,
+        minorTickPosition: 'outside',
+        tickPosition: 'outside',
+        labels: {
+            rotation: 'auto',
+            distance: 20
+        },
+        plotBands: [{
+            from: -10,
+            to: 0,
+            color: '#C02316',
+            innerRadius: '100%',
+            outerRadius: '105%'
+        }],
+        pane: 1,
+        title: {
+            text: '<%=@countsentence.to_i%><br/><span style="font-size:8px">確認</span>',
+            y: -40
+        }
+    }],
+
+    plotOptions: {
+        gauge: {
+            dataLabels: {
+                enabled: false
+            },
+            dial: {
+                radius: '100%'
+            }
+        }
+    },
+
+
+    series: [{
+        name: 'Channel A',
+        data: [<%=@rep01%>],
+        yAxis: 0
+    }, {
+        name: 'Channel B',
+        data: [<%=@rep02%>],
+        yAxis: 1
     }]
 
 });

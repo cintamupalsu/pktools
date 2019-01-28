@@ -66,6 +66,19 @@ class PagesController < ApplicationController
       @sentence_use[user.id]=user.sentence_ids.count
     end
     @countrecords = countStorage
+    @noanswer=0.0
+    @countsentence = Sentence.count.to_f
+    allsent=0
+    wlus = WatsonLanguageMaster.where("anchor = -1")
+    wlus.each do |wlu|
+      if wlu.answer_denpyo_ids.count==0
+        @noanswer+=1
+      end
+      allsent+=1
+    end
+    @rep01 = (@noanswer.to_f/allsent.to_f*20-10)*-1
+    @rep02 = (@countsentence/allsent.to_f*20-10)*-1
+
   end
   
   def countStorage
