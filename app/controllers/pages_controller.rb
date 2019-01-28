@@ -54,6 +54,15 @@ class PagesController < ApplicationController
   
   def user_statistic
     @selected_item=1
+    @users = User.all
+    @bunsho = {}
+    @kaito = {}
+    @file_use ={}
+    @users.each do |user|
+      @bunsho[user.id]=user.watson_language_master_ids.count
+      @kaito[user.id]=user.answer_denpyo_ids.count
+      @file_use[user.id]=user.file_manager_ids.count
+    end
   end
   
 end

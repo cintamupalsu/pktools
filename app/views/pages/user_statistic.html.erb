@@ -1,4 +1,5 @@
 <% provide(:title,"Statistic") %>
+<% user_counter = 0 %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -6,13 +7,212 @@
   <div class="col-xl-11">
     <div class="card ml-1" id="users">
       <div class="card-header text-center">
-          <h4>Statistic</h4>
+          <h4>文章</h4>
       </div>
       <div class="card-body">
-          Under Contruction
+
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        
+        <div id="container_1" ></div>
       </div>
-      <div class="card-footer">
+
+    </div>
+    <% user_counter=0 %>
+    <div class="card ml-1 mt-1" id="users">
+      <div class="card-header text-center">
+          <h4>回答</h4>
+      </div>
+      <div class="card-body">
+  
+        <div id="container_2" ></div>
+      </div>
+    </div>
+    
+    <% user_counter=0 %>
+    <div class="card ml-1 mt-1" id="file">
+      <div class="card-header text-center">
+          <h4>ファイル</h4>
+      </div>
+      <div class="card-body">
+  
+        <div id="container_3" ></div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+Highcharts.chart('container_1', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'ユーザー毎に文章を登録した'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: '文章',
+        colorByPoint: true,
+        data: [
+      
+        <% @bunsho.sort_by {|k,v| v}.reverse.each do |k,v| %>
+          <% name = User.find(k).email.split('@') %>
+          <% if user_counter==0 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>,
+            sliced: true,
+            selected: true
+            },
+          <% elsif user_counter == @bunsho.count-1 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            }
+          <% else %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            },
+          <% end %>
+          <% user_counter+=1 %>
+        <% end %>
+        ]
+    }]
+});
+
+Highcharts.chart('container_2', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'ユーザー毎に回答を登録した'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: '回答',
+        colorByPoint: true,
+        data: [
+      
+        <% @kaito.sort_by {|k,v| v}.reverse.each do |k,v| %>
+          <% name = User.find(k).email.split('@') %>
+          <% if user_counter==0 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>,
+            sliced: true,
+            selected: true
+            },
+          <% elsif user_counter == @kaito.count-1 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            }
+          <% else %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            },
+          <% end %>
+          <% user_counter+=1 %>
+        <% end %>
+        ]
+    }]
+});
+
+Highcharts.chart('container_3', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'ユーザー毎にファイルを登録した'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'ファイル',
+        colorByPoint: true,
+        data: [
+      
+        <% @file_use.sort_by {|k,v| v}.reverse.each do |k,v| %>
+          <% name = User.find(k).email.split('@') %>
+          <% if user_counter==0 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>,
+            sliced: true,
+            selected: true
+            },
+          <% elsif user_counter == @file_use.count-1 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            }
+          <% else %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            },
+          <% end %>
+          <% user_counter+=1 %>
+        <% end %>
+        ]
+    }]
+});
+
+</script>

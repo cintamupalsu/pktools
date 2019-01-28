@@ -11,4 +11,5 @@ class User < ApplicationRecord
   has_many :hospitals, dependent: :destroy
   has_many :vendors, dependent: :destroy
   has_many :sentences, dependent: :destroy
+  has_many :answer_denpyo
 end
