@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   def index
-
+     @countrecords = countStorage
   end
   
   def user_management
@@ -65,6 +65,23 @@ class PagesController < ApplicationController
       @file_use[user.id]=user.file_manager_ids.count
       @sentence_use[user.id]=user.sentence_ids.count
     end
+    @countrecords = countStorage
   end
   
+  def countStorage
+    countrecords=0
+    countrecords=User.count
+    countrecords+=WatsonLanguageMaster.count
+    countrecords+=Question.count
+    countrecords+=Answer.count
+    countrecords+=FileManager.count
+    countrecords+=Company.count
+    countrecords+=Hospital.count
+    countrecords+=Vendor.count
+    countrecords+=Sentence.count
+    countrecords+=AnswerDenpyo.count
+    countrecords+=Setting.count
+    countrecords=(countrecords/50)
+    return countrecords
+  end
 end
