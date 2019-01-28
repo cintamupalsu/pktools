@@ -40,6 +40,16 @@
         <div id="container_3" ></div>
       </div>
     </div>
+    
+    <% user_counter=0 %>
+    <div class="card ml-1 mt-1" id="kakunin">
+      <div class="card-header text-center">
+          <h4>確認文章</h4>
+      </div>
+      <div class="card-body">
+        <div id="container_4" ></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -215,4 +225,60 @@ Highcharts.chart('container_3', {
     }]
 });
 
+Highcharts.chart('container_4', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: '残っている確認文書'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: '確認文章',
+        colorByPoint: true,
+        data: [
+      
+        <% @sentence_use.sort_by {|k,v| v}.reverse.each do |k,v| %>
+          <% name = User.find(k).email.split('@') %>
+          <% if user_counter==0 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>,
+            sliced: true,
+            selected: true
+            },
+          <% elsif user_counter == @sentence_use.count-1 %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            }
+          <% else %>
+            {
+            name: '<%= name[0] %>',
+            y: <%= v %>
+            },
+          <% end %>
+          <% user_counter+=1 %>
+        <% end %>
+        ]
+    }]
+});
 </script>

@@ -58,10 +58,12 @@ class PagesController < ApplicationController
     @bunsho = {}
     @kaito = {}
     @file_use ={}
+    @sentence_use ={}
     @users.each do |user|
       @bunsho[user.id]=user.watson_language_master_ids.count
       @kaito[user.id]=user.answer_denpyo_ids.count
       @file_use[user.id]=user.file_manager_ids.count
+      @sentence_use[user.id]=user.sentence_ids.count
     end
   end
   
