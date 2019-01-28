@@ -77,7 +77,7 @@ class PagesController < ApplicationController
       allsent+=1
     end
     @rep01 = (@noanswer.to_f/allsent.to_f*20-10)*-1
-    @rep02 = (@countsentence/allsent.to_f*20-10)*-1
+    @rep02 = (@countsentence/allsent.to_f*100-50)*-1
 
   end
   
