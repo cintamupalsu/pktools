@@ -19,18 +19,15 @@
       </div>
 
     </div>
-    <% user_counter=0 %>
     <div class="card ml-1 mt-1" id="users">
       <div class="card-header text-center">
           <h4>回答</h4>
       </div>
       <div class="card-body">
-  
         <div id="container_2" ></div>
       </div>
     </div>
     
-    <% user_counter=0 %>
     <div class="card ml-1 mt-1" id="file">
       <div class="card-header text-center">
           <h4>ファイル</h4>
@@ -41,7 +38,6 @@
       </div>
     </div>
     
-    <% user_counter=0 %>
     <div class="card ml-1 mt-1" id="kakunin">
       <div class="card-header text-center">
           <h4>確認文章</h4>
@@ -120,7 +116,6 @@ Highcharts.chart('container_1', {
         name: '文章',
         colorByPoint: true,
         data: [
-      
         <% @bunsho.sort_by {|k,v| v}.reverse.each do |k,v| %>
           <% name = User.find(k).email.split('@') %>
           <% if user_counter==0 %>
@@ -178,6 +173,7 @@ Highcharts.chart('container_2', {
         colorByPoint: true,
         data: [
       
+        <% user_counter=0 %>
         <% @kaito.sort_by {|k,v| v}.reverse.each do |k,v| %>
           <% name = User.find(k).email.split('@') %>
           <% if user_counter==0 %>
@@ -235,6 +231,7 @@ Highcharts.chart('container_3', {
         colorByPoint: true,
         data: [
       
+        <% user_counter=0 %>
         <% @file_use.sort_by {|k,v| v}.reverse.each do |k,v| %>
           <% name = User.find(k).email.split('@') %>
           <% if user_counter==0 %>
@@ -292,6 +289,7 @@ Highcharts.chart('container_4', {
         colorByPoint: true,
         data: [
       
+        <% user_counter=0 %>
         <% @sentence_use.sort_by {|k,v| v}.reverse.each do |k,v| %>
           <% name = User.find(k).email.split('@') %>
           <% if user_counter==0 %>
