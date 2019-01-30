@@ -34,16 +34,20 @@
       </div>
       <div class="card-body">
         <% @watson_language_masters.each do |wlm| %>
-          <% if wlm.id != @watson_language_master.id && wlm.id != @watson_language_master.anchor && Sentence.find_by(watson_language_master_id: wlm.id)==nil  %>
+          <%# if wlm.id != @watson_language_master.id && wlm.id != @watson_language_master.anchor && Sentence.find_by(watson_language_master_id: wlm.id)==nil  %>
           <div class="row border-bottom">
             <div class="col-1">
-              <%= link_to "参照", attached_path(:id => wlm.id, :sid => @watson_language_master.id), class: "btn btn-outline-info btn-sm", role: "button" %>
+              <% if wlm.id != @watson_language_master.id && wlm.id != @watson_language_master.anchor && Sentence.find_by(watson_language_master_id: wlm.id)==nil  %>
+                <%= link_to "参照", attached_path(:id => wlm.id, :sid => @watson_language_master.id), class: "btn btn-outline-info btn-sm", role: "button" %>
+              <% else %>
+                <%= link_to "参照", attached_path(:id => wlm.id, :sid => @watson_language_master.id), class: "btn btn-info btn-sm disabled", role: "button" %>
+              <% end %>
             </div>  
             <div class="col-11">
               <small><%= link_to wlm.content, sentence_path(:id => wlm.id) %></small>
             </div>
           </div>
-          <% end %>
+          <%# end %>
         <% end %>
       </div>
       <div class="card-footer">
