@@ -10,7 +10,7 @@
       <div class="card-body">
         <%= @company.address %>
         <br/>
-        関係：
+        区分：
         <% if Hospital.where("company_id = ?", @company.id).count>0 %>
           <span class="badge badge-info">病院</span>
         <% end %>
