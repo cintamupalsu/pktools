@@ -94,15 +94,15 @@
   <% @sentence_count = Sentence.count %>
   <% if @selected_item==3 %>
     <% if @sentence_count>0 %>
-      <a href="<%= senconfirm_path %>" class="card-header pl-1 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="文章確認">
+      <a href="<%= senconfirm_path %>" class="card-header pl-1 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="未確認文章">
     <% else %>
-      <a href="<%= senconfirm_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="文章確認">
+      <a href="<%= senconfirm_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="未確認文章">
     <% end %>
   <% else %>
     <% if @sentence_count>0 %>
-      <a href="<%= senconfirm_path %>" class="card-body pl-1 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="文章確認">
+      <a href="<%= senconfirm_path %>" class="card-body pl-1 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="未確認文章">
     <% else %>
-      <a href="<%= senconfirm_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="文章確認">
+      <a href="<%= senconfirm_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="未確認文章">
     <% end %>
   <% end %>
   <% if @sentence_count>0 %>

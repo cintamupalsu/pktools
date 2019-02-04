@@ -1,4 +1,5 @@
 <% provide(:title,"ダウンロード") %>
+<% Time.zone = 'Tokyo' %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -39,7 +40,7 @@
                 <% end %>
 
               </div>
-              <div class="col-2 text-justify"><small><%=file.created_at%></small></div>
+              <div class="col-2 text-center"><small><%=file.created_at.in_time_zone.strftime("%Y年%-m月%d日 %H:%M")%></small></div>
               <div class="col-3 text-center">
                 <% if file.status==0 %>
                   進行中<%= link_to "強制削除", file_path(:id => file.id, :download => 1), class: "btn btn-outline-warning ml-1", role: "button", method: :delete, data: { confirm: "You sure?　お祈り必要" } %>

@@ -6,30 +6,30 @@
     <div class="col-2 text-center">
       <% if user.marshal %>
         <% if user.id != current_user.id %>
-          <%= link_to "Downgrade", downgrade_path(:id => user.id), class: "btn btn-outline-warning btn-sm btn-block ", role: "button" %>
+          <%= link_to "なし", downgrade_path(:id => user.id), class: "btn btn-outline-warning btn-sm btn-block ", role: "button" %>
         <% else %>
-          <%= link_to "Downgrade", downgrade_path(:id => user.id), class: "btn btn-warning btn-sm btn-block disabled", role: "button" %>
+          <%= link_to "なし", downgrade_path(:id => user.id), class: "btn btn-warning btn-sm btn-block disabled", role: "button" %>
         <% end %>
       <% else %>
         <% if user.id != current_user.id %>
-          <%= link_to "Promote", promote_path(:id => user.id), class: "btn btn-outline-primary btn-sm btn-block ", role: "button" %>
+          <%= link_to "あり", promote_path(:id => user.id), class: "btn btn-outline-primary btn-sm btn-block ", role: "button" %>
         <% else %>
-          <%= link_to "Promote", promote_path(:id => user.id), class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+          <%= link_to "あり", promote_path(:id => user.id), class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
         <% end %>
       <% end %>
     </div>
     <div class="col-2 text-center">
       <% if user.id != current_user.id %>
         <% if user.activated %>
-          <%= link_to "Detach", detach_path(:id => user.id), class: "btn btn-outline-danger btn-sm btn-block ", role: "button" %>
+          <%= link_to "無効", detach_path(:id => user.id), class: "btn btn-outline-danger btn-sm btn-block ", role: "button" %>
         <% else %>
-          <%= link_to "Activate", activate_path(:id => user.id), class: "btn btn-outline-primary btn-sm btn-block ", role: "button" %>
+          <%= link_to "有効", activate_path(:id => user.id), class: "btn btn-outline-primary btn-sm btn-block ", role: "button" %>
         <% end %>
       <% else %>
         <% if user.activated %>
-          <%= link_to "Detach", detach_path(:id => user.id), class: "btn btn-danger btn-sm btn-block disabled", role: "button" %>
+          <%= link_to "無効", detach_path(:id => user.id), class: "btn btn-danger btn-sm btn-block disabled", role: "button" %>
         <% else %>
-          <%= link_to "Activate", activate_path(:id => user.id), class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
+          <%= link_to "有効", activate_path(:id => user.id), class: "btn btn-primary btn-sm btn-block disabled", role: "button" %>
         <% end %>
       <% end %>
     </div>

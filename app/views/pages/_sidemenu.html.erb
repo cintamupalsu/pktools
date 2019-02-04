@@ -7,9 +7,9 @@
     <%= image_tag("ico_users.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>
   <% if @selected_item==1 %>
-    <a href="<%= user_statistic_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="Statistic">
+    <a href="<%= user_statistic_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="続計">
   <% else %>
-    <a href="<%= user_statistic_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="Statistic">
+    <a href="<%= user_statistic_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="続計">
   <% end %>
     <%= image_tag("ico_statistic.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>

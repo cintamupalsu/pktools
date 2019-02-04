@@ -1,4 +1,5 @@
 <% provide(:title,"文章管理") %>
+<% Time.zone = 'Tokyo' %>
 <div class="row">
   <aside class="col-xl-1">
     <%= render 'sidemenu' %>
@@ -23,7 +24,7 @@
             ファイル: <%= file.name %>
           </div>            
           <div class="col-4 text-left">
-            登録日: <%= file.created_at %>
+            登録日: <%= file.created_at.in_time_zone.strftime("%Y年%-m月%d日 %H:%M") %>
           </div>            
         </div>
       </div>        
@@ -72,7 +73,7 @@
               ファイル: <%= file.name %>
             </div>            
             <div class="col-4 text-left">
-              登録日: <%= file.created_at %>
+              登録日: <%= file.created_at.in_time_zone.strftime("%Y年%-m月%d日 %H:%M") %>
             </div>            
           </div>
         </div>

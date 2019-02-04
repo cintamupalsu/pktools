@@ -77,10 +77,21 @@ Highcharts.chart('container_1', {
         type: 'pie'
     },
     title: {
-        text: '文章を登録した'
+        text: '文章登録'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    lang: {
+      printChart: '印刷',
+      downloadPNG: 'PNG保存',
+      downloadJPEG: 'JPEG保存',
+      downloadPDF: 'PDF保存',
+      downloadSVG: 'SVG保存',
+      downloadCSV: 'CSV保存',
+      downloadXLS: 'XLS保存',
+      viewData: '詳細データ表示',
+      openInCloud: 'Highcharts Cloudで開く'
     },
     plotOptions: {
         pie: {
@@ -133,10 +144,21 @@ Highcharts.chart('container_2', {
         type: 'pie'
     },
     title: {
-        text: '回答を登録した'
+        text: '回答登録'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    lang: {
+      printChart: '印刷',
+      downloadPNG: 'PNG保存',
+      downloadJPEG: 'JPEG保存',
+      downloadPDF: 'PDF保存',
+      downloadSVG: 'SVG保存',
+      downloadCSV: 'CSV保存',
+      downloadXLS: 'XLS保存',
+      viewData: '詳細データ表示',
+      openInCloud: 'Highcharts Cloudで開く'
     },
     plotOptions: {
         pie: {
@@ -191,10 +213,21 @@ Highcharts.chart('container_3', {
         type: 'pie'
     },
     title: {
-        text: 'ファイルを登録した'
+        text: 'ファイル登録'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    lang: {
+      printChart: '印刷',
+      downloadPNG: 'PNG保存',
+      downloadJPEG: 'JPEG保存',
+      downloadPDF: 'PDF保存',
+      downloadSVG: 'SVG保存',
+      downloadCSV: 'CSV保存',
+      downloadXLS: 'XLS保存',
+      viewData: '詳細データ表示',
+      openInCloud: 'Highcharts Cloudで開く'
     },
     plotOptions: {
         pie: {
@@ -249,11 +282,23 @@ Highcharts.chart('container_4', {
         type: 'pie'
     },
     title: {
-        text: '残っている確認文書'
+        text: '未確認文書'
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
     },
+    lang: {
+      printChart: '印刷',
+      downloadPNG: 'PNG保存',
+      downloadJPEG: 'JPEG保存',
+      downloadPDF: 'PDF保存',
+      downloadSVG: 'SVG保存',
+      downloadCSV: 'CSV保存',
+      downloadXLS: 'XLS保存',
+      viewData: '詳細データ表示',
+      openInCloud: 'Highcharts Cloudで開く'
+    },
+    
     plotOptions: {
         pie: {
             allowPointSelect: true,
@@ -307,6 +352,18 @@ Highcharts.chart('container_5', {
         plotBackgroundImage: null,
         plotBorderWidth: 0,
         plotShadow: false
+    },
+
+    lang: {
+      printChart: '印刷',
+      downloadPNG: 'PNG保存',
+      downloadJPEG: 'JPEG保存',
+      downloadPDF: 'PDF保存',
+      downloadSVG: 'SVG保存',
+      downloadCSV: 'CSV保存',
+      downloadXLS: 'XLS保存',
+      viewData: '詳細データ表示',
+      openInCloud: 'Highcharts Cloudで開く'
     },
 
     title: {
@@ -411,6 +468,18 @@ Highcharts.chart('container_6', {
         height: 200
     },
 
+    lang: {
+      printChart: '印刷',
+      downloadPNG: 'PNG保存',
+      downloadJPEG: 'JPEG保存',
+      downloadPDF: 'PDF保存',
+      downloadSVG: 'SVG保存',
+      downloadCSV: 'CSV保存',
+      downloadXLS: 'XLS保存',
+      viewData: '詳細データ表示',
+      openInCloud: 'Highcharts Cloudで開く'
+    },
+
     title: {
         text: '信頼性'
     },
@@ -472,7 +541,7 @@ Highcharts.chart('container_6', {
         }],
         pane: 1,
         title: {
-            text: '<%=@countsentence.to_i%><br/><span style="font-size:8px">確認</span>',
+            text: '<%=@countsentence.to_i%><br/><span style="font-size:8px">未確認</span>',
             y: -40
         }
     }],

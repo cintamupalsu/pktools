@@ -12,9 +12,9 @@
         <div class="row">
           <div class="col-4">
             <% if @in_sentence_array.count>0 %>
-                <small><%= link_to "答えがない文書は", manage_sentences_path(:noanswer => 1) %></small>
+                <small><%= link_to "回答のない文章が", manage_sentences_path(:noanswer => 1) %></small>
                 <%= content_tag :span, @in_sentence_array.count, class: 'badge badge-pill badge-danger' %>
-                <small><%= link_to "があります", manage_sentences_path(:noanswer => 1) %></small>
+                <small><%= link_to "あります", manage_sentences_path(:noanswer => 1) %></small>
             <% end %>
           </div>          
           <div class="col-4 text-center">
