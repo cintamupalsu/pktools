@@ -250,7 +250,7 @@ class FileManager < ApplicationRecord
       if divider!=0 
         colnumber = 26*divider
       end
-      output += (colnumber.modulo(26)+65).chr
+      output = (colnumber.modulo(26)+65).chr+output
       divider = (colnumber/26).to_i
       break if (colnumber.to_f/26.0)<1
     end
