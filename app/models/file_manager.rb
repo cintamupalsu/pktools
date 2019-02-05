@@ -146,6 +146,7 @@ class FileManager < ApplicationRecord
         worksheet = workbook[ws]
         (first_row..worksheet.count-1).each do |row|
           if worksheet[row]!=nil
+          if worksheet[row].hidden != true
           if worksheet[row][question_col]!= nil 
           if worksheet[row][question_col].value!= ""
             variant = worksheet[row][question_col].value.to_s.gsub(/。|、|\ |\.|,|　|\n/,'')
@@ -172,6 +173,7 @@ class FileManager < ApplicationRecord
                 find_similar = similar_register(natural_language_understanding, variant, worksheet[row][question_col].value.to_s, hospital_id, vendor_id, user_id)
               end
             end #end if watson
+          end # end if
           end # end if
           end # end if
           end # end if
