@@ -21,83 +21,93 @@ class FileManager < ApplicationRecord
         if question[row]!=""
           variant= question[row].gsub(/。|、|\ |\.|,|　|\n/,'')
           if variant!=""
-            # find same Watson
-            # 01.01 2019/01/10 >>>
-            # wlm = WatsonLanguageMaster.where("variant = ? AND user_id= ?",variant, user.id).first
-            wlm = WatsonLanguageMaster.where("variant = ?",variant).first
-            # 01.01 2019/01/10 <<<
-            find_similar=-1
-            # if not found check similarity
-            if wlm == nil
-              watson_response = natural_language_understanding.analyze(
-                text: variant,
-                features: {keywords: {limit: 50, sentiment: 0, emotion: 0}}
-              )
-              
-              # Save WatsonLanguageMaster with no achor
-              wlm = WatsonLanguageMaster.create(content: question[row], variant: variant, anchor: -1, user_id: user.id, file_manager_id: self.id)
-                        
-              filter = {} # filter is to count the similar keyword in an ID of WatsonLanguageMaster.
-              chosen_word=0
-              (0..watson_response.result["keywords"].length-1).each do |k|
-                if watson_response.result["keywords"][k]["relevance"].to_f>threshold
-                  chosen_word+=1
-                  wlks = WatsonLanguageKeyword.where("keyword = ?", watson_response.result["keywords"][k]["text"])  
-                  (0..wlks.count-1).each do |j|
-                    if filter[wlks[j].watson_language_master.id]==nil
-                      filter[wlks[j].watson_language_master.id]=1
-                    else
-                      filter[wlks[j].watson_language_master.id]+=1
+            # check answer ( if no answer, dont process)
+            answer_exist=false
+            (0..answer.count-1).each do |checkanswer|
+              if(answer[checkanswer][row])!=""
+                answer_exist=true
+              end
+            end
+            if answer_exist 
+              # ----
+              # find same Watson
+              # 01.01 2019/01/10 >>>
+              # wlm = WatsonLanguageMaster.where("variant = ? AND user_id= ?",variant, user.id).first
+              wlm = WatsonLanguageMaster.where("variant = ?",variant).first
+              # 01.01 2019/01/10 <<<
+              find_similar=-1
+              # if not found check similarity
+              if wlm == nil
+                watson_response = natural_language_understanding.analyze(
+                  text: variant,
+                  features: {keywords: {limit: 50, sentiment: 0, emotion: 0}}
+                )
+                
+                # Save WatsonLanguageMaster with no achor
+                wlm = WatsonLanguageMaster.create(content: question[row], variant: variant, anchor: -1, user_id: user.id, file_manager_id: self.id)
+                          
+                filter = {} # filter is to count the similar keyword in an ID of WatsonLanguageMaster.
+                chosen_word=0
+                (0..watson_response.result["keywords"].length-1).each do |k|
+                  if watson_response.result["keywords"][k]["relevance"].to_f>threshold
+                    chosen_word+=1
+                    wlks = WatsonLanguageKeyword.where("keyword = ?", watson_response.result["keywords"][k]["text"])  
+                    (0..wlks.count-1).each do |j|
+                      if filter[wlks[j].watson_language_master.id]==nil
+                        filter[wlks[j].watson_language_master.id]=1
+                      else
+                        filter[wlks[j].watson_language_master.id]+=1
+                      end
                     end
                   end
                 end
-              end
-  
-              #save WatsonLanguageKeyword
-              (0..watson_response.result["keywords"].length-1).each do |i|
-                if watson_response.result["keywords"][i]["relevance"].to_f>threshold
-                  WatsonLanguageKeyword.create(keyword: watson_response.result["keywords"][i]["text"], 
-                                             relevance: watson_response.result["keywords"][i]["relevance"].to_f,
-                                             watson_language_master_id: wlm.id)
+    
+                #save WatsonLanguageKeyword
+                (0..watson_response.result["keywords"].length-1).each do |i|
+                  if watson_response.result["keywords"][i]["relevance"].to_f>threshold
+                    WatsonLanguageKeyword.create(keyword: watson_response.result["keywords"][i]["text"], 
+                                               relevance: watson_response.result["keywords"][i]["relevance"].to_f,
+                                               watson_language_master_id: wlm.id)
+                  end
                 end
+          
+                filter.each do |k,v|
+                  if v == chosen_word
+                    find_similar=k.to_i
+                  end
+                end
+                
               end
-        
-              filter.each do |k,v|
-                if v == chosen_word
-                  find_similar=k.to_i
+              anchor=wlm.id
+              if wlm.anchor!=-1
+                anchor=wlm.anchor
+              end
+              (0..answer.count-1).each do |ans|
+                if answer[ans][row]=="" 
+                else
+                  if benkyo==0
+                    AnswerDenpyo.create!(user_id: user.id, 
+                                        watson_language_master_id: anchor, 
+                                        content: answer[ans][row],
+                                        answer_id: answer_id[ans],
+                                        hospital_id: hospital_id,
+                                        vendor_id: vendor_id,
+                                        file_manager_id: self.id
+                                        )
+                  end
                 end
               end
               
-            end
-            anchor=wlm.id
-            if wlm.anchor!=-1
-              anchor=wlm.anchor
-            end
-            (0..answer.count-1).each do |ans|
-              if answer[ans][row]=="" 
-              else
-                if benkyo==0
-                  AnswerDenpyo.create!(user_id: user.id, 
-                                      watson_language_master_id: anchor, 
-                                      content: answer[ans][row],
-                                      answer_id: answer_id[ans],
-                                      hospital_id: hospital_id,
-                                      vendor_id: vendor_id,
-                                      file_manager_id: self.id
-                                      )
-                end
+              if find_similar!=-1
+                # Need Confirmation
+                sentence = Sentence.create!(content: question[row], 
+                                            watson_language_master_id: wlm.id,
+                                            user_id: user.id,
+                                            hospital: hospital_id,
+                                            vendor: vendor_id,
+                                            file_manager_id: self.id,
+                                            wlu: find_similar)
               end
-            end
-            
-            if find_similar!=-1
-              # Need Confirmation
-              sentence = Sentence.create!(content: question[row], 
-                                          watson_language_master_id: wlm.id,
-                                          user_id: user.id,
-                                          hospital: hospital_id,
-                                          vendor: vendor_id,
-                                          file_manager_id: self.id,
-                                          wlu: find_similar)
             end
           end
         end

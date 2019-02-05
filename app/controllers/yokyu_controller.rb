@@ -586,7 +586,8 @@ class YokyuController < ApplicationController
   
   def download
     @selected_item=7
-    @files = FileManager.where("user_id=? AND content_type IS NOT NULL",current_user.id)
+    #@files = FileManager.where("user_id=? AND content_type IS NOT NULL",current_user.id)
+    @files = FileManager.where("content_type IS NOT NULL")
   end
   
   def download_file
