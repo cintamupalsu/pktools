@@ -33,6 +33,7 @@
       <% hosvenid= key.split('-') %>
       <% hospital = Hospital.find(hosvenid[0].to_i) %>
       <% vendor = Vendor.find(hosvenid[1].to_i) %>
+      <% file = FileManager.find(AnswerDenpyo.find(@answerdenpyoids[key]).file_manager_id) %>
       <div class="card ml-1 mt-1" id="sentence">
         <div class="card-header">
           <div class="row" >
@@ -46,10 +47,11 @@
               列名:<%= @question.name %>
             </div>
             <div class="col-2">
-              列所:<%= @question.column %>
+              列所: <%= file.col_to_string(file.question_col.to_i) %>
             </div>
           </div>
         </div>
+      
         <div class="card-body">
           <div class="row border-bottom">
             <div class="col-1 text-center"><strong>№</strong></div>
@@ -57,17 +59,20 @@
             <div class="col-1 text-center"><strong>列所</strong></div>
             <div class="col-8 text-center"><strong>回答</strong></div>
           </div>
+          <% if file.answer_col!=nil %>
+            <% colnum = file.answer_col.split(',') %>
+          <% end %>
           <% (1..values.count).each do |i| %>
             <div class="row border-bottom">
             <div class="col-1 text-center"><%=i%>.</div>
             <div class="col-2 text-left"><%= @question.answers[i-1].name %></div>
-            <div class="col-1 text-left"><%= @question.answers[i-1].column %></div>
+            <div class="col-1 text-left"><%= file.col_to_string(colnum[i-1].to_i) %> <%# @question.answers[i-1].column %></div>
             <div class="col-8 text-left"><%= values[i-1] %></div>
             </div>
           <% end %>
         </div>
         <div class="card-footer">
-          <% file = FileManager.find(AnswerDenpyo.find(@answerdenpyoids[key]).file_manager_id) %>
+          <%# file = FileManager.find(AnswerDenpyo.find(@answerdenpyoids[key]).file_manager_id) %>
           <div class="row">
             <div class="col-8 text-left">
               ファイル: <%= file.name %>

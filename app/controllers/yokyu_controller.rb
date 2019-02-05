@@ -127,6 +127,15 @@ class YokyuController < ApplicationController
                                   question_id: @question.id)
 
         question_col = file_manager.string_to_col(learning_params['question'])
+        answer_cols = ""
+        (0..learning_params['answer'].count-1).each do |ans|
+          answer_cols+= file_manager.string_to_col(learning_params['answer'][ans]).to_s
+          if ans!=learning_params['answer'].count-1
+            answer_cols+=","
+          end
+        end
+        file_manager.update_attributes(question_col: question_col, answer_col: answer_cols)
+        
         answers_count = @question.answers.count
 
         # read file

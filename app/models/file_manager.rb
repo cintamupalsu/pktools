@@ -103,7 +103,7 @@ class FileManager < ApplicationRecord
         end
       end
     end
-    update_attributes(status: 1)
+    update_attributes(status: 1,)
   end
   
   def string_to_col(colname)
@@ -243,4 +243,18 @@ class FileManager < ApplicationRecord
     return find_similar
   end
   
+  def col_to_string(colnumber)
+    output = ""
+    divider=0
+    loop do
+      if divider!=0 
+        colnumber = 26*divider
+      end
+      output += (colnumber.modulo(26)+65).chr
+      divider = (colnumber/26).to_i
+      break if (colnumber.to_f/26.0)<1
+    end
+    return output
+  end
+
 end

@@ -15,11 +15,8 @@
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://code.highcharts.com/highcharts-more.js"></script>
-        <div class="row">
-          <div class="col-12">
-            <div id="container_6" ></div>
-          </div>
-        </div>
+        <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+
         <div class="row border-bottom">
           <div class="col-6 border-right">
             <div id="container_1" ></div>
@@ -28,7 +25,7 @@
             <div id="container_2" ></div>
           </div>
         </div>
-        <div class="row">
+        <div class="row border-bottom">
           <div class="col-6 border-right">
             <div id="container_3" ></div>
           </div>
@@ -36,13 +33,19 @@
             <div id="container_4" ></div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="container_6" ></div>
+          </div>
+        </div>
+
       </div>
 
     </div>
 
     <div class="card ml-1 mt-1" id="kakunin">
       <div class="card-header text-center">
-          <h4>Storage</h4>
+          <h4>データ使用率</h4>
       </div>
       <div class="card-body">
         <div id="container_5" ></div>
@@ -344,16 +347,73 @@ Highcharts.chart('container_4', {
     }]
 });
 
-Highcharts.chart('container_5', {
+var gaugeOptions = {
 
     chart: {
-        type: 'gauge',
-        plotBackgroundColor: null,
-        plotBackgroundImage: null,
-        plotBorderWidth: 0,
-        plotShadow: false
+        type: 'solidgauge'
     },
 
+    title: null,
+
+    pane: {
+        center: ['50%', '85%'],
+        size: '140%',
+        startAngle: -90,
+        endAngle: 90,
+        background: {
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+            innerRadius: '60%',
+            outerRadius: '100%',
+            shape: 'arc'
+        }
+    },
+
+    tooltip: {
+        enabled: false
+    },
+
+    // the value axis
+    yAxis: {
+        stops: [
+            [0.1, '#55BF3B'], // green
+            [0.5, '#DDDF0D'], // yellow
+            [0.9, '#DF5353'] // red
+        ],
+        lineWidth: 0,
+        minorTickInterval: null,
+        tickAmount: 2,
+        title: {
+            y: -70
+        },
+        labels: {
+            y: 16
+        }
+    },
+
+    plotOptions: {
+        solidgauge: {
+            dataLabels: {
+                y: 5,
+                borderWidth: 0,
+                useHTML: true
+            }
+        }
+    }
+};
+
+// The speed gauge
+var chartSpeed = Highcharts.chart('container_5', Highcharts.merge(gaugeOptions, {
+    yAxis: {
+        min: 0,
+        max: 100,
+        title: {
+            text: '空き領域'
+        }
+    },
+
+    credits: {
+        enabled: false
+    },
     lang: {
       printChart: '印刷',
       downloadPNG: 'PNG保存',
@@ -366,90 +426,21 @@ Highcharts.chart('container_5', {
       openInCloud: 'Highcharts Cloudで開く'
     },
 
-    title: {
-        text: 'Heroku PG (Hobby-Dev) Storage'
-    },
-
-    pane: {
-        startAngle: -150,
-        endAngle: 150,
-        background: [{
-            backgroundColor: {
-                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                stops: [
-                    [0, '#FFF'],
-                    [1, '#333']
-                ]
-            },
-            borderWidth: 0,
-            outerRadius: '109%'
-        }, {
-            backgroundColor: {
-                linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                stops: [
-                    [0, '#333'],
-                    [1, '#FFF']
-                ]
-            },
-            borderWidth: 1,
-            outerRadius: '107%'
-        }, {
-            // default background
-        }, {
-            backgroundColor: '#DDD',
-            borderWidth: 0,
-            outerRadius: '105%',
-            innerRadius: '103%'
-        }]
-    },
-
-    // the value axis
-    yAxis: {
-        min: 0,
-        max: 200,
-
-        minorTickInterval: 'auto',
-        minorTickWidth: 1,
-        minorTickLength: 10,
-        minorTickPosition: 'inside',
-        minorTickColor: '#666',
-
-        tickPixelInterval: 30,
-        tickWidth: 2,
-        tickPosition: 'inside',
-        tickLength: 10,
-        tickColor: '#666',
-        labels: {
-            step: 2,
-            rotation: 'auto'
-        },
-        title: {
-            text: 'km/h'
-        },
-        plotBands: [{
-            from: 0,
-            to: 120,
-            color: '#55BF3B' // green
-        }, {
-            from: 120,
-            to: 160,
-            color: '#DDDF0D' // yellow
-        }, {
-            from: 160,
-            to: 200,
-            color: '#DF5353' // red
-        }]
-    },
-
     series: [{
         name: 'Speed',
-        data: [<%=@countrecords%>],
+        data: [<%=@countrecords/2%>],
+        dataLabels: {
+            format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                   '<span style="font-size:12px;color:silver">％</span></div>'
+        },
         tooltip: {
-            valueSuffix: ' km/h'
+            valueSuffix: ' %'
         }
     }]
 
-});
+}));
+
 
 Highcharts.chart('container_6', {
 
@@ -467,17 +458,17 @@ Highcharts.chart('container_6', {
         plotBackgroundImage: null,
         height: 200
     },
-
+    exporting: {enabled: false},
     lang: {
       printChart: '印刷',
       downloadPNG: 'PNG保存',
       downloadJPEG: 'JPEG保存',
       downloadPDF: 'PDF保存',
-      downloadSVG: 'SVG保存',
-      downloadCSV: 'CSV保存',
-      downloadXLS: 'XLS保存',
+      downloadSVG: '',
+      downloadCSV: '',
+      downloadXLS: '',
       viewData: '詳細データ表示',
-      openInCloud: 'Highcharts Cloudで開く'
+      openInCloud: ''
     },
 
     title: {
