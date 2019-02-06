@@ -4,4 +4,5 @@ class WatsonLanguageMaster < ApplicationRecord
   has_many :watson_language_keywords, dependent: :destroy
   has_many :answer_denpyos, dependent: :destroy
   has_many :sentences, dependent: :destroy
+  default_scope -> { order(created_at: :desc) }
 end

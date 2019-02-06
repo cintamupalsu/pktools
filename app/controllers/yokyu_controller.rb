@@ -397,7 +397,7 @@ class YokyuController < ApplicationController
     @selected_item=1
     # 01.01 2019/01/10 >>>
     #@files = FileManager.where("user_id=? AND content_type IS NULL",current_user.id)
-    @files = FileManager.where("content_type IS NULL")
+    @files = FileManager.where("content_type IS NULL AND status<2")
     #wlm_ids = Sentence.where("user_id = ?",current_user.id).pluck(:wlu)
     wlm_ids = Sentence.all.pluck(:wlu)
     @file_manager_ids = WatsonLanguageMaster.where("id IN (?)", wlm_ids).pluck(:file_manager_id)
@@ -408,7 +408,10 @@ class YokyuController < ApplicationController
 
   def file_destroy
     file = FileManager.find(params[:id])
-    file.destroy
+    file.update_attributes(status: 2)
+    #file.destroy
+    file.delay.deleting()
+    
     flash[:success] = "ファイルを削除しました"
     if params[:download].to_i == 0
       redirect_to yokyufile_path
@@ -587,7 +590,7 @@ class YokyuController < ApplicationController
   def download
     @selected_item=7
     #@files = FileManager.where("user_id=? AND content_type IS NOT NULL",current_user.id)
-    @files = FileManager.where("content_type IS NOT NULL")
+    @files = FileManager.where("content_type IS NOT NULL AND status < 2")
   end
   
   def download_file

@@ -255,6 +255,27 @@ class FileManager < ApplicationRecord
     return find_similar
   end
   
+  def deleting
+    wlms = WatsonLanguageMaster.where("file_manager_id=? AND anchor = -1",self.id)
+    wlms.each do |wlm|
+      counter=0
+      anchor_id=-1
+      wlmids = WatsonLanguageMaster.where("anchor = ?", wlm.id)
+      wlmids.each do |wlmid|
+        wlmid.update_attributes(anchor: anchor_id)
+        if counter==0
+          anchor_id=wlmid.id
+        end
+        counter +=1
+      end
+      answer_denpyos = AnswerDenpyo.where("watson_language_master_id=? AND file_manager_id<>?", wlm.id, self.id)
+      answer_denpyos.each do |answer_denpyo|
+        answer_denpyo.update(watson_language_master_id: wlmids[0])
+      end
+    end
+    self.destroy
+  end
+  
   def col_to_string(colnumber)
     output = ""
     divider=0
