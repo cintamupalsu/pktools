@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get    '/mpeg7',            to: 'mpeg7#index'
+  
   get    '/companies',        to: 'companies#index'
   get    '/companies/new',    to: 'companies#new'
   post   '/companies/new',    to: 'companies#create'

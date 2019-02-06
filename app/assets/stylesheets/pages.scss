@@ -6,6 +6,7 @@ $gray-medium-light: #eaeaea;
 $gray-darker: #a9a9a9;
 $gray-light: #d3d3d3;
 $gray: #808080;
+$blue-light: #00BFFF;
 
 #sbs_logo{
   float: left;
@@ -63,6 +64,13 @@ body{
 
 #card-title {
   font-family: "HGP行書体";
+}
+
+#sbs_title {
+  font-family: "HGP行書体";
+  font-size: 21px;
+  color: $blue-light;
+  letter-spacing: -5px;
 }
 
 #card-title-inactive {
