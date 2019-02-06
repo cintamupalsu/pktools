@@ -683,8 +683,8 @@ class YokyuController < ApplicationController
   
   def ibmwatson(indexing)
     if indexing==0
-      IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
-      # IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+      # IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: "oZL8aWn9Z0I8U0vOXBPRfev9YbGUrGoFkmnvGK6TGUox", url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
+      IBMWatson::NaturalLanguageUnderstandingV1.new(version: "2018-03-16",iam_apikey: ENV['WATSON_NLU'], url: "https://gateway.watsonplatform.net/natural-language-understanding/api")
     end
   end
   
