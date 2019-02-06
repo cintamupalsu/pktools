@@ -85,6 +85,13 @@ Highcharts.chart('container_1', {
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
     },
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['printChart','separator','downloadPNG', 'downloadXLS', 'downloadPDF']
+            }
+        }
+    },
     lang: {
       printChart: '印刷',
       downloadPNG: 'PNG保存',
@@ -151,6 +158,13 @@ Highcharts.chart('container_2', {
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['printChart','separator','downloadPNG', 'downloadXLS', 'downloadPDF']
+            }
+        }
     },
     lang: {
       printChart: '印刷',
@@ -221,6 +235,13 @@ Highcharts.chart('container_3', {
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
     },
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['printChart','separator','downloadPNG', 'downloadXLS', 'downloadPDF']
+            }
+        }
+    },
     lang: {
       printChart: '印刷',
       downloadPNG: 'PNG保存',
@@ -289,6 +310,13 @@ Highcharts.chart('container_4', {
     },
     tooltip: {
         pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+    },
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['printChart','separator','downloadPNG', 'downloadXLS', 'downloadPDF']
+            }
+        }
     },
     lang: {
       printChart: '印刷',
@@ -367,6 +395,13 @@ var gaugeOptions = {
             shape: 'arc'
         }
     },
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['printChart','separator','downloadPNG', 'downloadXLS', 'downloadPDF']
+            }
+        }
+    },
 
     tooltip: {
         enabled: false
@@ -414,6 +449,14 @@ var chartSpeed = Highcharts.chart('container_5', Highcharts.merge(gaugeOptions, 
     credits: {
         enabled: false
     },
+    exporting: {
+        buttons: {
+            contextButton: {
+                menuItems: ['printChart','separator','downloadPNG', 'downloadXLS', 'downloadPDF']
+            }
+        }
+    },
+    
     lang: {
       printChart: '印刷',
       downloadPNG: 'PNG保存',
@@ -458,7 +501,9 @@ Highcharts.chart('container_6', {
         plotBackgroundImage: null,
         height: 200
     },
-    exporting: {enabled: false},
+    exporting: {
+      enabled: false
+    },
     lang: {
       printChart: '印刷',
       downloadPNG: 'PNG保存',
@@ -470,6 +515,7 @@ Highcharts.chart('container_6', {
       viewData: '詳細データ表示',
       openInCloud: ''
     },
+
 
     title: {
         text: '信頼性'
