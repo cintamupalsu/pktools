@@ -270,7 +270,15 @@ class FileManager < ApplicationRecord
       end
       answer_denpyos = AnswerDenpyo.where("watson_language_master_id=? AND file_manager_id<>?", wlm.id, self.id)
       answer_denpyos.each do |answer_denpyo|
-        answer_denpyo.update(watson_language_master_id: wlmids[0])
+        answer_denpyo.update(watson_language_master_id: anchor_id)
+      end
+      sentences = Sentence.where("wlu=? AND file_manager_id<>?",wlm.id, self.id)
+      sentences.each do |sentence|
+        if anchor_id!=-1
+          sentence.update_attributes(wlu: anchor_id)
+        else
+          sentence.destroy
+        end
       end
     end
     self.destroy

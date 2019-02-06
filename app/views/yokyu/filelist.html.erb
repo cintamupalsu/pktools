@@ -26,7 +26,7 @@
               <div class="col-2 text-center"><small><%=file.created_at.in_time_zone.strftime("%Y年%-m月%d日 %H:%M")%></small></div>
               <div class="col-2 text-center">
               <% if file.status==0 %>
-                <small>進行中</small><%= link_to "強制削除", file_path(:id => file.id), class: "btn btn-outline-warning", role: "button", method: :delete, data: { confirm: "You sure?　お祈り必要" } %>
+                <small>進行中 </small><%= link_to "強制削除", file_path(:id => file.id), class: "btn btn-outline-warning", role: "button", method: :delete, data: { confirm: "You sure?　お祈り必要" } %>
               <% else %>
                 <% disablebutton = @file_manager_ids.include? file.id %>
                 <% if disablebutton || @inprogress>0 %>
