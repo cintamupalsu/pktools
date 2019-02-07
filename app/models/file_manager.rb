@@ -258,28 +258,37 @@ class FileManager < ApplicationRecord
   def deleting
     wlms = WatsonLanguageMaster.where("file_manager_id=? AND anchor = -1",self.id)
     wlms.each do |wlm|
+
       counter=0
       anchor_id=-1
-      wlmids = WatsonLanguageMaster.where("anchor = ?", wlm.id)
-      wlmids.each do |wlmid|
-        wlmid.update_attributes(anchor: anchor_id)
-        if counter==0
-          anchor_id=wlmid.id
-        end
-        counter +=1
-      end
+
       answer_denpyos = AnswerDenpyo.where("watson_language_master_id=? AND file_manager_id<>?", wlm.id, self.id)
-      answer_denpyos.each do |answer_denpyo|
-        answer_denpyo.update(watson_language_master_id: anchor_id)
-      end
-      sentences = Sentence.where("wlu=? AND file_manager_id<>?",wlm.id, self.id)
-      sentences.each do |sentence|
-        if anchor_id!=-1
-          sentence.update_attributes(wlu: anchor_id)
-        else
-          sentence.destroy
+      if answer_denpyos.count>0
+        wlm.update_attributes(file_manager_id: answer_denpyos[0].file_manager_id)
+      else
+        wlmids = WatsonLanguageMaster.where("anchor = ?", wlm.id)
+        wlmids.each do |wlmid|
+          wlmid.update_attributes(anchor: anchor_id)
+          if counter==0
+            anchor_id=wlmid.id
+          end
+          counter +=1
         end
+        
+        sentences = Sentence.where("wlu=? AND file_manager_id<>?",wlm.id, self.id)
+        sentences.each do |sentence|
+          if anchor_id!=-1
+            sentence.update_attributes(wlu: anchor_id)
+          else
+            sentence.destroy
+          end
+        end
+
       end
+        
+      #answer_denpyos.each do |answer_denpyo|
+      #  answer_denpyo.update(watson_language_master_id: anchor_id)
+      #end
     end
     self.destroy
   end
