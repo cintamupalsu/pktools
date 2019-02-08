@@ -50,14 +50,14 @@
               <% if current_user.marshal %>
               <li><%= link_to "ユーザー管理", user_management_path, class: "nav-link" %></li>
               <% end %>
-              <li><%= link_to "編集", edit_user_registration_path, class: "nav-link" %></li>
+              <li><%= link_to "情報編集", edit_user_registration_path, class: "nav-link" %></li>
               <li class="dropdown-divider"></li>
               <li><%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %> </li>
             </ul>
           </li>
           
         <% else %>
-          <li class="nav-item"><%= link_to "申し込み", new_user_registration_path, class: "nav-link" %></li>
+          <li class="nav-item"><%= link_to "ユーザー登録", new_user_registration_path, class: "nav-link" %></li>
           <!--<li class="nav-item"><%#= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link" %> </li> -->
           <li class="nav-item"><%= link_to "ログイン", new_user_session_path, class: "nav-link" %></li>
         <% end %>

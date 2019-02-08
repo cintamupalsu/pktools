@@ -15,7 +15,6 @@
         <a class="nav-link" id="kekka-tab" data-toggle="tab" href="#kekka" role="tab" aria-controls="kekka" aria-selected="false">結果</a>
       </li>
     </ul>
-    
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="touroku" role="tabpanel" aria-labelledby="touroku-tab">
         <div class="row bg-white" id="innertab">
@@ -41,7 +40,49 @@
           </div>
         </div>
       </div>
-      
     </div>
   </div>
 </div>
+<div class="row">
+  <div class="col-xl-2">
+    <div class="tab">
+      <button class="tablinks" onclick="openCity(event, 'London')">L</button>
+      <button class="tablinks" onclick="openCity(event, 'Paris')">P</button>
+      <button class="tablinks" onclick="openCity(event, 'Tokyo')">T</button>
+    </div>
+    
+    <div id="London" class="tabcontent">
+      <p>London is the capital city of England.</p>
+    </div>
+    
+    <div id="Paris" class="tabcontent">
+      <p>Paris is the capital of France.</p> 
+    </div>
+    
+    <div id="Tokyo" class="tabcontent">
+      <p>Tokyo is the capital of Japan.</p>
+    </div>
+  </div>
+</div>
+<script>
+  function openCity(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the link that opened the tab
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
