@@ -39,7 +39,7 @@
   <% end %>
   </a>
   
-  <% @file_inprogress = FileManager.where("status=0 AND user_id=? AND content_type IS NOT NULL", current_user.id).count %>
+  <% @file_inprogress = FileManager.where("status=0 AND user_id=? AND content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'", current_user.id).count %>
   <% if @selected_item==7 %>
     <% if @file_inprogress>0 %>
       <a href="<%= yokyu_download_path %>" class="card-header pl-1 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="ダウンロード">

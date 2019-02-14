@@ -11,6 +11,9 @@ class FileManager < ApplicationRecord
   has_many :answer_denpyos, dependent: :destroy
   has_many :sentences, dependent: :destroy
   has_many :watson_language_masters, dependent: :destroy
+  mount_uploader :picture, PictureUploader
+  validate :picture_size
+  
 
   
   def learning(natural_language_understanding, question, answer, user, answer_id, hospital_id, vendor_id, benkyo)
@@ -306,5 +309,12 @@ class FileManager < ApplicationRecord
     end
     return output
   end
-
+  
+  private
+  
+    def picture_size
+      if picture.size > 5.megabytes
+        errors.add(:picture, "should be less than 5MB")
+      end
+    end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_24_072629) do
+ActiveRecord::Schema.define(version: 2019_02_14_045500) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2019_01_24_072629) do
     t.integer "first_row"
     t.integer "question_col"
     t.string "answer_col"
+    t.string "picture"
     t.index ["hospital_id"], name: "index_file_managers_on_hospital_id"
     t.index ["question_id"], name: "index_file_managers_on_question_id"
     t.index ["user_id"], name: "index_file_managers_on_user_id"

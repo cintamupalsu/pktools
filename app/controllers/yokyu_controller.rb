@@ -590,7 +590,7 @@ class YokyuController < ApplicationController
   def download
     @selected_item=7
     #@files = FileManager.where("user_id=? AND content_type IS NOT NULL",current_user.id)
-    @files = FileManager.where("content_type IS NOT NULL AND status < 2")
+    @files = FileManager.where("content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' AND status < 2")
   end
   
   def download_file

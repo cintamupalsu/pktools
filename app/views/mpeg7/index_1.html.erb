@@ -1,0 +1,45 @@
+<% provide(:title,"MPEG-7") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="touroku-tab" data-toggle="tab" href="#touroku" role="tab" aria-controls="touroku" aria-selected="true">登録</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="settei-tab" data-toggle="tab" href="#settei" role="tab" aria-controls="settei" aria-selected="false">設定</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="kekka-tab" data-toggle="tab" href="#kekka" role="tab" aria-controls="kekka" aria-selected="false">結果</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="touroku" role="tabpanel" aria-labelledby="touroku-tab">
+        <div class="row bg-white" id="innertab">
+          <div class="col-xl-12 " id="layout">
+            </br>
+            工事中
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="settei" role="tabpanel" aria-labelledby="settei">
+        <div class="row bg-white" id="innertab">
+          <div class="col-xl-12 " id="layout">
+            under construction <br/>
+            工事中
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="kekka" role="tabpanel" aria-labelledby="kekka">
+        <div class="row bg-white" id="innertab">
+          <div class="col-xl-12 " id="layout">
+            nil <br/>
+            工事中
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

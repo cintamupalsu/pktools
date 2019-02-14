@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get    '/mpeg7',            to: 'mpeg7#index'
-  
+  post   '/image_saving',     to: 'mpeg7#image_saving'
   get    '/companies',        to: 'companies#index'
   get    '/companies/new',    to: 'companies#new'
   post   '/companies/new',    to: 'companies#create'

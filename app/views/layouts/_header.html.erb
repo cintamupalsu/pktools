@@ -8,7 +8,7 @@
         <% if user_signed_in? %>
           <%# @sentence_count = Sentence.where("user_id=?",current_user.id).count %>
           <% @sentence_count = Sentence.count %>
-          <% @file_inprogress = FileManager.where("user_id=? AND status=0", current_user.id).count %>
+          <% @file_inprogress = FileManager.where("user_id=? AND status=0 AND content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'", current_user.id).count %>
           
           <% in_sentence_array=[] %>
           <% wlms = WatsonLanguageMaster.where("anchor = -1") %>

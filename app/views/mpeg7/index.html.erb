@@ -6,40 +6,45 @@
   <div class="col-xl-11">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="touroku-tab" data-toggle="tab" href="#touroku" role="tab" aria-controls="touroku" aria-selected="true">登録</a>
+        <a class="nav-link active" id="gazouichiran-tab" data-toggle="tab" href="#gazouichiran" role="tab" aria-controls="gazouichiran" aria-selected="true">画像一覧</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="settei-tab" data-toggle="tab" href="#settei" role="tab" aria-controls="settei" aria-selected="false">設定</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="kekka-tab" data-toggle="tab" href="#kekka" role="tab" aria-controls="kekka" aria-selected="false">結果</a>
+        <a class="nav-link" id="gazouinput-tab" data-toggle="tab" href="#gazouinput" role="tab" aria-controls="gazouinput" aria-selected="false">画像入力</a>
       </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="touroku" role="tabpanel" aria-labelledby="touroku-tab">
+      <div class="tab-pane fade show active" id="gazouichiran" role="tabpanel" aria-labelledby="gazouichiran-tab">
         <div class="row bg-white" id="innertab">
           <div class="col-xl-12 " id="layout">
+            
             </br>
-            工事中
+            <% if @file_png!=nil %>
+            <%= image_tag @file_png.picture.url if @file_png.picture? %>
+            <% end %>
           </div>
         </div>
       </div>
-      <div class="tab-pane fade" id="settei" role="tabpanel" aria-labelledby="settei">
+      <div class="tab-pane fade" id="gazouinput" role="tabpanel" aria-labelledby="gazouinput">
         <div class="row bg-white" id="innertab">
           <div class="col-xl-12 " id="layout">
-            under construction <br/>
-            工事中
-          </div>
-        </div>
-      </div>
-      <div class="tab-pane fade" id="kekka" role="tabpanel" aria-labelledby="kekka">
-        <div class="row bg-white" id="innertab">
-          <div class="col-xl-12 " id="layout">
-            nil <br/>
-            工事中
+            <%= form_for(:saving, url: image_saving_path) do |f| %>
+              <%= f.label :filename, "画像" %>
+              <%= f.file_field :filename, class: 'form-control mb-1', accept: 'image/png' %>
+              </br>
+              <%= f.submit "登録", class: "btn btn-outline-primary btn-block" %>
+            <% end %>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $('#saving_picture').bind('change', function(){
+    var size_in_megabytes = this.files[0].size/1024/1024;
+    if (size_in_megabytes>5){
+      alert('Maximum file size is 5MB. Please choose a smaller file.');
+    }
+  });
+</script>
