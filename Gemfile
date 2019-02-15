@@ -50,6 +50,8 @@ gem 'jquery-rails'
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'delayed_job_active_record'
+gem 'rmagick' #if error try=> $sudo apt-get install imagemagick libmagick++-dev
+
 # heroku run rake jobs:work
 
 group :development, :test do
