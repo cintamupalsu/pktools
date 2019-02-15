@@ -16,10 +16,9 @@
       <div class="tab-pane fade show active" id="gazouichiran" role="tabpanel" aria-labelledby="gazouichiran-tab">
         <div class="row bg-white" id="innertab">
           <div class="col-xl-12 " id="layout">
-            
             </br>
-            <% if @file_png!=nil %>
-            <%= image_tag @file_png.picture.url if @file_png.picture? %>
+            <% if @files_png!=nil %>
+              <%= render 'images' %>
             <% end %>
           </div>
         </div>

@@ -413,11 +413,12 @@ class YokyuController < ApplicationController
     file.delay.deleting()
     
     flash[:success] = "ファイルを削除しました"
-    if params[:download].to_i == 0
-      redirect_to yokyufile_path
-    else
-      redirect_to yokyu_download_path
-    end
+    redirect_back fallback_location: root_path
+    #if params[:download].to_i == 0
+    #  redirect_to yokyufile_path
+    #else
+    #  redirect_to yokyu_download_path
+    #end
   end
   
   def senmanage

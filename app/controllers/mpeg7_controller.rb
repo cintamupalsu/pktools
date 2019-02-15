@@ -1,6 +1,6 @@
 class Mpeg7Controller < ApplicationController
   def index
-    @file_png= FileManager.where("content_type='image/png'").first
+    @files_png= FileManager.where("content_type='image/png' AND status=0")
     
   end
   

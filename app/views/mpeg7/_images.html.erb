@@ -1,0 +1,30 @@
+<% counter = 0 %>
+<% @files_png.each do |file_png| %>
+  <% counter+=1 %>
+  <% if counter.even? == true %>
+      <div class="col-1">
+        <%= image_tag file_png.picture.url, size: "80x80" if file_png.picture? %>
+      </div>
+      <div class="col-5">
+        <%= file_png.name %></br>
+        <%= file_png.created_at.in_time_zone.strftime("%Y年%-m月%d日 %H:%M")%></br>
+        <%= link_to "削除", file_path(:id => file_png.id), class: "btn btn-outline-danger mt-1 btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+      </div>
+    </div>
+  <% else %>
+    <div class="row border-bottom">  
+      <div class="col-1">
+        <%= image_tag file_png.picture.url, size: "80x80" if file_png.picture? %>
+      </div>
+      <div class="col-5">
+        <%= file_png.name %></br>
+        <%= file_png.created_at.in_time_zone.strftime("%Y年%-m月%d日 %H:%M")%></br>
+        <%= link_to "削除", file_path(:id => file_png.id), class: "btn btn-outline-danger mt-1 btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+      </div>
+  <% end %>
+<% end %>
+<% if counter.even? == false %>
+    <div class="col-6">
+    </div>
+  </div>
+<% end %>
