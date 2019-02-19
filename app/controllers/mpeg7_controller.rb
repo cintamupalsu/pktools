@@ -1,7 +1,11 @@
 class Mpeg7Controller < ApplicationController
   def index
-    @files_png= FileManager.where("content_type='image/png' AND status=0")
-    
+    @files_png= FileManager.where("content_type='image/png' AND status<2")
+    @paramkocok={}
+    pixel=[100,80,255]
+    @paramkocok=@files_png[0].hsv(pixel)
+    @pasticocok=@files_png[0].hsv_linear(pixel)
+    @cocok=@files_png[0].ycbcr(pixel)
   end
   
   def image_saving
@@ -17,6 +21,7 @@ class Mpeg7Controller < ApplicationController
                                            vendor_id: Vendor.first.id,
                                            question_id: Question.first.id,
                                            picture: saving_params['filename'])
+        file_manager.delay.mpeg_description()
       else
         flash[:warning]="PNGしか登録できない"
       end
@@ -31,5 +36,4 @@ class Mpeg7Controller < ApplicationController
   def saving_params
     params.require(:saving).permit(:filename)
   end
-  
 end

@@ -309,7 +309,62 @@ class FileManager < ApplicationRecord
     end
     return output
   end
+  #------------------------MPEG-------------------------------------------------
+  def mpeg_description
+    self.update(status: 1)
+  end
+
+  def ycbcr(pixel)
+    result={}
+    result['Y'] = 0.299*pixel[0].to_f + 0.587*pixel[1].to_f + 0.114*pixel[2].to_f
+    result['Cb']=-0.169*pixel[0].to_f - 0.331*pixel[1].to_f + 0.500*pixel[2].to_f
+    result['Cr']= 0.500*pixel[0].to_f - 0.419*pixel[1].to_f - 0.081*pixel[2].to_f
+    return result
+  end
   
+  def hsv(pixel)
+    result={}
+    result['Hue'] = 0.00
+    result['Saturation'] = 0.00
+    max = pixel.max.to_f
+    min = pixel.min.to_f
+    result['Value']=(max/255).to_f
+    if max!=0 
+      result['Saturation']=(max-min)/max
+    end
+    if max != min
+      if max == pixel[0] && pixel[1]>= pixel[2]
+        result['Hue']=60*(G-B)/(max-min)
+      elsif max == pixel[0] && pixel[1]<pixel[2]
+        result['Hue']=360+60*(pixel[1]-pixel[2])/(max-min)
+      elsif pixel[1]==max
+        result['Hue']=60*(2.0+(pixel[2]-pixel[0])/(max-min))
+      else 
+        result['Hue']=60*(4.0+(pixel[0]-pixel[1])/(max-min))
+      end
+    end
+    return result
+  end
+  
+  def hsv_linear(pixel)
+    result={}
+    result['Hue'] = Math.atan2((0.5*pixel[0].to_f-0.419*pixel[1].to_f-0.081*pixel[2].to_f), (-0.169*pixel[0].to_f-0.331*pixel[1].to_f+0.5*pixel[2].to_f))
+    result['Saturation'] = Math.sqrt((-0.169*pixel[0].to_f-0.331*pixel[1].to_f+0.5*pixel[2].to_f)**2+(0.5*pixel[0].to_f-0.419*pixel[1].to_f-0.081*pixel[2].to_f)**2)
+    result['Value'] = 0.299*pixel[0].to_f + 0.587*pixel[1].to_f + 0.114*pixel[2].to_f
+    return result
+  end
+  
+  def hmmd(pixel)
+    result={}
+    result['Hue']  = self.hsv(pixel)['Hue']
+    result['Max']  = pixel.max.to_f / 255.0
+    result['Min']  = pixel.min.to_f / 255.0
+    result['Diff'] = (result['Max']-result['Min']) 
+    result['Sum']  = (result['Max']+result['Min']) / 2.0 
+    return result
+  end
+
+  #------------------------end of MPEG------------------------------------------
   private
   
     def picture_size
@@ -317,4 +372,8 @@ class FileManager < ApplicationRecord
         errors.add(:picture, "should be less than 5MB")
       end
     end
+    
+    #----------------------MPEG---------------------------------------------------
+    #--------------------end of MPEG----------------------------------------------
+    
 end
