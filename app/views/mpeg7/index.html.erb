@@ -28,7 +28,7 @@
             $$M = \begin{bmatrix}
             \frac{5}{6} & \frac{1}{6} & 0           \\[0.3em]
             \frac{5}{6} & 0           & \frac{1}{6} \\[0.3em]
-            0           & \frac{5}{6} & \frac{1}{6}
+            0           & \frac{5}{6} & \frac{1}{\frac{6}{\frac{10}{3}}}
             \end{bmatrix}$$
             \( \bar{w} \) = 
             <%=@paramkocok%><br/>
@@ -36,7 +36,19 @@
             <%=@pasticocok%><br/>
             \( \bar{w} \) = 
             <%=@cocok%>
-            
+            <br/>
+            <%=@response['OriginTime']%><br/>
+            <%=@response['Hypocenter']['Location']%><br/>
+            <%=@response['Hypocenter']['Magnitude']%><br/>
+            <p>覚えてください</p>
+            \(X=\{x_1,x_2,\dots,x_n\}\)
+            \(Y=\{y_1,y_2,\dots,y_n\}\)<br/>
+            Manhattan Distance:
+            $$D(X,Y)=|x_1-y_1|+|x_2-y_2|+\dots+|x_n-y_n|$$
+            Euclidean Distance:
+            $$D(X,Y)=\sqrt{(x_1-y_1)^2+\dots+(x_n-y_n)^2}$$
+            Cosine Similarity Distance:
+            $$D(X,Y)=1-\frac{\displaystyle\sum_{i=1}^{n}x_iy_i}{\sqrt{\displaystyle\sum_{i=1}^{n}x_i^2}\sqrt{\displaystyle\sum_{i=1}^{n}y_i^2}}$$
           </div>
         </div>
       </div>
@@ -57,7 +69,7 @@
 </div>
 
 <script type="text/javascript">
-  $('#saving_picture').bind('change', function(){
+  $('#saving_filename').bind('change', function(){
     var size_in_megabytes = this.files[0].size/1024/1024;
     if (size_in_megabytes>5){
       alert('Maximum file size is 5MB. Please choose a smaller file.');

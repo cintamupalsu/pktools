@@ -6,6 +6,7 @@ class Mpeg7Controller < ApplicationController
     @paramkocok=@files_png[0].hsv(pixel)
     @pasticocok=@files_png[0].hsv_linear(pixel)
     @cocok=@files_png[0].ycbcr(pixel)
+    @response = JSON.parse(open("https://api.iedred7584.com/eew/json/").read)
   end
   
   def image_saving
