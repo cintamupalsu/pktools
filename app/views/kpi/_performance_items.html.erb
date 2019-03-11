@@ -1,0 +1,24 @@
+<div class="col-md-12 bg-white">
+  <br/>
+  <ul class="questions">
+    <% @performances.each do |performance| %>
+      <div class="row">
+        <div class="col-md-9">
+          <li>
+            <%= link_to performance.name, performance_task_path(:id => performance.id) %>
+          </li>
+        </div>
+        <div class="col-1 pl-0">
+          <%= link_to "項目", performance_task_path(:id => performance.id), class: "btn btn-outline-info btn-block", role: "button" %>    
+        </div>
+        <div class="col-1 pl-0">
+          <%= link_to "編集", performance_edit_path(:id => performance.id), class: "btn btn-outline-secondary btn-block", role: "button" %>    
+        </div>
+        <div class="col-1 pl-0">
+          <%= link_to "削除", performance_path(:id => performance.id), class: "btn btn-outline-danger btn-block", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+        </div>
+      </div>
+    <% end %>
+  </ul>
+  <br/>
+</div>

@@ -1,0 +1,30 @@
+    <% @tasks.each do |task| %>
+      <div class="row border-bottom ">
+        <div class="col-md-5 text-left">
+          <li>
+            <%= link_to task.description, task_edit_path(:id => task.id) %>
+          </li>
+        </div>
+        <div class="col-1 pl-0 text-right">
+          <%= task.points %>
+        </div>
+        <div class="col-1 pl-0 text-right">
+          <%= task.minvalue %>
+        </div>
+        <div class="col-2 pl-0 text-left">
+          <%= task.valuename %>
+        </div>
+        <div class="col-1 pl-0 pr-0 text-left">
+          <% hours= (task.minminutestime/60).to_i%>
+          <% minutes = task.minminutestime%60 %>
+          <%=hours%>時 <%=minutes%>分
+        </div>
+        <div class="col-1 pl-0">
+          <%= link_to "編集", task_edit_path(:id => task.id), class: "btn btn-outline-secondary btn-block btn-sm", role: "button" %>    
+        </div>
+        <div class="col-1 pl-0">
+          <%= link_to "削除", task_path(:id => task.id), class: "btn btn-outline-danger btn-block btn-sm", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+        </div>
+
+      </div>
+    <% end %>

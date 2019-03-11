@@ -1,0 +1,65 @@
+<% provide(:title, "タスク追加") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="company">
+      <div class="card-header text-center">
+        <strong>新規タスク</strong>
+      </div>
+      <div class="card-body text-left">
+        <%= form_for(:perform_detail, url: task_new_path) do |f| %>
+          <%= f.label :description, "内容 (必要）" %>
+          <%= f.text_area :description, placeholder: "問題検定作成" , class: 'form-control'  %>
+          </br>
+          <%= f.label :points, "点" %>
+          <%= f.text_field :points, placeholder: "100" , class: 'form-control'  %>
+          <%= f.hidden_field :performance_id, value: @performance.id %>
+          </br>
+          <%= f.label :minvalue, "評価" %>
+          <%= f.text_field :minvalue, placeholder: "100" , class: 'form-control'  %>
+          </br>
+          <%= f.label :valuename, "評価名" %>
+          <%= f.text_field :valuename, placeholder: "枚" , class: 'form-control'  %>
+
+          </br>
+          <div class="row">
+            <div class="col-2">
+              最短時間：
+            </div>
+            
+            <div class="col-2">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+          	      <%= f.label :hours, "時 : ", class:"input-group-text" %>
+          	    </div>
+        	      <%= f.select(:hours) do %>
+        	        <% (0..23).each do |i| %>
+            	  	  <%= content_tag(:option, "#{i}時", value: i) %>
+        	        <% end %>
+        	      <% end %>
+              </div>
+            </div>
+            
+            <div class="col-2">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+          	      <%= f.label :minutes, "分 : ", class:"input-group-text" %>
+          	    </div>
+        	      <%= f.select(:minutes) do %>
+        	        <% (0..59).each do |i| %>
+            	  	  <%= content_tag(:option, "#{i}分", value: i) %>
+        	        <% end %>
+        	      <% end %>
+              </div>
+            </div>
+
+          </div>
+          
+          <%= f.submit '登録', class: "btn btn-outline-primary btn-block fluid" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

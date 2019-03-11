@@ -1,0 +1,84 @@
+<% provide(:title, "タスク項目編集") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="company">
+      <div class="card-header text-center">
+        <strong>タスク項目編集</strong>
+      </div>
+      <div class="card-body text-left">
+        <%= form_for(:perform_detail, url: task_update_path) do |f| %>
+          <%= f.label :description, "内容 (必要）" %>
+          <%= f.text_area :description, value: @task.description , class: 'form-control'  %>
+          </br>
+          <%= f.label :points, "点" %>
+          <%= f.text_field :points, value: @task.points , class: 'form-control'  %>
+
+          <%= f.hidden_field :performance_id, value: @task.performance_id %>
+          <%= f.hidden_field :id, value: @task.id %>
+
+          </br>
+          <%= f.label :minvalue, "評価" %>
+          <%= f.text_field :minvalue, value: @task.minvalue , class: 'form-control'  %>
+          </br>
+          <%= f.label :valuename, "評価名" %>
+          <%= f.text_field :valuename, value: @task.valuename , class: 'form-control'  %>
+          <!--
+          <input type="text" data-provide='datepicker' >
+          -->
+          </br>
+          <% hours = (@task.minminutestime/60).to_i%>
+          <% minutes = @task.minminutestime%60 %>
+          <div class="row">
+            <div class="col-2">
+              最短時間：
+            </div>
+            
+            <div class="col-2">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+          	      <%= f.label :hours, "時 : ", class:"input-group-text" %>
+          	    </div>
+        	      <%= f.select(:hours) do %>
+        	        <% (0..23).each do |i| %>
+        	          <% if hours!=i %>
+            	  	    <%= content_tag(:option, "#{i}時", value: i) %>
+        	          <% else %>
+            	  	    <%= content_tag(:option, "#{i}時", value: i, :selected=>true) %>
+        	          <% end %>
+        	        <% end %>
+        	      <% end %>
+              </div>
+            </div>
+            
+            <div class="col-2">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+          	      <%= f.label :minutes, "分 : ", class:"input-group-text" %>
+          	    </div>
+        	      <%= f.select(:minutes) do %>
+        	        <% (0..59).each do |i| %>
+        	          <% if minutes!=i %>
+            	  	    <%= content_tag(:option, "#{i}分", value: i) %>
+        	          <% else %>
+            	  	    <%= content_tag(:option, "#{i}分", value: i, :selected=>true) %>
+        	          <% end %>
+        	        <% end %>
+        	      <% end %>
+              </div>
+            </div>
+          </div>
+          
+          <%= f.submit '登録', class: "btn btn-outline-primary btn-block fluid" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+</script>

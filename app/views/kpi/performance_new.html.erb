@@ -1,0 +1,75 @@
+<% provide(:title, "新規タスク") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card" id="question">
+      <div class="card-header text-center">
+        <strong>新規タスク </strong>
+      </div>
+      <div class="card-body">
+        <%= form_for(:performance, url: performance_new_path) do |f| %>
+     
+          <%= f.label :name, "タスク名" %>
+          <%= f.text_field :name, placeholder: "看護個人KPI" , class: 'form-control'  %>
+          </br>
+          
+          <%= f.label :description, "内容" %>
+          <%= f.text_area :description, placeholder: "看護個人KPI" , class: 'form-control'  %>
+
+          </br>
+          <div class="row">
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+          	      <%= f.label :shurui, "種類 : ", class:"input-group-text" %>
+          	    </div>
+        	      <%= f.select(:shurui) do %>
+        	  	    <%= content_tag(:option, "普通", value: 1) %>
+        	  	    <%= content_tag(:option, "検定問題", value: 2, :disabled=>true) %>
+        	      <% end %>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+          	      <%= f.label :schedule, "種類 : ", class:"input-group-text" %>
+          	    </div>
+        	      <%= f.select(:schedule) do %>
+        	  	    <%= content_tag(:option, "毎日", value: 1) %>
+        	  	    <%= content_tag(:option, "毎週", value: 2, :disabled=>true) %>
+        	  	    <%= content_tag(:option, "毎月", value: 3, :disabled=>true) %>
+        	  	    <%= content_tag(:option, "2ヶ月", value: 4, :disabled=>true) %>
+        	  	    <%= content_tag(:option, "3ヶ月", value: 5, :disabled=>true) %>
+        	  	    <%= content_tag(:option, "4ヶ月", value: 6, :disabled=>true) %>
+        	  	    <%= content_tag(:option, "半年", value: 7, :disabled=>true) %>
+        	  	    <%= content_tag(:option, "毎年", value: 8, :disabled=>true) %>
+        	      <% end %>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+          	      <%= f.label :assignation, "Assign to : ", class:"input-group-text" %>
+          	    </div>
+        	      <%= f.select(:schedule) do %>
+        	  	    <%= content_tag(:option, "全体", value: 1) %>
+        	      <% end %>
+              </div>
+            </div>
+          </div>
+          
+          <span class="picture">
+            <%= f.label :k_pic, "画像マスク" %>
+            <%= f.file_field :k_pic %>
+          </span>
+          </br> 
+          <%= f.hidden_field :user_id, value: current_user.id %>
+          </br>
+          <%= f.submit '列情登録', class: "btn btn-outline-primary fluid" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

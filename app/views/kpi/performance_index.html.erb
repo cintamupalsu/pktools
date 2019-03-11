@@ -1,0 +1,27 @@
+<% provide(:title,"タスク管理") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+
+    <div class="card" id="question">
+      <div class="card-header">
+        タスク管理
+      </div>
+      <div class="card-body">
+        <% if @performances.count != 0 %>
+            <%= render 'performance_items' %>
+        <% else %>
+            タスクがありません!
+        <% end %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "新規タスク", performance_new_path, class: "btn btn-outline-primary", role: "button" %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+

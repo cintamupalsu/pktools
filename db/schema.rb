@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_14_045500) do
+ActiveRecord::Schema.define(version: 2019_03_11_043755) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -99,6 +99,35 @@ ActiveRecord::Schema.define(version: 2019_02_14_045500) do
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_hospitals_on_company_id"
     t.index ["user_id"], name: "index_hospitals_on_user_id"
+  end
+
+  create_table "perform_details", force: :cascade do |t|
+    t.integer "performance_id"
+    t.integer "shorui"
+    t.string "description"
+    t.integer "points"
+    t.datetime "dateset"
+    t.float "maxvalue"
+    t.float "minvalue"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "minminutestime"
+    t.string "valuename"
+    t.index ["performance_id"], name: "index_perform_details_on_performance_id"
+  end
+
+  create_table "performances", force: :cascade do |t|
+    t.string "name"
+    t.string "k_pic"
+    t.integer "user_id"
+    t.integer "u_user"
+    t.string "description"
+    t.integer "points"
+    t.integer "shurui"
+    t.integer "schedule"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_performances_on_user_id"
   end
 
   create_table "questions", force: :cascade do |t|

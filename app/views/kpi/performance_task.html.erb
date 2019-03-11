@@ -1,0 +1,44 @@
+<% provide(:title, "タスク編集") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="performance_tast">
+      <div class="card-header text-center">
+        <strong><%= @performance.name %></strong>
+      </div>
+      <div class="card-body">
+        <div class="row border-bottom text-center font-weight-bold">
+          <div class="col-md-5">
+              内容
+          </div>          
+          <div class="col-md-1">
+              点
+          </div>          
+          <div class="col-md-1">
+              評価
+          </div>          
+          <div class="col-md-2">
+              評価名
+          </div>    
+          <div class="col-md-1">
+              時間
+          </div>    
+          <div class="col-md-2">
+            操作
+          </div>
+        </div>
+
+        <%if @tasks.count !=0  %>
+            <%= render 'perform_detail_items' %>
+        <% else %>
+            タスク項目がありません!
+        <% end %>
+      </div>
+      <div class="card-footer">
+        <%= link_to "タスク追加", task_new_path(:id => @performance.id), class: "btn btn-outline-primary", role: "button" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+  
+  get    '/kpi',                to: 'kpi#index'
+  get    '/kpi_assessement',    to: 'kpi#assessement'
+  get    '/performance/new',    to: 'kpi#performance_new'
+  post   '/performance/new',    to: 'kpi#performance_create'
+  get    '/performance/index',  to: 'kpi#performance_index'
+  get    '/performance',        to: 'kpi#performance_show'
+  get    '/performance/edit',   to: 'kpi#performance_edit'
+  post   '/performance/update', to: 'kpi#performance_update'
+  get    '/performance/task',   to: 'kpi#performance_task'
+  delete '/performance',        to: 'kpi#performance_delete'
+  get    '/task/new',           to: 'kpi#perform_detail_new'
+  post   '/task/new',           to: 'kpi#perform_detail_create'
+  get    '/task/edit',          to: 'kpi#perform_detail_edit'
+  post   '/task/update',        to: 'kpi#perform_detail_update'
+  delete '/task',               to: 'kpi#perform_detail_delete'
+  
   get    '/mpeg7',            to: 'mpeg7#index'
   post   '/image_saving',     to: 'mpeg7#image_saving'
   get    '/companies',        to: 'companies#index'

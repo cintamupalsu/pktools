@@ -1,0 +1,23 @@
+<div class="card ml-0 pl-0" style="width: 6rem;">
+  <% if @selected_item==0 %>
+    <a href="<%=kpi_path%>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="KPIタスク">
+  <% else %>
+    <a href="<%=kpi_path%>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="KPIタスク">
+  <% end %>
+    <%= image_tag("ico_coins.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==1 %>
+    <a href="<%= performance_index_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="タスク管理">
+  <% else %>
+    <a href="<%= performance_index_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="タスク管理">
+  <% end %>
+    <%= image_tag("ico_tasks.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==2 %>
+    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="報告">
+  <% else %>
+    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="報告">
+  <% end %>
+    <%= image_tag("ico_reports.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+</div>

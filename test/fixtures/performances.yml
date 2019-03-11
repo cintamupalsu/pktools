@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  k_pic: MyString
+  user: one
+  u_user: 1
+  description: MyString
+  points: 1
+  shurui: 1
+  schedule: 1
+
+two:
+  name: MyString
+  k_pic: MyString
+  user: two
+  u_user: 1
+  description: MyString
+  points: 1
+  shurui: 1
+  schedule: 1
