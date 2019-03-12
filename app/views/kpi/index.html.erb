@@ -4,6 +4,11 @@
     <%= render 'sidemenu' %>
   </aside>
   <div class="col-xl-11">
+    <div class="card ml-1 mb-1" id="performance_card">
+      <div class="card-header">
+        今月点：<%= @total_points %>
+      </div>
+    </div>
     <% counter=0 %>
     <% @performances.each do |performance| %>
       <% if counter==0 || counter==4 %>
@@ -19,6 +24,8 @@
             <div class="card-body">
               <h5 class="card-title"><%=performance.name%></h5>
               <p class="card-text"><%=performance.description%></p>
+              
+              <footer class="blockquote-footer text-right">満点： <cite title="Source Title"><%=performance.points%>点</cite></footer>
             </div>
             <div class="card-footer">
               <a href="<%=kpi_assessement_path(:id => performance.id) %>" class="btn btn-outline-primary btn-block">します</a>

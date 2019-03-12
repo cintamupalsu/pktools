@@ -10,8 +10,12 @@
       </div>
       <div class="card-body text-left">
         <%= form_for(:perform_detail, url: task_new_path) do |f| %>
+
           <%= f.label :description, "内容 (必要）" %>
           <%= f.text_area :description, placeholder: "問題検定作成" , class: 'form-control'  %>
+          </br>
+          <%= f.label :flinks, "URL" %>
+          <%= f.text_field :flinks, placeholder: "http://elf01b/puki" , class: 'form-control'  %>
           </br>
           <%= f.label :points, "点" %>
           <%= f.text_field :points, placeholder: "100" , class: 'form-control'  %>

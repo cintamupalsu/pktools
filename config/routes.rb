@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   
   get    '/kpi',                to: 'kpi#index'
   get    '/kpi_assessement',    to: 'kpi#assessement'
+  post   '/kpi_assessement',    to: 'kpi#assessement_record'
   get    '/performance/new',    to: 'kpi#performance_new'
   post   '/performance/new',    to: 'kpi#performance_create'
   get    '/performance/index',  to: 'kpi#performance_index'

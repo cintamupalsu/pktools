@@ -1,1 +1,125 @@
-assessement
+<% provide(:title, "アセスメント") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="sentence">
+      <div class="card-header text-center">
+        <div class="row">
+          <div class="col-12">
+            <%=@performance.name%>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row border-bottom text-center">
+          <div class="col-1">
+            <strong>✓</strong>
+          </div>
+          <div class="col-5">
+            内容
+          </div>
+          <div class="col-1">
+            URL
+          </div>
+          <div class="col-3 text-left">
+            操作点
+          </div>
+          <div class="col-2">
+            操作時間
+          </div>
+        </div>
+        <% counter=0 %>
+        <% if @performance.perform_details.count>0 %>
+          <%= form_for(:perform_denpyos, url: kpi_assessement_path) do |f| %>
+            <%= f.hidden_field :id, value: @performance.id %>
+            <% @performance.perform_details.each do |pd| %>
+            
+              <% pdenpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=?", current_user.id, pd.id).last %>
+              <div class="row border-bottom">
+                <div class="col-1 text-center pt-2">
+                  <% if pdenpyo %>
+                    <%= f.check_box :yaru, multiple: true, checked: true %>
+                  <% else %>
+                    <%= f.check_box :yaru, multiple: true %>
+                  <% end %>
+                  <%= f.hidden_field :perform_detail_id, value: pd.id, multiple: true %>
+                </div>
+                <div class="col-5 pt-2">
+                  <%= pd.description %> 
+                  <% if pd.valuename && pd.valuename!="" %>
+                    <%= pd.minvalue.to_i %><%= pd.valuename %>必要 
+                  <% end %>
+                  <% if pd.minminutestime >0 %>
+                    <% minhours=(pd.minminutestime/60).to_i %>
+                    <% minminutes=pd.minminutestime%60 %>
+                    <%= minhours %>時<%= minminutes %>分間必要 
+                  <% end %>
+                </div>
+                <div class="col-1 pt-1">
+                  <% if pd.flinks && pd.flinks!="" %>
+                    <%= link_to "参照", pd.flinks, class: "btn btn-outline-info btn-block btn-sm", role: "button" %>    
+                  <% end %>
+                </div>
+                <div class="col-1">
+                  <% if pd.minvalue!=nil && pd.minvalue>0 %>
+                    <% if pdenpyo %>
+                      <%= f.text_field :achieve_value, multiple: true , value: pdenpyo.value , class: 'form-control'  %>
+                    <% else %>
+                      <%= f.text_field :achieve_value, multiple: true , class: 'form-control'  %>
+                    <% end %>
+                  <% else %>
+                    <%= f.hidden_field :achieve_value, multiple: true , value: 0, class: 'form-control'  %>
+                  <% end %>
+                </div>
+                <div class="col-2 pt-2">
+                  <% if pd.valuename && pd.valuename!="" %>
+                    <%= pd.valuename %>
+                  <% end %>
+                </div>
+                <div class="col-1 pt-0 pl-0 pr-0">
+                  <%if pd.minminutestime>0 %>
+                    <div class="input-group">
+                      <% if pdenpyo %>
+                        <%= f.text_field :hours, multiple: true , value: (pdenpyo.minutes/60).to_i ,class: 'form-control' %>
+                      <% else %>
+                        <%= f.text_field :hours, multiple: true , class: 'form-control' %>
+                      <% end %>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">時</span>
+                      </div>
+                    </div>
+                  <% else %>
+                    <%= f.hidden_field :hours, multiple: true, value: 0 , class: 'form-control'  %>
+                  <% end %>
+                </div>
+                <div class="col-1 pt-0 pl-0 pr-0">
+                  <%if pd.minminutestime>0 %>
+                    <div class="input-group">
+                      <% if pdenpyo %>
+                        <%= f.text_field :minutes, multiple: true , value: (pdenpyo.minutes%60), class: 'form-control'  %>
+                      <% else %>
+                        <%= f.text_field :minutes, multiple: true , class: 'form-control'  %>
+                      <% end %>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">分</span>
+                      </div>
+                    </div>
+                  <% else %>
+                    <%= f.hidden_field :minutes, multiple: true, value: 0 , class: 'form-control'  %>
+                  <% end %>
+                </div>
+              </div>
+              <% counter +=1 %>
+            <% end %>
+            </br>
+            <%= f.submit "登録", class: "btn btn-outline-primary btn-block" %>  
+          <% end %>
+        <% end %>
+      </div>
+      <div class="card-footer">
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_11_043755) do
+ActiveRecord::Schema.define(version: 2019_03_12_045308) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -101,6 +101,20 @@ ActiveRecord::Schema.define(version: 2019_03_11_043755) do
     t.index ["user_id"], name: "index_hospitals_on_user_id"
   end
 
+  create_table "perform_denpyos", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "perform_detail_id"
+    t.float "value"
+    t.integer "minutes"
+    t.float "completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "performance_id"
+    t.index ["perform_detail_id"], name: "index_perform_denpyos_on_perform_detail_id"
+    t.index ["performance_id"], name: "index_perform_denpyos_on_performance_id"
+    t.index ["user_id"], name: "index_perform_denpyos_on_user_id"
+  end
+
   create_table "perform_details", force: :cascade do |t|
     t.integer "performance_id"
     t.integer "shorui"
@@ -113,6 +127,7 @@ ActiveRecord::Schema.define(version: 2019_03_11_043755) do
     t.datetime "updated_at", null: false
     t.integer "minminutestime"
     t.string "valuename"
+    t.string "flinks"
     t.index ["performance_id"], name: "index_perform_details_on_performance_id"
   end
 

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  perform_detail: one
+  value: 1.5
+  minutes: 1
+
+two:
+  user: two
+  perform_detail: two
+  value: 1.5
+  minutes: 1

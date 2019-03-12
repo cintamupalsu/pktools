@@ -13,9 +13,12 @@
           <%= f.label :description, "内容 (必要）" %>
           <%= f.text_area :description, value: @task.description , class: 'form-control'  %>
           </br>
+          <%= f.label :flinks, "URL" %>
+          <%= f.text_field :flinks, value: @task.flinks , class: 'form-control'  %>
+          </br>
           <%= f.label :points, "点" %>
           <%= f.text_field :points, value: @task.points , class: 'form-control'  %>
-
+          
           <%= f.hidden_field :performance_id, value: @task.performance_id %>
           <%= f.hidden_field :id, value: @task.id %>
 
