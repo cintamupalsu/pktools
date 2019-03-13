@@ -246,7 +246,12 @@ class KpiController < ApplicationController
     
     pdenpyos = PerformDenpyo.where("DATE(created_at_utc)>= '#{@selected_date.beginning_of_month}' AND DATE(created_at_utc)< '#{@selected_date.end_of_month + 1.day}' ")
     pdenpyos.each do |pdenpyo|
-      @scores[pdenpyo.user_id][pdenpyo.performance_id]+=((pdenpyo.completed/100)*pdetailpoint[pdenpyo.perform_detail_id])
+      if pdetailpoint[pdenpyo.perform_detail_id]!=nil
+        points = pdetailpoint[pdenpyo.perform_detail_id]
+      else
+        points=0
+      end
+      @scores[pdenpyo.user_id][pdenpyo.performance_id]+=((pdenpyo.completed/100)*points)
     end
     
     #@pdenpos=PerformDenpyo.where("user_id=? AND DATE(created_at_utc) >= { ")
