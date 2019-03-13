@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   get    '/task/edit',          to: 'kpi#perform_detail_edit'
   post   '/task/update',        to: 'kpi#perform_detail_update'
   delete '/task',               to: 'kpi#perform_detail_delete'
+  get    '/kpi/reports',        to: 'kpi#reports'
+  post   '/kpi/reports',        to: 'kpi#reports_henkou'
   
   get    '/mpeg7',            to: 'mpeg7#index'
   post   '/image_saving',     to: 'mpeg7#image_saving'

@@ -1,1 +1,11 @@
 <%= @param_kocok %>
+                <% kpis=Performance.all %>
+                <% total_kpis =kpis.count %>
+                <% counter=0 % >
+                <% kpis.each do |kpi| %>
+                    <% counter+=1 %>
+                    '<%= kpi.name %>'
+                    <% if counter!= total_kpis %>
+                      ,
+                    <% end %>
+                <% end %>

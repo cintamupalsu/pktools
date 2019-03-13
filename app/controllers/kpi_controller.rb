@@ -219,6 +219,54 @@ class KpiController < ApplicationController
     #@param_kocok= perform_denpyo_multiple_params
     #render 'parcok'
   end
+  
+  def reports
+    @selected_item=2
+    if params[:selected_date]==nil 
+      @selected_date = Time.zone.now.to_date
+    else
+      @selected_date = Date.parse(params[:selected_date])
+    end
+    
+    @scores={}
+    @users=User.all
+    @performances = Performance.all
+    @users.each do |user|
+      @scores[user.id]={}
+      @performances.each do |performance|
+        @scores[user.id][performance.id]=0
+      end
+    end
+    pdetailpoint={}
+    pdetails=PerformDetail.all
+    pdetails.each do |pdetail|
+      pdetailpoint[pdetail.id]=pdetail.points
+    end
+    
+    
+    pdenpyos = PerformDenpyo.where("DATE(created_at_utc)>= '#{@selected_date.beginning_of_month}' AND DATE(created_at_utc)< '#{@selected_date.end_of_month + 1.day}' ")
+    pdenpyos.each do |pdenpyo|
+      @scores[pdenpyo.user_id][pdenpyo.performance_id]+=((pdenpyo.completed/100)*pdetailpoint[pdenpyo.perform_detail_id])
+    end
+    
+    #@pdenpos=PerformDenpyo.where("user_id=? AND DATE(created_at_utc) >= { ")
+  end
+  
+  def reports_henkou
+    @selected_item=2
+    if reports_params['selected_date']!=""
+      #begin
+      #  @selected_date = Date.parse(reports_params['selected_date'])
+      #rescue => e
+        date_string =reports_params['selected_date'].split('/')
+        getdate=date_string[2]+"/"+date_string[0]+"/"+date_string[1]
+        @selected_date=Date.parse(getdate)
+      #end
+    else
+      @selected_date = Time.zone.now.to_date
+    end
+    redirect_to kpi_reports_path(:selected_date => @selected_date)
+  end
 
   private
   def performance_params
@@ -231,6 +279,10 @@ class KpiController < ApplicationController
   
   def perform_denpyo_multiple_params
     params.require(:perform_denpyos).permit(:id, :yaru=>[], :perform_detail_id=>[], :achieve_value=>[], :hours=>[], :minutes=>[] )
+  end
+  
+  def reports_params
+    params.require(:reports).permit(:selected_date)
   end
   
   def update_performance_point(performance)
@@ -259,5 +311,9 @@ class KpiController < ApplicationController
     end
     return result
   end
-
+  
+  def userid(user)
+      userstring= user.email.split('@')
+      return userstring[0]
+  end
 end

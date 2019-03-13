@@ -1,0 +1,155 @@
+<% provide(:title,"Statistic") %>
+<% user_counter = 0 %>
+<% date_string = @selected_date.to_s(:date).split('-') %>
+<% this_month = @selected_date.beginning_of_month %>
+<% next_month = (this_month + 1.month).beginning_of_month %>
+<% end_month = @selected_date.end_of_month %>
+<% pdenpyos = PerformDenpyo.where("DATE(created_at_utc)>= '#{this_month}' AND DATE(created_at_utc)< '#{end_month + 1.day}' ") %>
+
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1" id="users">
+      <div class="card-header text-center">
+        <%= form_for(:reports, url: kpi_reports_path) do |f| %>
+        <div class="row">
+          <div class="col-1">
+            Date:
+          </div>
+          <div class="col-4">
+              <%= f.text_field :selected_date, class: 'form-control', :data => {:provide => "datepicker"}, :autocomplete => :off  %>
+          </div>
+          <div class="col-1">
+            <%= f.submit "変更", class: "btn btn-outline-primary btn-block" %>  
+          </div>
+          <div class="col-6">
+            
+          </div>
+        </div>
+        <% end %>
+      </div>
+      <div class="card-body">
+        
+        <script src="https://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="https://code.highcharts.com/modules/export-data.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/solid-gauge.js"></script>
+
+        <div class="row border-bottom">
+          <div class="col-6 border-right">
+            <div id="container_1" ></div>
+          </div>
+          <div class="col-6">
+            <div id="container_2" ></div>
+          </div>
+        </div>
+        <div class="row border-bottom">
+          <div class="col-6 border-right">
+            <div id="container_3" ></div>
+          </div>
+          <div class="col-6">
+            <div id="container_4" ></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div id="container_6" ></div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="card ml-1 mt-1" id="kakunin">
+      <div class="card-header text-center">
+          <h4>月点</h4>
+      </div>
+      <div class="card-body">
+        <div id="container_5" ></div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+<script type="text/javascript">
+    Highcharts.chart('container_5', {
+    
+        chart: {
+            type: 'column'
+        },
+    
+        title: {
+            text: 'KPI<%= this_month %>から<%= end_month %>まで点'
+        },
+    
+        xAxis: {
+            categories: [
+                <% counter=0 %>
+              　<% @performances.each do |performance| %>
+                  '<%= performance.name %>'
+                  <% counter +=1 %>
+                  <% if counter!=@performances.count %>
+                   ,
+                 <% end %>
+              　<% end %>
+                ]
+        },
+    
+        yAxis: {
+            allowDecimals: false,
+            min: 0,
+            title: {
+                text: '点'
+            }
+        },
+    
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.x + '</b><br/>' +
+                    this.series.name + ': ' + this.y + '<br/>' +
+                    'Total: ' + this.point.stackTotal;
+            }
+        },
+    
+        plotOptions: {
+            column: {
+                stacking: 'normal'
+            }
+        },
+    
+        series: [
+        <% counter=0 %>
+        <% @scores.each do |key, value| %>
+          {
+            <% uname=User.find(key) %>
+            <% uname=uname.email.split('@') %>
+            name: '<%=uname[0]%>',
+            data: [
+              <% counter1=0 %>
+              <% @scores[key].each do |k,v| %>
+                <%= v %>
+                <% counter1+=1 %>
+                <% if counter1!=@performances.count %>
+                  ,
+                <% end %>
+              <% end %>
+              ],
+            stack: '<%=key%>'
+          }
+          <% counter+=1 %>
+          <% if counter!=@users.count %>
+            ,
+          <% end %>
+        <% end %>
+        ]
+    });
+</script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+</script>
