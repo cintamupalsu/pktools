@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_12_045308) do
+ActiveRecord::Schema.define(version: 2019_03_13_002230) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -110,6 +110,8 @@ ActiveRecord::Schema.define(version: 2019_03_12_045308) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "performance_id"
+    t.datetime "create_at_utc"
+    t.datetime "created_at_utc"
     t.index ["perform_detail_id"], name: "index_perform_denpyos_on_perform_detail_id"
     t.index ["performance_id"], name: "index_perform_denpyos_on_performance_id"
     t.index ["user_id"], name: "index_perform_denpyos_on_user_id"

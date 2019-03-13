@@ -36,7 +36,7 @@
             <%= f.hidden_field :id, value: @performance.id %>
             <% @performance.perform_details.each do |pd| %>
             
-              <% pdenpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at)='#{Date.today}'", current_user.id, pd.id).last %>
+              <% pdenpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{Time.zone.now.to_date}'", current_user.id, pd.id).last %>
               <div class="row border-bottom">
                 <div class="col-1 text-center pt-2">
                   <% if pdenpyo %>

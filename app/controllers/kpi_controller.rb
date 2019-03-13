@@ -111,7 +111,8 @@ class KpiController < ApplicationController
                          flinks: perform_detail_params['flinks']
                          )
     if perform_detail.save
-      update_performance_point(perform_detail)
+      performance=Performance.find(perform_detail.performance_id)
+      update_performance_point(performance)
       flash[:info] = "タスクを登録しました。"
       redirect_to performance_task_path(:id => perform_detail_params['performance_id'])
     else
@@ -138,7 +139,8 @@ class KpiController < ApplicationController
                          valuename: perform_detail_params['valuename'],
                          flinks: perform_detail_params['flinks']
                          )
-       update_performance_point(perform_detail)
+       performance=Performance.find(perform_detail.performance_id)
+       update_performance_point(performance)
        flash[:success] = "タスク項目を編集した"
        redirect_to performance_task_path(:id => perform_detail_params['performance_id'])
     else
@@ -150,10 +152,11 @@ class KpiController < ApplicationController
   
   def perform_detail_delete
     perform_detail = PerformDetail.find(params[:id])
-    performance_id = perform_detail.performance_id
+    performance = Performance.find(perform_detail.performance_id)
     perform_detail.destroy
+    update_performance_point(performance)
     flash[:success] = "タスク項目を削除しました"
-    redirect_to performance_task_path(:id => performance_id)
+    redirect_to performance_task_path(:id => performance.id)
   end
   
   def assessement_record
@@ -200,7 +203,9 @@ class KpiController < ApplicationController
                                perform_detail_id: pdetail.id, 
                                completed: achievement, 
                                value: perform_denpyo_multiple_params['achieve_value'][counter].to_i, 
-                               minutes: minutes)
+                               minutes: minutes, 
+                               created_at_utc: Time.zone.now
+                               )
         end
       else
         pdetail = PerformDetail.find(perform_denpyo_multiple_params['perform_detail_id'][counter])
@@ -228,8 +233,7 @@ class KpiController < ApplicationController
     params.require(:perform_denpyos).permit(:id, :yaru=>[], :perform_detail_id=>[], :achieve_value=>[], :hours=>[], :minutes=>[] )
   end
   
-  def update_performance_point(perform_detail)
-      performance = Performance.find(perform_detail.performance_id)
+  def update_performance_point(performance)
       perform_details = PerformDetail.where("performance_id=?", performance.id)
       total_points=0
       perform_details.each do |pd|
