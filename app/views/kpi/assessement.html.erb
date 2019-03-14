@@ -6,11 +6,20 @@
   <div class="col-xl-11">
     <div class="card ml-1" id="sentence">
       <div class="card-header text-center">
+        <%= form_for(:changedate, url: kpi_assessement_cd_path) do |f| %>
         <div class="row">
-          <div class="col-12">
-            <%=@performance.name%>
+          <div class="col-9">
+            <%= @performance.name %>
+          </div>
+          <div class="col-2">
+            <%= f.text_field :selected_date, placeholder: "#{@selected_date.to_date}", class: 'form-control', :data => {:provide => "datepicker"}, :autocomplete => :off  %>
+            <%= f.hidden_field :performance_id, value: @performance.id %>
+          </div>
+          <div class="col-1">
+             <%= f.submit "変更", class: "btn btn-outline-primary btn-block" %>  
           </div>
         </div>
+        <% end %>
       </div>
       <div class="card-body">
         <div class="row border-bottom text-center">
@@ -34,9 +43,11 @@
         <% if @performance.perform_details.count>0 %>
           <%= form_for(:perform_denpyos, url: kpi_assessement_path) do |f| %>
             <%= f.hidden_field :id, value: @performance.id %>
+            <%= f.hidden_field :selected_date, value: @selected_date %>
             <% @performance.perform_details.each do |pd| %>
-            
-              <% pdenpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{Time.zone.now.to_date}'", current_user.id, pd.id).last %>
+              
+              <% #pdenpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{Time.zone.now.to_date}'", current_user.id, pd.id).last %>
+              <% pdenpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{@selected_date.to_date}'", current_user.id, pd.id).last %>
               <div class="row border-bottom">
                 <div class="col-1 text-center pt-2">
                   <% if pdenpyo %>
@@ -123,3 +134,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+</script>

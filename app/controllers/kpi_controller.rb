@@ -18,6 +18,24 @@ class KpiController < ApplicationController
   def assessement
     @selected_item=0
     @performance=Performance.find(params[:id])
+    if params[:selected_date]==nil 
+      @selected_date=Time.zone.now.to_date
+    else
+      @selected_date=Date.parse(params[:selected_date])
+    end
+  end
+  
+  def assessement_changedate
+    performance = Performance.find(assessement_changedate_params['performance_id'])
+    @selected_item=0
+    if assessement_changedate_params['selected_date']!=""
+      date_string =assessement_changedate_params['selected_date'].split('/')
+      getdate=date_string[2]+"/"+date_string[0]+"/"+date_string[1]
+      @selected_date=Date.parse(getdate)
+    else
+      @selected_date = Time.zone.now.to_date
+    end
+    redirect_to kpi_assessement_path(:id => performance.id, :selected_date => @selected_date)
   end
   
   def performance_index
@@ -161,6 +179,7 @@ class KpiController < ApplicationController
   
   def assessement_record
     checkbox = check_box_bug(perform_denpyo_multiple_params['yaru'])
+    selected_date = Date.parse(perform_denpyo_multiple_params['selected_date'])
     (0..checkbox.count-1).each do |counter|
       if checkbox[counter]==1
         pdetail = PerformDetail.find(perform_denpyo_multiple_params['perform_detail_id'][counter])
@@ -194,7 +213,8 @@ class KpiController < ApplicationController
           achievement = ((v_achieve+t_achieve)/max_achieve)*100
         end
         
-        perform_denpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{Time.zone.now.to_date}'", current_user.id, pdetail.id).first
+        #perform_denpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{Time.zone.now.to_date}'", current_user.id, pdetail.id).first
+        perform_denpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{selected_date.to_date}'", current_user.id, pdetail.id).first
         if perform_denpyo
           perform_denpyo.update_attributes(completed: achievement, value: perform_denpyo_multiple_params['achieve_value'][counter].to_i, minutes: minutes)
         else
@@ -204,12 +224,13 @@ class KpiController < ApplicationController
                                completed: achievement, 
                                value: perform_denpyo_multiple_params['achieve_value'][counter].to_i, 
                                minutes: minutes, 
-                               created_at_utc: Time.zone.now+9.hours
+                               #created_at_utc: Time.zone.now+9.hours
+                               created_at_utc: selected_date+9.hours
                                )
         end
       else
         pdetail = PerformDetail.find(perform_denpyo_multiple_params['perform_detail_id'][counter])
-        perform_denpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=?", current_user.id, pdetail.id).first
+        perform_denpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{selected_date.to_date}'", current_user.id, pdetail.id).first
         if perform_denpyo
           perform_denpyo.destroy
         end
@@ -283,11 +304,15 @@ class KpiController < ApplicationController
   end
   
   def perform_denpyo_multiple_params
-    params.require(:perform_denpyos).permit(:id, :yaru=>[], :perform_detail_id=>[], :achieve_value=>[], :hours=>[], :minutes=>[] )
+    params.require(:perform_denpyos).permit(:id, :selected_date, :yaru=>[], :perform_detail_id=>[], :achieve_value=>[], :hours=>[], :minutes=>[])
   end
   
   def reports_params
     params.require(:reports).permit(:selected_date)
+  end
+  
+  def assessement_changedate_params
+    params.require(:changedate).permit(:performance_id, :selected_date)
   end
   
   def update_performance_point(performance)

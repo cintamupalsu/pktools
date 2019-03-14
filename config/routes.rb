@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get    '/kpi',                to: 'kpi#index'
   get    '/kpi_assessement',    to: 'kpi#assessement'
   post   '/kpi_assessement',    to: 'kpi#assessement_record'
+  post   '/kpi_assessement_cd', to: 'kpi#assessement_changedate'
   get    '/performance/new',    to: 'kpi#performance_new'
   post   '/performance/new',    to: 'kpi#performance_create'
   get    '/performance/index',  to: 'kpi#performance_index'
@@ -18,6 +19,7 @@ Rails.application.routes.draw do
   delete '/task',               to: 'kpi#perform_detail_delete'
   get    '/kpi/reports',        to: 'kpi#reports'
   post   '/kpi/reports',        to: 'kpi#reports_henkou'
+  
   
   get    '/mpeg7',            to: 'mpeg7#index'
   post   '/image_saving',     to: 'mpeg7#image_saving'
