@@ -194,17 +194,18 @@ class KpiController < ApplicationController
           achievement = ((v_achieve+t_achieve)/max_achieve)*100
         end
         
-        perform_denpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=?", current_user.id, pdetail.id).first
+        perform_denpyo=PerformDenpyo.where("user_id=? AND perform_detail_id=? AND DATE(created_at_utc) ='#{Time.zone.now.to_date}'", current_user.id, pdetail.id).first
         if perform_denpyo
           perform_denpyo.update_attributes(completed: achievement, value: perform_denpyo_multiple_params['achieve_value'][counter].to_i, minutes: minutes)
         else
+          datestr=Time.zone.now.to_date.to_s("%y/%m/%d")+" 23:00"
           PerformDenpyo.create(user_id: current_user.id, 
                                performance_id: pdetail.performance_id, 
                                perform_detail_id: pdetail.id, 
                                completed: achievement, 
                                value: perform_denpyo_multiple_params['achieve_value'][counter].to_i, 
                                minutes: minutes, 
-                               created_at_utc: Time.zone.now
+                               created_at_utc: Time.zone.now+9.hours
                                )
         end
       else
