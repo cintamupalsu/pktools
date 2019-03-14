@@ -198,7 +198,6 @@ class KpiController < ApplicationController
         if perform_denpyo
           perform_denpyo.update_attributes(completed: achievement, value: perform_denpyo_multiple_params['achieve_value'][counter].to_i, minutes: minutes)
         else
-          datestr=Time.zone.now.to_date.to_s("%y/%m/%d")+" 23:00"
           PerformDenpyo.create(user_id: current_user.id, 
                                performance_id: pdetail.performance_id, 
                                perform_detail_id: pdetail.id, 
