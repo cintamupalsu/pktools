@@ -54,6 +54,7 @@ gem 'rmagick' #if error try=> $sudo apt-get install imagemagick libmagick++-dev
 gem 'bootstrap-datepicker-rails'
 
 # heroku run rake jobs:work
+# if bcrypt error try=> gem pristine --all
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
