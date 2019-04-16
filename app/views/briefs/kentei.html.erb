@@ -1,0 +1,121 @@
+<% provide(:title,"KPI") %>
+<div class="row">
+  <aside class="col-xl-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-xl-11">
+    <div class="card ml-1 mb-1" id="performance_card">
+      <div class="card-header">
+        <div class="row">
+          <div class="col-6 text-center">
+            <h2>
+              検定問題
+            </h2>
+          </div>
+          <div class="col-5">
+            <%= form_for(:changedate, url: kenteidate_path) do |f| %>
+              <div class="row">
+                <div class="col-9">
+                  <%= f.text_field :selected_date, placeholder: "#{@selected_date.to_date}", class: 'form-control', :data => {:provide => "datepicker"}, :autocomplete => :off  %>
+                </div>
+                <div class="col-3">
+                   <%= f.submit "変更", class: "btn btn-outline-primary btn-block" %>  
+                </div>
+              </div>
+            <% end %>
+          </div>
+          <div class="col-1">
+            <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#exceluploadModal">
+              <%= image_tag("ico_setting.png", alt:"test icon", size: "25x25", id: "test_icon") %>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <% if @decided %>
+         
+          <%=@kentei.question%>
+          <%= form_for(:answerquestion, url: kenteianswer_path) do |f| %>
+            <%= f.label :choices, class: "form-check form-radio-inline ml-3" do %>
+              <% if @kentei.kchoices[0]!=nil %>
+                <%= f.radio_button :choices, :choice1 %> 
+                <%= f.label :choices, @kentei.kchoices[0].sentence, class: "choice1" %>
+                <br/>
+              <% end %>
+              <% if @kentei.kchoices[1]!=nil %>
+                <%= f.radio_button :choices, :choice2 %> 
+                <%= f.label :choices, @kentei.kchoices[1].sentence, class: "choice2" %>
+                <br/>
+              <% end %>
+              <% if @kentei.kchoices[2]!=nil %>
+                <%= f.radio_button :choices, :choice3 %> 
+                <%= f.label :choices, @kentei.kchoices[2].sentence, class: "choice3" %>
+                <br/>
+              <% end %>
+              <% if @kentei.kchoices[3]!=nil %>
+                <%= f.radio_button :choices, :choice4 %> 
+                <%= f.label :choices, @kentei.kchoices[3].sentence, class: "choice4" %>
+                <br/>
+              <% end %>
+              <% if @kentei.kchoices[4]!=nil %>
+                <%= f.radio_button :choices, :choice5 %> 
+                <%= f.label :choices, @kentei.kchoices[4].sentence, class: "choice5" %>
+                <br/>
+              <% end %>
+              <% if @kentei.kchoices[5]!=nil %>
+                <%= f.radio_button :choices, :choice6 %> 
+                <%= f.label :choices, @kentei.kchoices[5].sentence, class: "choice6" %>
+                <br/>
+              <% end %>
+              <% if @kentei.kchoices[6]!=nil %>
+                <%= f.radio_button :choices, :choice7 %> 
+                <%= f.label :choices, @kentei.kchoices[6].sentence, class: "choice7" %>
+                <br/>
+              <% end %>
+            <% end %>
+           <%= f.submit "答える", class: "btn btn-outline-primary btn-block" %>
+          <% end %>
+        <% else %>
+          <%= form_for(:decideexercise, url: kenteidecided_path) do |f| %>
+            
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <%= f.label :kenteino, "検定問題番号：", class:"input-group-text"  %>
+              </div>
+              <%= f.select :kenteino, @kenteis.collect { |p| [p.number, p.id] }, {}, {class: 'custom-select'} %>
+            </div>
+            <%= f.hidden_field :decideddate, value: @selected_date %>
+            <%= f.submit "登録", class: "btn btn-outline-primary btn-block" %>
+          </div>
+          <% end %>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exceluploadModal" tabindex="-1" role="dialog" aria-labelledby="exceluploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">検定問題Excelアップデート</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row bg-white" id="innertab">
+          <div class="col-xl-12 " id="layout">
+            <%= form_for(:excelupload, url: kentei_excel_path) do |f| %>
+              <%= f.label :filename, "Excelファイル" %>
+              <%= f.file_field :filename, class: 'form-control mb-1', accept: 'excel/xlsx' %>
+              </br>
+              <%= f.submit "アップデート", class: "btn btn-outline-primary btn-block" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+     </div>
+    </div>
+  </div>
+</div>

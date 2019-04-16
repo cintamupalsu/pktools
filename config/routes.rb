@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
   
+  get    '/briefs',             to: 'briefs#index'
+  get    '/kentei',             to: 'briefs#kentei'
+  post   '/kentei_excel',       to: 'briefs#kentei_excel'
+  post   '/kenteidate',         to: 'briefs#kenteidate'
+  post   '/kenteidecided',      to: 'briefs#kenteidecided'
+  post   '/kenteianswer',       to: 'briefs#kenteianswer'
+  
   get    '/kpi',                to: 'kpi#index'
   get    '/kpi_assessement',    to: 'kpi#assessement'
   post   '/kpi_assessement',    to: 'kpi#assessement_record'

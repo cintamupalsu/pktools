@@ -98,23 +98,24 @@
         <h4>KPI</h4>
       </div>
       <div class="card-body text-center">
-        <%= image_tag("ico_charlie.png", alt:"yokyu icon", size: "72x144", id: "yokyu_icon") %>
+        <%= image_tag("ico_feel.gif", alt:"yokyu icon", size: "202x144", id: "yokyu_icon") %>
       </div>
       <div class="card-footer">
         <%= link_to "KPI", kpi_path, class: "btn btn-outline-primary btn-sm btn-block", role: "button" %>
       </div>
     </div>
   </div>
+  
   <div class="col-4">
     <div class="card shadow">
-      <div class="card-header text-center" id="card-title-inactive">
-        <h4>未来ツール</h4>
+      <div class="card-header text-center" id="card-title">
+        <h4>朝会議</h4>
       </div>
       <div class="card-body text-center">
-        <%= image_tag("sbs_logo.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
+        <%= image_tag("ico_pooh.png", alt:"yokyu icon", size: "180x144", id: "yokyu_icon") %>
       </div>
       <div class="card-footer">
-        <%= link_to "未来", "#", class: "btn btn-secondary btn-sm btn-block disabled", role: "button" %>
+        <%= link_to "掲示板",  briefs_path, class: "btn btn-outline-primary btn-sm btn-block", role: "button" %>
       </div>
     </div>
   </div>

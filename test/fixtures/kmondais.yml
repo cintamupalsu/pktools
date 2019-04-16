@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number: 1
+  question: MyString
+  level: 1
+  answer: MyString
+  system: MyString
+  order: MyString
+  suborder: MyString
+  explanation: MyString
+
+two:
+  number: 1
+  question: MyString
+  level: 1
+  answer: MyString
+  system: MyString
+  order: MyString
+  suborder: MyString
+  explanation: MyString

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  daily: 2019-04-16 00:24:07
+  kmondai: one
+  user: one
+
+two:
+  daily: 2019-04-16 00:24:07
+  kmondai: two
+  user: two

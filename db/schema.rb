@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_002230) do
+ActiveRecord::Schema.define(version: 2019_04_16_002407) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -53,6 +53,16 @@ ActiveRecord::Schema.define(version: 2019_03_13_002230) do
     t.index ["user_id"], name: "index_companies_on_user_id"
   end
 
+  create_table "dailyexcercises", force: :cascade do |t|
+    t.datetime "daily"
+    t.integer "kmondai_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kmondai_id"], name: "index_dailyexcercises_on_kmondai_id"
+    t.index ["user_id"], name: "index_dailyexcercises_on_user_id"
+  end
+
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
@@ -92,6 +102,14 @@ ActiveRecord::Schema.define(version: 2019_03_13_002230) do
     t.index ["vendor_id"], name: "index_file_managers_on_vendor_id"
   end
 
+  create_table "gfiles", force: :cascade do |t|
+    t.string "name"
+    t.binary "data"
+    t.string "picture"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "hospitals", force: :cascade do |t|
     t.integer "company_id"
     t.integer "user_id"
@@ -99,6 +117,29 @@ ActiveRecord::Schema.define(version: 2019_03_13_002230) do
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_hospitals_on_company_id"
     t.index ["user_id"], name: "index_hospitals_on_user_id"
+  end
+
+  create_table "kchoices", force: :cascade do |t|
+    t.integer "kmondai_id"
+    t.string "sentence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "number"
+    t.index ["kmondai_id"], name: "index_kchoices_on_kmondai_id"
+  end
+
+  create_table "kmondais", force: :cascade do |t|
+    t.integer "number"
+    t.string "question"
+    t.integer "level"
+    t.string "answer"
+    t.string "system"
+    t.string "order"
+    t.string "suborder"
+    t.string "explanation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "oriquestion"
   end
 
   create_table "perform_denpyos", force: :cascade do |t|

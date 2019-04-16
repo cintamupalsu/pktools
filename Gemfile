@@ -56,6 +56,10 @@ gem 'bootstrap-datepicker-rails'
 # heroku run rake jobs:work
 # if bcrypt error try=> gem pristine --all
 
+# rails crash
+# lsof -i -P | grep 8080
+# kill -9 15882
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  kmondai: one
+  sentence: MyString
+
+two:
+  kmondai: two
+  sentence: MyString

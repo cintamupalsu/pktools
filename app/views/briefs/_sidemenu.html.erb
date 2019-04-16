@@ -1,0 +1,52 @@
+<div class="card ml-0 pl-0" style="width: 6rem;">
+  <% if @selected_item==0 %>
+    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="感想">
+  <% else %>
+    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="感想">
+  <% end %>
+    <%= image_tag("ico_kanso.png", alt:"yokyu icon", size: "60x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==1 %>
+    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="Keep">
+  <% else %>
+    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="keep">
+  <% end %>
+    <%= image_tag("ico_keep.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==2 %>
+    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="Try">
+  <% else %>
+    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="Try">
+  <% end %>
+    <%= image_tag("ico_try.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==3 %>
+    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="Problem">
+  <% else %>
+    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="Problem">
+  <% end %>
+    <%= image_tag("ico_problem.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==4 %>
+    <a href="<%= kentei_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="検定問題">
+  <% else %>
+    <a href="<%= kentei_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="検定問題">
+  <% end %>
+    <%= image_tag("ico_kentei.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==5 %>
+    <a href="<%= briefs_path %>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="掲示板">
+  <% else %>
+    <a href="<%= briefs_path %>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="掲示板">
+  <% end %>
+    <%= image_tag("ico_board.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+  <% if @selected_item==6 %>
+    <a href="#" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="Tasks">
+  <% else %>
+    <a href="#" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="Tasks">
+  <% end %>
+    <%= image_tag("ico_dailytask.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+
+</div>
