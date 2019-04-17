@@ -61,6 +61,7 @@ class BriefsController < ApplicationController
   
   def kenteianswer
     @decided=false
+    @selected_item=4
     kmondai= Kmondai.find(answerquestion_params['kmondai_id'])
     if params[:answerquestion][:c_date]==""
       @selected_date=Time.zone.now.to_date
