@@ -10,7 +10,6 @@
           <div class="col-6 text-center">
             <% star="" %>
             <% if @kentei!=nil %>
-              
               <% (0..@kentei.level-1).each do %>
                 <% star+="★"  %>
               <% end %>
@@ -43,8 +42,20 @@
         <% if Kmondai.count>0 %>
           <% if @decided %>
             <div class="row">
-              <%= @kentei.number%>. <%=@kentei.question%>
-              <% multiplechoices= Kchoice.where("kmondai_id=?", @kentei.id).order("number") %>
+              <% if @angry %>
+                <div class="col-1 text-center">
+                  <%= image_tag("answer_nothing.gif", alt:"yokyu icon", size: "70x80", id: "yokyu_icon") %>
+                </div>
+                <div class="col-11">
+                  <%= @kentei.number%>. <%=@kentei.question%></br>答えてください！
+                </div>
+                <% multiplechoices= Kchoice.where("kmondai_id=?", @kentei.id).order("number") %>
+             <% else %>
+                <div class="col-12">
+                  <%= @kentei.number%>. <%=@kentei.question%>
+                </div>
+                <% multiplechoices= Kchoice.where("kmondai_id=?", @kentei.id).order("number") %>
+             <% end %>
             </div>
             <%= form_for(:answerquestion, url: kenteianswer_path) do |f| %>
               <%= f.hidden_field :c_date, value: @selected_date %>
