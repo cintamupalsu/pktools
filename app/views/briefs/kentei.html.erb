@@ -8,8 +8,15 @@
       <div class="card-header">
         <div class="row">
           <div class="col-6 text-center">
+            <% star="" %>
+            <% if @kentei!=nil %>
+              
+              <% (0..@kentei.level-1).each do %>
+                <% star+="★"  %>
+              <% end %>
+            <% end %>
             <h2>
-              検定問題
+              検定問題 <%=star %>
             </h2>
           </div>
           <div class="col-5">
@@ -135,7 +142,7 @@
               </div>
               <div class="col-2">
               <% if @answered.correct %>
-                <%= image_tag("answer_correct.gif", alt:"yokyu icon", size: "120x150", id: "yokyu_icon") %></br>
+                <%= image_tag("answer_correct.gif", alt:"yokyu icon", size: "120x160", id: "yokyu_icon") %></br>
                 正解です！
               <% else %>
                 <%= image_tag("answer_wrong.gif", alt:"yokyu icon", size: "120x150", id: "yokyu_icon") %></br>
