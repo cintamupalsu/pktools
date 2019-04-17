@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get    '/kentei',             to: 'briefs#kentei'
   post   '/kentei_excel',       to: 'briefs#kentei_excel'
   post   '/kenteidate',         to: 'briefs#kenteidate'
+  get    '/kenteidate',         to: 'briefs#kentei'
   post   '/kenteidecided',      to: 'briefs#kenteidecided'
   post   '/kenteianswer',       to: 'briefs#kenteianswer'
   

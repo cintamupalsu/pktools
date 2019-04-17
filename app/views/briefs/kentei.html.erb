@@ -32,63 +32,108 @@
         </div>
       </div>
       <div class="card-body">
-        <% if @decided %>
-         
-          <%=@kentei.question%>
-          <%= form_for(:answerquestion, url: kenteianswer_path) do |f| %>
-            <%= f.label :choices, class: "form-check form-radio-inline ml-3" do %>
-              <% if @kentei.kchoices[0]!=nil %>
-                <%= f.radio_button :choices, :choice1 %> 
-                <%= f.label :choices, @kentei.kchoices[0].sentence, class: "choice1" %>
-                <br/>
-              <% end %>
-              <% if @kentei.kchoices[1]!=nil %>
-                <%= f.radio_button :choices, :choice2 %> 
-                <%= f.label :choices, @kentei.kchoices[1].sentence, class: "choice2" %>
-                <br/>
-              <% end %>
-              <% if @kentei.kchoices[2]!=nil %>
-                <%= f.radio_button :choices, :choice3 %> 
-                <%= f.label :choices, @kentei.kchoices[2].sentence, class: "choice3" %>
-                <br/>
-              <% end %>
-              <% if @kentei.kchoices[3]!=nil %>
-                <%= f.radio_button :choices, :choice4 %> 
-                <%= f.label :choices, @kentei.kchoices[3].sentence, class: "choice4" %>
-                <br/>
-              <% end %>
-              <% if @kentei.kchoices[4]!=nil %>
-                <%= f.radio_button :choices, :choice5 %> 
-                <%= f.label :choices, @kentei.kchoices[4].sentence, class: "choice5" %>
-                <br/>
-              <% end %>
-              <% if @kentei.kchoices[5]!=nil %>
-                <%= f.radio_button :choices, :choice6 %> 
-                <%= f.label :choices, @kentei.kchoices[5].sentence, class: "choice6" %>
-                <br/>
-              <% end %>
-              <% if @kentei.kchoices[6]!=nil %>
-                <%= f.radio_button :choices, :choice7 %> 
-                <%= f.label :choices, @kentei.kchoices[6].sentence, class: "choice7" %>
-                <br/>
-              <% end %>
-            <% end %>
-           <%= f.submit "答える", class: "btn btn-outline-primary btn-block" %>
-          <% end %>
-        <% else %>
-          <%= form_for(:decideexercise, url: kenteidecided_path) do |f| %>
-            
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <%= f.label :kenteino, "検定問題番号：", class:"input-group-text"  %>
-              </div>
-              <%= f.select :kenteino, @kenteis.collect { |p| [p.number, p.id] }, {}, {class: 'custom-select'} %>
+      
+        <% if Kmondai.count>0 %>
+          <% if @decided %>
+            <div class="row">
+              <%=@kentei.question%>
             </div>
-            <%= f.hidden_field :decideddate, value: @selected_date %>
-            <%= f.submit "登録", class: "btn btn-outline-primary btn-block" %>
-          </div>
+            <%= form_for(:answerquestion, url: kenteianswer_path) do |f| %>
+              <%= f.hidden_field :c_date, value: @selected_date %>
+              <%= f.hidden_field :kmondai_id, value: @kentei.id %>
+              <% if @kentei.answer.length==1 %>
+                <%= f.label :choices, class: "form-check form-radio-inline ml-3" do %>
+                  <% if @kentei.kchoices[0]!=nil %>
+                    <div class="row">
+                      <div class="col-1"><%= f.radio_button :choices, :choice1 %> ①</div> 
+                      <div class="col-11><%= f.label :choices, @kentei.kchoices[0].sentence, class: "choice1" %></div>
+                    </div> 
+                  <% end %>
+                  <% if @kentei.kchoices[1]!=nil %>
+                    <div class="row">
+                      <div class="col-1"><%= f.radio_button :choices, :choice2 %> ②</div> 
+                      <div class="col-11><%= f.label :choices, @kentei.kchoices[1].sentence, class: "choice1" %></div>
+                    </div> 
+                  <% end %>
+                  <% if @kentei.kchoices[2]!=nil %>
+                    <div class="row">
+                      <div class="col-1"><%= f.radio_button :choices, :choice3 %> ③</div> 
+                      <div class="col-11><%= f.label :choices, @kentei.kchoices[2].sentence, class: "choice2" %></div>
+                    </div> 
+                  <% end %>
+                  <% if @kentei.kchoices[3]!=nil %>
+                    <div class="row">
+                      <div class="col-1"><%= f.radio_button :choices, :choice4 %> ④</div> 
+                      <div class="col-11><%= f.label :choices, @kentei.kchoices[3].sentence, class: "choice3" %></div>
+                    </div> 
+                  <% end %>
+                  <% if @kentei.kchoices[4]!=nil %>
+                    <div class="row">
+                      <div class="col-1"><%= f.radio_button :choices, :choice5 %> ⑤</div> 
+                      <div class="col-11><%= f.label :choices, @kentei.kchoices[4].sentence, class: "choice4" %></div>
+                    </div> 
+                  <% end %>
+                  <% if @kentei.kchoices[5]!=nil %>
+                    <div class="row">
+                      <div class="col-1"><%= f.radio_button :choices, :choice6 %> ⑥</div> 
+                      <div class="col-11><%= f.label :choices, @kentei.kchoices[5].sentence, class: "choice5" %></div>
+                    </div> 
+                  <% end %>
+                  <% if @kentei.kchoices[6]!=nil %>
+                    <div class="row">
+                      <div class="col-1"><%= f.radio_button :choices, :choice7 %> ⑦</div> 
+                      <div class="col-11><%= f.label :choices, @kentei.kchoices[6].sentence, class: "choice6" %></div>
+                    </div> 
+                  <% end %>
+                <% end %>
+              <% else %>
+                <% multiplecounter=0 %>
+                <% @kentei.kchoices.each do |kc| %>
+                  <div class="row">
+                    <% multiplecounter+=1 %>
+                    <div class="col-1"><%= f.check_box :cbchoice, multiple: true %> <%= multiplecounter %>.</div>
+                    <div class="col-11"><%= kc.sentence %></div>                  
+                  </div>
+                <% end %>
+              <% end %>
+             <%= f.submit "答える", class: "btn btn-outline-primary btn-block" %>
+            <% end %>
+          <% else %>
+            <div class="row">
+              <div class="col-10">
+                <% kentei=Kmondai.find(@answered.kmondai_id) %>
+                <%= kentei.question %>
+                </br>
+                <strong>正しい答えは：</strong>
+                </br>
+                <% if kentei.answer.length==1 %>
+                  <% correct_answer=Kchoice.where("kmondai_id=? AND number=?", kentei.id, kentei.answer.to_i).first %>
+                  <%= correct_answer.number %>. <%= correct_answer.sentence %>
+                <% else %>
+                  <% numbers=kentei.answer.split(',') %>
+                  <% numbers.each do |number| %>
+                    <% correct_answer=Kchoice.where("kmondai_id=? AND number=?", kentei.id, number.to_i).first %>
+                    <%= correct_answer.number %>. <%= correct_answer.sentence %></br>
+                  <% end %>
+                <% end %>
+                </br>
+                <strong>説明：</strong>
+                </br>
+                <%= kentei.explanation %>
+              </div>
+              <div class="col-2">
+              <% if @answered.correct %>
+                <%= image_tag("answer_correct.gif", alt:"yokyu icon", size: "120x150", id: "yokyu_icon") %></br>
+                正解です！
+              <% else %>
+                <%= image_tag("answer_wrong.gif", alt:"yokyu icon", size: "120x150", id: "yokyu_icon") %></br>
+                残念で御座いました!
+              <% end %>
+              </div>
+            </div>  
           <% end %>
         <% end %>
+      
       </div>
 
     </div>
@@ -119,3 +164,8 @@
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+</script>

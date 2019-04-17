@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_16_002407) do
+ActiveRecord::Schema.define(version: 2019_04_17_062550) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -125,7 +125,20 @@ ActiveRecord::Schema.define(version: 2019_04_16_002407) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "number"
+    t.integer "answerno"
     t.index ["kmondai_id"], name: "index_kchoices_on_kmondai_id"
+  end
+
+  create_table "kenteikaitous", force: :cascade do |t|
+    t.integer "user_id"
+    t.datetime "datetest"
+    t.string "answer"
+    t.integer "kmondai_id"
+    t.boolean "correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kmondai_id"], name: "index_kenteikaitous_on_kmondai_id"
+    t.index ["user_id"], name: "index_kenteikaitous_on_user_id"
   end
 
   create_table "kmondais", force: :cascade do |t|

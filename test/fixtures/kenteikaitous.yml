@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  datetest: 2019-04-17 04:42:42
+  answer: MyString
+  kmondai: one
+  correct: false
+
+two:
+  user: two
+  datetest: 2019-04-17 04:42:42
+  answer: MyString
+  kmondai: two
+  correct: false
