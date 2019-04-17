@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_062550) do
+ActiveRecord::Schema.define(version: 2019_04_17_075714) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 2019_04_17_062550) do
     t.integer "number"
     t.integer "answerno"
     t.index ["kmondai_id"], name: "index_kchoices_on_kmondai_id"
+    t.index ["number"], name: "index_kchoices_on_number"
   end
 
   create_table "kenteikaitous", force: :cascade do |t|
