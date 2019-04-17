@@ -146,10 +146,6 @@
                     <%= correct_answer.number %>. <%= correct_answer.sentence %></br>
                   <% end %>
                 <% end %>
-                </br>
-                <strong>説明：</strong>
-                </br>
-                <%= kentei.explanation %>
               </div>
               <div class="col-2">
               <% if @answered.correct %>
@@ -161,6 +157,13 @@
               <% end %>
               </div>
             </div>  
+            <div class="row">
+              <div class="col-12">
+                <strong>説明：</strong>
+                </br>
+                <%= kentei.explanation %>
+              </div>
+            </div>
           <% end %>
         <% end %>
       
