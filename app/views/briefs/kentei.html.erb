@@ -47,43 +47,43 @@
                   <% if multiplechoices[0]!=nil %>
                     <div class="row">
                       <div class="col-1"><%= f.radio_button :choices, :choice1 %> ①</div> 
-                      <div class="col-11><%= f.label :choices, @kentei.kchoices[0].sentence, class: "choice1" %></div>
+                      <div class="col-11><%= f.label :choices,multiplechoices[0].sentence, class: "choice1" %></div>
                     </div> 
                   <% end %>
                   <% if multiplechoices[1]!=nil %>
                     <div class="row">
                       <div class="col-1"><%= f.radio_button :choices, :choice2 %> ②</div> 
-                      <div class="col-11><%= f.label :choices, @kentei.kchoices[1].sentence, class: "choice1" %></div>
+                      <div class="col-11><%= f.label :choices,multiplechoices[1].sentence, class: "choice1" %></div>
                     </div> 
                   <% end %>
                   <% if multiplechoices[2]!=nil %>
                     <div class="row">
                       <div class="col-1"><%= f.radio_button :choices, :choice3 %> ③</div> 
-                      <div class="col-11><%= f.label :choices, @kentei.kchoices[2].sentence, class: "choice2" %></div>
+                      <div class="col-11><%= f.label :choices, multiplechoices[2].sentence, class: "choice2" %></div>
                     </div> 
                   <% end %>
                   <% if multiplechoices[3]!=nil %>
                     <div class="row">
                       <div class="col-1"><%= f.radio_button :choices, :choice4 %> ④</div> 
-                      <div class="col-11><%= f.label :choices, @kentei.kchoices[3].sentence, class: "choice3" %></div>
+                      <div class="col-11><%= f.label :choices, multiplechoices[3].sentence, class: "choice3" %></div>
                     </div> 
                   <% end %>
                   <% if multiplechoices[4]!=nil %>
                     <div class="row">
                       <div class="col-1"><%= f.radio_button :choices, :choice5 %> ⑤</div> 
-                      <div class="col-11><%= f.label :choices, @kentei.kchoices[4].sentence, class: "choice4" %></div>
+                      <div class="col-11><%= f.label :choices, multiplechoices[4].sentence, class: "choice4" %></div>
                     </div> 
                   <% end %>
                   <% if multiplechoices[5]!=nil %>
                     <div class="row">
                       <div class="col-1"><%= f.radio_button :choices, :choice6 %> ⑥</div> 
-                      <div class="col-11><%= f.label :choices, @kentei.kchoices[5].sentence, class: "choice5" %></div>
+                      <div class="col-11><%= f.label :choices, multiplechoices[5].sentence, class: "choice5" %></div>
                     </div> 
                   <% end %>
                   <% if multiplechoices[6]!=nil %>
                     <div class="row">
                       <div class="col-1"><%= f.radio_button :choices, :choice7 %> ⑦</div> 
-                      <div class="col-11><%= f.label :choices, @kentei.kchoices[6].sentence, class: "choice6" %></div>
+                      <div class="col-11><%= f.label :choices, multiplechoices[6].sentence, class: "choice6" %></div>
                     </div> 
                   <% end %>
                 <% end %>
