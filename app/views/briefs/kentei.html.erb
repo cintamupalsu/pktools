@@ -105,13 +105,17 @@
                 <% kentei=Kmondai.find(@answered.kmondai_id) %>
                 <%= kentei.number%>. <%= kentei.question %>
                 </br>
+                </br>
                 <% multiplechoices= Kchoice.where("kmondai_id=?", kentei.id).order("number") %>
                  <% multiplecounter=0%>
                  <% multiplechoices.each do |kc| %>
                   <div class="row">
-                  <%= multiplecounter+=1 %>. <%=kc.sentence %></br>
+                  <div class="col-12">
+                    <%= multiplecounter+=1 %>. <%=kc.sentence %></br>
+                  </div>
                   </div>
                 <% end %>
+                </br>
                 <strong>正しい答えは：</strong>
                 </br>
                 <% if kentei.answer.length==1 %>
