@@ -43,8 +43,12 @@
       
         <% if Kmondai.count>0 %>
           <% if @decided %>
-            <div class="row">
-              <% if @angry %>
+            <% if @kentei.answer.length==1 %>
+              <div class="row pl-4">
+            <% else %>
+              <div class="row">
+            <% end %>
+            <% if @angry %>
                 <div class="col-1 text-center">
                   <%= image_tag("answer_nothing.gif", alt:"yokyu icon", size: "70x80", id: "yokyu_icon") %>
                 </div>
@@ -66,8 +70,8 @@
                 <%= f.label :choices, class: "form-check form-radio-inline ml-3" do %>
                   <% if multiplechoices[0]!=nil %>
                     <div class="row">
-                      <div class="col-1"><%= f.radio_button :choices, :choice1 %> ①</div> 
-                      <div class="col-11><%= f.label :choices,multiplechoices[0].sentence, class: "choice1" %></div>
+                      <div class="col-1"><%= f.radio_button :choices, :choice1 %> ①</div>
+                      <div class="col-11<%= f.label :choices,multiplechoices[0].sentence, class: "choice1" %></div>
                     </div> 
                   <% end %>
                   <% if multiplechoices[1]!=nil %>
