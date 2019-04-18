@@ -122,7 +122,13 @@
                  <%= f.submit "答える", class: "btn btn-outline-primary btn-block" %>
                </div>
                <div class="col-1 pl-0">
-                 <%= image_tag("thinking.gif", alt:"yokyu icon", size: "50x60", id: "yokyu_icon") %></br>
+                 <% if @kentei.level==2 %>
+                   <%= image_tag("thinking2.gif", alt:"yokyu icon", size: "70x60", id: "yokyu_icon") %></br>
+                 <% elsif @kentei.level==3 %>
+                   <%= image_tag("thinking3.gif", alt:"yokyu icon", size: "60x60", id: "yokyu_icon") %></br>
+                 <% else %>
+                   <%= image_tag("thinking.gif", alt:"yokyu icon", size: "50x60", id: "yokyu_icon") %></br>
+                 <% end %>
                </div>
              </div> 
             <% end %>
