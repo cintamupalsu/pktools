@@ -39,10 +39,10 @@
           </div>
         </div>
       </div>
-      <div class="card-body">
-      
-        <% if Kmondai.count>0 %>
-          <% if @decided %>
+
+      <% if Kmondai.count>0 %>
+        <% if @decided %>
+          <div class="card-body pb-0">
             <div class="row">
               <% if @angry %>
                 <div class="col-1 text-center">
@@ -117,22 +117,30 @@
                   </div>
                 <% end %>
               <% end %>
-             <%= f.submit "答える", class: "btn btn-outline-primary btn-block" %>
+             <div class="row">
+               <div class="col-11">
+                 <%= f.submit "答える", class: "btn btn-outline-primary btn-block" %>
+               </div>
+               <div class="col-1 pl-0">
+                 <%= image_tag("thinking.gif", alt:"yokyu icon", size: "50x60", id: "yokyu_icon") %></br>
+               </div>
+             </div> 
             <% end %>
           <% else %>
-            <div class="row">
-              <div class="col-10">
-                <% kentei=Kmondai.find(@answered.kmondai_id) %>
-                <%= kentei.number%>. <%= kentei.question %>
-                </br>
-                </br>
-                <% multiplechoices= Kchoice.where("kmondai_id=?", kentei.id).order("number") %>
-                 <% multiplecounter=0%>
-                 <% multiplechoices.each do |kc| %>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-10">
+                  <% kentei=Kmondai.find(@answered.kmondai_id) %>
+                  <%= kentei.number%>. <%= kentei.question %>
+                  </br>
+                  </br>
+                  <% multiplechoices= Kchoice.where("kmondai_id=?", kentei.id).order("number") %>
+                  <% multiplecounter=0%>
+                  <% multiplechoices.each do |kc| %>
                   <div class="row">
-                  <div class="col-12">
-                    <%= multiplecounter+=1 %>. <%=kc.sentence %></br>
-                  </div>
+                    <div class="col-12">
+                      <%= multiplecounter+=1 %>. <%=kc.sentence %></br>
+                    </div>
                   </div>
                 <% end %>
               </div>
