@@ -135,20 +135,6 @@
                   </div>
                   </div>
                 <% end %>
-                </br>
-                <strong>正しい答えは：</strong>
-                </br>
-                <% if kentei.answer.length==1 %>
-                  <% correct_answer=Kchoice.where("kmondai_id=? AND number=?", kentei.id, kentei.answer.to_i).first %>
-                  <%= correct_answer.number %>. <%= correct_answer.sentence %>
-                <% else %>
-                  <% numbers=kentei.answer.split(',') %>
-                  <% numbers.each do |number| %>
-                    <% correct_answer=Kchoice.where("kmondai_id=? AND number=?", kentei.id, number.to_i).first %>
-                    <%= correct_answer.number %>. <%= correct_answer.sentence %></br>
-                  <% end %>
-                <% end %>
-
               </div>
               <div class="col-2">
               <% if @answered.correct %>
@@ -162,6 +148,23 @@
             </div>  
             <div class="row">
               <div class="col-12">
+                </br>
+                <strong>正しい答えは：</strong>
+                </br>
+                <% if kentei.answer.length==1 %>
+                  <% correct_answer=Kchoice.where("kmondai_id=? AND number=?", kentei.id, kentei.answer.to_i).first %>
+                  <%= correct_answer.number %>. <%= correct_answer.sentence %>
+                <% else %>
+                  <% numbers=kentei.answer.split(',') %>
+                  <% numbers.each do |number| %>
+                    <% correct_answer=Kchoice.where("kmondai_id=? AND number=?", kentei.id, number.to_i).first %>
+                    <%= correct_answer.number %>. <%= correct_answer.sentence %></br>
+                  <% end %>
+                <% end %>
+              </div>
+            </div>
+            <div class="row border-top">
+              <div class="col-12">
                 <strong>説明：</strong>
                 </br>
                 <%= kentei.explanation %>
@@ -169,9 +172,7 @@
             </div>
           <% end %>
         <% end %>
-      
       </div>
-
     </div>
   </div>
 </div>
