@@ -128,16 +128,30 @@ class BriefsController < ApplicationController
         ans=getans(worksheet[row][2].value)
         
         if Kmondai.where("oriquestion=?",raw_question).first==nil
+          
+          kmondai = Kmondai.where("number=?",worksheet[row][0].value.to_i).first
           question, answers=q_and_a(raw_question)
-          kmondai=Kmondai.create(question: question, 
-                                 oriquestion: raw_question,
-                                 explanation: worksheet[row][3].value, 
-                                 number: Kmondai.count+1, 
-                                 system: worksheet[row][5].value,
-                                 order: worksheet[row][6].value,
-                                 suborder: worksheet[row][7].value,
-                                 answer: ans,
-                                 level: level)
+          if kmondai==nil
+            kmondai=Kmondai.create(question: question, 
+                                   oriquestion: raw_question,
+                                   explanation: worksheet[row][3].value, 
+                                   number: worksheet[row][0].value.to_i, 
+                                   system: worksheet[row][5].value,
+                                   order: worksheet[row][6].value,
+                                   suborder: worksheet[row][7].value,
+                                   answer: ans,
+                                   level: level)
+          else
+            kmondai.update_attributes(question: question, 
+                                   oriquestion: raw_question,
+                                   explanation: worksheet[row][3].value, 
+                                   number: worksheet[row][0].value.to_i, 
+                                   system: worksheet[row][5].value,
+                                   order: worksheet[row][6].value,
+                                   suborder: worksheet[row][7].value,
+                                   answer: ans,
+                                   level: level)
+          end
           answers.each do |k,v|
             Kchoice.delay.create(number: k, sentence: v, kmondai_id: kmondai.id)
           end
