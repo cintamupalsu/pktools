@@ -48,5 +48,12 @@
   <% end %>
     <%= image_tag("ico_dailytask.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>
+  <% if @selected_item==7 %>
+    <a href="<%=kenteiexam_path%>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="試験">
+  <% else %>
+    <a href="<%=kenteiexam_path%>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="試験">
+  <% end %>
+    <%= image_tag("ico_finaltest.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
 
 </div>

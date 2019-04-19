@@ -112,8 +112,8 @@
                 <% multiplechoices.each do |kc| %>
                   <div class="row">
                     <% multiplecounter+=1 %>
-                    <div class="col-1"><%= f.check_box :cbchoice, multiple: true %> <%= multiplecounter %>.</div>
-                    <div class="col-11"><%= kc.sentence %></div>                  
+                    <div class="col-11 pl-5"><%= f.check_box :cbchoice, multiple: true %> <%= multiplecounter %>. 
+                    <%= kc.sentence %></div>                  
                   </div>
                 <% end %>
               <% end %>
@@ -125,7 +125,7 @@
                  <% if @kentei.level==2 %>
                    <%= image_tag("thinking2.gif", alt:"yokyu icon", size: "70x60", id: "yokyu_icon") %></br>
                  <% elsif @kentei.level==3 %>
-                   <%= image_tag("thinking3.gif", alt:"yokyu icon", size: "60x60", id: "yokyu_icon") %></br>
+                   <%= image_tag("thinking3.gif", alt:"yokyu icon", size: "80x60", id: "yokyu_icon") %></br>
                  <% else %>
                    <%= image_tag("thinking.gif", alt:"yokyu icon", size: "50x60", id: "yokyu_icon") %></br>
                  <% end %>

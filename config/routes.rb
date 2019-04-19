@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get    '/kenteidate',         to: 'briefs#kentei'
   post   '/kenteidecided',      to: 'briefs#kenteidecided'
   post   '/kenteianswer',       to: 'briefs#kenteianswer'
+  get    '/kenteiexam',         to: 'briefs#exam'
   
   get    '/kpi',                to: 'kpi#index'
   get    '/kpi_assessement',    to: 'kpi#assessement'

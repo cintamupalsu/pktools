@@ -161,6 +161,10 @@ class BriefsController < ApplicationController
     redirect_to kentei_path
   end
   
+  def exam 
+    
+  end
+  
   private
   
   def excelupload_params
