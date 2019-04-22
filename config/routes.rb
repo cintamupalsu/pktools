@@ -8,6 +8,11 @@ Rails.application.routes.draw do
   post   '/kenteidecided',      to: 'briefs#kenteidecided'
   post   '/kenteianswer',       to: 'briefs#kenteianswer'
   get    '/kenteiexam',         to: 'briefs#exam'
+  get    '/newtest',            to: 'briefs#newtest'
+  post   '/newtest',            to: 'briefs#createtest'
+  post   '/choosemondai',       to: 'briefs#choosemondai'
+  post   '/chooseuser',         to: 'briefs#chooseuser'
+  get    '/managetest',         to: 'briefs#managetest'
   
   get    '/kpi',                to: 'kpi#index'
   get    '/kpi_assessement',    to: 'kpi#assessement'

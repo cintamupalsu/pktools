@@ -153,7 +153,12 @@ class BriefsController < ApplicationController
                                    level: level)
           end
           answers.each do |k,v|
-            Kchoice.delay.create(number: k, sentence: v, kmondai_id: kmondai.id)
+            kchoice= Kchoice.where("kmondai_id=? AND number=?", kmondai.id, k ).first
+            if kchoice==nil
+              Kchoice.delay.create(number: k, sentence: v, kmondai_id: kmondai.id)
+            else
+              kchoice.update_attributes(sentence: v, kmondai_id: kmondai.id)
+            end
           end
         end
       end
@@ -162,7 +167,40 @@ class BriefsController < ApplicationController
   end
   
   def exam 
-    
+    @selected_item=7
+    @naiyo=0
+    render "exam"
+  end
+  
+  def newtest
+    @selected_item=7
+    @naiyo=1
+    render "exam"
+  end
+  
+  def createtest
+    @selected_item=7
+    @naiyo=3
+    @kenteis=Kmondai.all.order("number")
+    render "exam"
+  end
+  
+  def choosemondai
+    @selected_item=7
+    @naiyo=4
+    @users=User.all.order("email")
+    render "exam"
+  end
+  
+  def chooseuser
+    @selected_item=7
+    redirect_to kenteiexam_path
+  end
+  
+  def managetest
+    @selected_item=7
+    @naiyo=2
+    render "exam"
   end
   
   private

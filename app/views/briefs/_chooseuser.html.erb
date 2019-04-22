@@ -1,0 +1,42 @@
+<div class="row mt-1">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        Assignment.
+      </div>
+      <div class="card-body pb-0">
+        <%= form_for(:chooseuser, url: chooseuser_path) do |f| %>
+          <div class="row text-center">
+            <div class="col-1">
+              №
+            </div>
+            <div class="col-11">
+              Email User Name
+            </div>
+          </div>
+          <% @users.each do |user| %>
+            <div class="row">
+              <div class="col-1 text-right">
+                <%= f.label :chosen, class: "checkbox" do %>
+                  <%= f.check_box :chosen, multiple: true %>
+                <% end %>  
+              </div>
+              <div class="col-11">
+                <%= user.email %>
+              </div>
+            </div>
+          <% end %>
+          <div class="row pb-0">
+            <div class="col-11">
+              <%= f.submit "選択する", class: "btn btn-outline-success btn-block" %>
+            </div>
+            <div class="col-1 pl-0">
+               <%= image_tag("leggo.gif", alt:"yokyu icon", size: "70x60", id: "yokyu_icon") %></br>
+            </div>
+          </div>
+         
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

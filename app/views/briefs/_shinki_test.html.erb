@@ -1,0 +1,40 @@
+<div class="row mt-1">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        新規テスト
+      </div>
+      <div class="card-body pb-0">
+        <%= form_for(:shinkitest, url: newtest_path) do |f| %>
+          <div class="row">
+            <div class="col-9">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <%= f.label :testname, "テスト名", class:"input-group-text" %>
+                </div>
+                <%= f.text_field :testname, class: 'form-control' %>
+              </div>
+            </div>
+            <div class="col-3">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <%= f.label :numofexams, "問題数", class:"input-group-text"  %>
+                </div>
+                <%= f.select :numofexams, (1..Kmondai.count).collect { |p| [p, p] }, {}, {class: 'custom-select'} %>
+              </div>
+            </div>
+          </div>
+
+          <div class="row pb-0">
+            <div class="col-11">
+              <%= f.submit "登録", class: "btn btn-outline-success btn-block" %>
+            </div>
+            <div class="col-1 pl-0">
+               <%= image_tag("thinking4.gif", alt:"yokyu icon", size: "70x60", id: "yokyu_icon") %></br>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
