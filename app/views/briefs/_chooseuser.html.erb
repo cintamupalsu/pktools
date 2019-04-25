@@ -6,12 +6,13 @@
       </div>
       <div class="card-body pb-0">
         <%= form_for(:chooseuser, url: chooseuser_path) do |f| %>
+          <%= f.hidden_field :fukusu_id, value: @fukusu.id  %>
           <div class="row text-center">
             <div class="col-1">
-              №
+              ﾁｪｯｸ
             </div>
             <div class="col-11">
-              Email User Name
+              メール
             </div>
           </div>
           <% @users.each do |user| %>

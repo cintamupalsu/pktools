@@ -169,31 +169,73 @@ class BriefsController < ApplicationController
   def exam 
     @selected_item=7
     @naiyo=0
+    @fukusus= Fukusu.all
     render "exam"
   end
   
   def newtest
     @selected_item=7
     @naiyo=1
+    @error_messages=""
     render "exam"
   end
   
   def createtest
     @selected_item=7
     @naiyo=3
-    @kenteis=Kmondai.all.order("number")
+    @error_messages=""
+    if fukusu_params['testname']=="" || fukusu_params['testname']==nil
+      @naiyo=1
+      @error_messages="テスト名前を書いてください。"
+    elsif fukusu_params['numofexams'].to_i<=0
+      @naiyo=1
+      @error_messages="問題数を決めてください。"
+    else
+      @fukusu=Fukusu.create(user_id: current_user.id, fname: fukusu_params['testname'], numofexam: fukusu_params['numofexams'].to_i)
+      @kenteis=Kmondai.all.order("number")
+    end
     render "exam"
   end
   
   def choosemondai
     @selected_item=7
     @naiyo=4
-    @users=User.all.order("email")
+    @chosen=check_box_bug(choosemondai_params['chosen'])
+    @fukusu=Fukusu.find(choosemondai_params['fukusu_id'].to_i)
+    @fukusu.fmondais.destroy_all
+    # counting checked
+    countcheck=0
+    @chosen.each do |k,v|
+      if v==1
+        countcheck+=1
+        kmondai=Kmondai.where("number=?", k+1).first 
+        Fmondai.create(fukusu_id: @fukusu.id, kmondai_id: kmondai.id, kettei: false)
+      end
+    end
+    @different = countcheck-@fukusu.numofexam
+    if @different!=0
+      @kenteis=Kmondai.all.order("number")
+      @naiyo=3
+    else
+      @fukusu.fmondais.each do |fmondai|
+        fmondai.update_attributes(kettei: true)
+      end
+      @users=User.all.order("email")
+    end
+      
     render "exam"
   end
   
   def chooseuser
     @selected_item=7
+    fukusu = Fukusu.find(chooseuser_params['fukusu_id'].to_i)
+    users=User.all.order("email")
+    chosen=check_box_bug(chooseuser_params['chosen'])
+    chosen.each do |k,v|
+      if v==1
+        Fuser.create(fukusu_id: fukusu.id, user_id: users[k].id)
+      end
+    end
     redirect_to kenteiexam_path
   end
   
@@ -203,19 +245,104 @@ class BriefsController < ApplicationController
     render "exam"
   end
   
+  def kenteitest
+    @selected_item=7
+   
+    if params[:id]!=nil
+      @fukusu=Fukusu.find(params[:id].to_i)
+      @mondai_no=params[:mondai_no].to_i-1
+      if @mondai_no<0 ; @mondai_no=0 end
+    else
+      @fukusu=Fukusu.find(kenteitest_params['fukusu_id'].to_i)
+      @mondai_no=kenteitest_params['mondai_no'].to_i+1
+      if @mondai_no>@fukusu.numofexam-1; @mondai_no=0 end
+    end
+    
+    @fmondais= Fmondai.where("fukusu_id=?",@fukusu.id).order("id")
+   
+    if params[:kenteitest]!=nil   
+      cbchoice=[]
+      fmondai=@fmondais[kenteitest_params['mondai_no'].to_i]
+      if kenteitest_params['cbchoice']!=nil
+        cbchoice=check_box_bug(kenteitest_params['cbchoice'])
+        answerstring =""
+        answercount =0
+        cbchoice.each do |k,v|
+          answercount+=1
+          if v==1
+            answerstring+=answercount.to_s+","
+          end
+        end
+        answerstring=answerstring[0..answerstring.length-2]
+        if answerstring!=""
+          savetestanswer(answerstring,fmondai,@fukusu, false)
+        end
+      else
+        if kenteitest_params['choices']=="choice1"; answerstring='1' end
+        if kenteitest_params['choices']=="choice2"; answerstring='2' end
+        if kenteitest_params['choices']=="choice3"; answerstring='3' end
+        if kenteitest_params['choices']=="choice4"; answerstring='4' end
+        if kenteitest_params['choices']=="choice5"; answerstring='5' end
+        if kenteitest_params['choices']=="choice6"; answerstring='6' end
+        if kenteitest_params['choices']=="choice7"; answerstring='7' end
+        if answerstring!=nil
+          savetestanswer(answerstring,fmondai,@fukusu, false)
+        end
+      end
+    end
+  end
+  
+  def kenteiend 
+    @selected_item=7
+    @fukusu=Fukusu.find(params[:id])
+    countcorrect=0
+    countstar=0
+    @fukusu.fmondais.each do |mondai|
+      fkaito=Fkaito.where("user_id=? AND fukusu_id=? AND fmondai_id=?", current_user.id, @fukusu.id, mondai.id).first
+      fkaito.update_attributes(kettei: true)
+      if fkaito.correct
+        countcorrect+=1
+        countstar+=Kmondai.find(fkaito.kmondai_id).level
+      end 
+    end
+    @fuser=Fuser.where("user_id=? AND fukusu_id=?", current_user.id, @fukusu.id).first
+    resultfloat=countcorrect.to_f/@fukusu.numofexam.to_f
+    @fuser.update_attributes(testdone: true, result: countstar, resultfloat: resultfloat)
+    
+  end
+  
   private
   
   def excelupload_params
     params.require(:excelupload).permit(:filename)
   end
+  
   def decideexercise_params
     params.require(:decideexercise).permit(:kenteino, :decideddate)
   end
+  
   def changedate_params
     params.require(:changedate).permit(:selected_date)
   end
+  
   def answerquestion_params
     params.require(:answerquestion).permit(:c_date, :kmondai_id, :choices, :cbchoice=>[])
+  end
+  
+  def fukusu_params
+    params.require(:fukusu).permit(:testname, :numofexams)
+  end
+  
+  def choosemondai_params
+    params.require(:choosemondai).permit(:fukusu_id, :chosen=>[])
+  end
+  
+  def chooseuser_params
+    params.require(:chooseuser).permit(:fukusu_id, :chosen=>[])
+  end
+  
+  def kenteitest_params
+    params.require(:kenteitest).permit(:fukusu_id, :mondai_no, :choices, :cbchoice=>[] )
   end
   
   def q_and_a(r_question)
@@ -321,6 +448,20 @@ class BriefsController < ApplicationController
       Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: true, datetest: c_date.to_date+9.hours, answer: answer)
     else
       Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: false, datetest: c_date.to_date+9.hours, answer: answer)
+    end
+  end
+  
+  def savetestanswer(answerstring, fmondai, fukusu, kettei)
+    correct=false
+    kmondai = Kmondai.find(fmondai.kmondai_id)
+    if answerstring==kmondai.answer
+      correct=true
+    end
+    fkaito=Fkaito.where("fukusu_id=? AND fmondai_id=? AND user_id=?", fukusu.id, fmondai.id, current_user.id).first
+    if fkaito==nil
+      Fkaito.create(user_id: current_user.id, fukusu_id: fukusu.id, kmondai_id: kmondai.id, fmondai_id: fmondai.id, answerstring: answerstring, kettei: kettei, correct: correct)
+    else
+      fkaito.update_attributes(answerstring: answerstring, kettei: kettei, correct: correct)
     end
   end
 end

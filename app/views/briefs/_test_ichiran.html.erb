@@ -1,1 +1,34 @@
-ichiran
+<% col_counter=0 %>
+<% @fukusus.each do |fukusu| %>
+  <% if col_counter==0 %>
+    <div class="row mt-1">
+    <% col_counter+=1 %>
+  <% end %> 
+  
+  <% if (fukusu.fkaitos.count==0  || (fukusu.fkaitos.count>0 && fukusu.fkaitos[0].kettei==false)) && Fuser.where("fukusu_id=? AND user_id=?", fukusu.id, current_user.id).first!=nil %>
+    <div class="col-4">
+      <div class="card">
+        <div class="card-header">
+          <%= fukusu.fname %>
+        </div>
+        <div class="card-body pb-0">
+          <%= image_tag("test.gif", alt:"task card icon", id: "task_card_icon", class: "card-img-top", size: "100x120") %>
+        </div>
+        <div class="card-body pt-0 pb-0">
+          問題数： <%=fukusu.numofexam%>
+        </div>
+        <div class="card-footer">
+           <a href="<%=kenteitest_path(:id => fukusu.id, :mondai_no =>'0') %>" class="btn btn-outline-secondary btn-block">はじめます</a>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  
+  <% if col_counter==3 %>
+    </div>
+    <% col_counter=0 %>
+  <% end %>
+<% end %>
+<% if col_counter!=0 %>
+  </div>
+<% end %>

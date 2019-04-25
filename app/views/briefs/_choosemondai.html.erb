@@ -5,6 +5,21 @@
         問題を選んでください。
       </div>
       <div class="card-body pb-0">
+        <% if @different!=nil && @different!=0 %>
+          <div class="row">
+            <div class="col-12">
+              <% if @different>0 %>
+                <div class="badge badge-danger text-wrap">
+                  選んだ問題が<%= @different %>個多すぎる。
+                </div>
+              <% else %>
+                <div class="badge badge-danger text-wrap">
+                  選んだ問題が<%= @different*-1 %>個足りない。
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
         <div class="row text-center">
           <div class="col-1">
             №
@@ -17,12 +32,17 @@
           </div>
         </div>
         <%= form_for(:choosemondai, url: choosemondai_path) do |f| %>
+          <%= f.hidden_field :fukusu_id, value: @fukusu.id  %>
           <% @kenteis.each do |kentei| %>
             <div class="row border-top">
               <div class="col-1">
                 <%= f.label :chosen, class: "checkbox" do %>
-                  <%= f.check_box :chosen, multiple: true %>
-                <% end %>  
+                  <% if @chosen!=nil && @chosen[kentei.number-1]==1 %>
+                    <%= f.check_box :chosen, multiple: true, checked: true %>
+                  <% else %>
+                    <%= f.check_box :chosen, multiple: true %>
+                  <% end %>
+                <% end %>
                 <%= kentei.number %>
               </div>
               <div class="col-9">

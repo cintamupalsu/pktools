@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fukusu: one
+  user: one
+  kmondai: one
+  answer: 1
+  kettei: false
+
+two:
+  fukusu: two
+  user: two
+  kmondai: two
+  answer: 1
+  kettei: false

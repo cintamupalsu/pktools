@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_17_075714) do
+ActiveRecord::Schema.define(version: 2019_04_25_050853) do
 
   create_table "answer_denpyos", force: :cascade do |t|
     t.text "content"
@@ -100,6 +100,54 @@ ActiveRecord::Schema.define(version: 2019_04_17_075714) do
     t.index ["question_id"], name: "index_file_managers_on_question_id"
     t.index ["user_id"], name: "index_file_managers_on_user_id"
     t.index ["vendor_id"], name: "index_file_managers_on_vendor_id"
+  end
+
+  create_table "fkaitos", force: :cascade do |t|
+    t.integer "fukusu_id"
+    t.integer "user_id"
+    t.integer "kmondai_id"
+    t.integer "fmondai_id"
+    t.integer "answer"
+    t.boolean "kettei"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "correct"
+    t.string "answerstring"
+    t.index ["fmondai_id"], name: "index_fkaitos_on_fmondai_id"
+    t.index ["fukusu_id"], name: "index_fkaitos_on_fukusu_id"
+    t.index ["kmondai_id"], name: "index_fkaitos_on_kmondai_id"
+    t.index ["user_id"], name: "index_fkaitos_on_user_id"
+  end
+
+  create_table "fmondais", force: :cascade do |t|
+    t.integer "fukusu_id"
+    t.integer "kmondai_id"
+    t.boolean "kettei"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fukusu_id"], name: "index_fmondais_on_fukusu_id"
+    t.index ["kmondai_id"], name: "index_fmondais_on_kmondai_id"
+  end
+
+  create_table "fukusus", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "fname"
+    t.integer "numofexam"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_fukusus_on_user_id"
+  end
+
+  create_table "fusers", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "fukusu_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "result"
+    t.boolean "testdone"
+    t.float "resultfloat"
+    t.index ["fukusu_id"], name: "index_fusers_on_fukusu_id"
+    t.index ["user_id"], name: "index_fusers_on_user_id"
   end
 
   create_table "gfiles", force: :cascade do |t|

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  fname: MyString
+  numofexam: 1
+
+two:
+  user: two
+  fname: MyString
+  numofexam: 1

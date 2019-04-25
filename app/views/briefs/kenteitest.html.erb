@@ -1,0 +1,156 @@
+<% provide(:title,"#{@fukusu.fname}") %>
+</div>
+<div class="container-fluid">
+  <% answered=0 %>
+  <div class="row">
+    <aside class="col-1">
+      <%= render 'sidemenu' %>
+    </aside>
+    <div class="col-11">
+      <div class="card">
+        <div class="card-header">
+          <% c_mon=0 %>
+          <% @fmondais.each do |fmondai| %>
+            <% c_mon+=1 %>
+            <%  fkaito=Fkaito.where("fukusu_id=? AND fmondai_id=? AND user_id=?", @fukusu.id, fmondai.id, current_user.id).first %>
+            <% if fkaito==nil %>
+              <%= link_to "#{c_mon}", kenteitest_path(:id => @fukusu.id, :mondai_no => c_mon), class: "btn btn-outline-danger mt-1 btn-sm", role: "button" %>
+            <% else %>
+              <%= link_to "#{c_mon}", kenteitest_path(:id => @fukusu.id, :mondai_no => c_mon), class: "btn btn-outline-primary mt-1 btn-sm", role: "button" %>
+              <% answered+=1 %>
+            <% end %>
+          <% end %>
+        </div>
+        <div class="card-body">
+          <div class="row pl-4">
+            <div class="col-12">
+              <% kmondai = Kmondai.find(@fmondais[@mondai_no].kmondai_id) %>
+              <%= @mondai_no+1 %>. <%= kmondai.question %>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <% fkaito=Fkaito.where("fukusu_id=? AND fmondai_id=? AND user_id=?", @fukusu.id, @fmondais[@mondai_no].id, current_user.id).first %>
+          <%= form_for(:kenteitest, url: kenteitest_path) do |f| %>
+            <%= f.hidden_field :fukusu_id, value: @fukusu.id  %>
+            <%= f.hidden_field :mondai_no, value: @mondai_no  %>
+            <% multiplechoices= Kchoice.where("kmondai_id=?", kmondai.id).order("number") %>
+            
+            <% if kmondai.answer.length==1 %>
+                <%= f.label :choices, class: "form-check form-radio-inline ml-3" do %>
+                  <% if multiplechoices[0]!=nil %>
+                    <div class="row">
+                      <% if fkaito!=nil && fkaito.answerstring=="1" %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice1, :checked=> true %> ① 
+                      <% else %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice1 %> ①
+                      <% end %>
+                      <%= f.label :choices,multiplechoices[0].sentence, class: "choice1" %></div>
+                    </div> 
+                  <% end %>
+                  <% if multiplechoices[1]!=nil %>
+                    <div class="row">
+                      <% if fkaito!=nil && fkaito.answerstring=="2" %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice2, :checked=> true %> ② 
+                      <% else %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice2 %> ②
+                      <% end %>
+                      <%= f.label :choices,multiplechoices[1].sentence, class: "choice2" %></div>
+                    </div> 
+                  <% end %>
+                  <% if multiplechoices[2]!=nil %>
+                    <div class="row">
+                      <% if fkaito!=nil && fkaito.answerstring=="3" %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice3, :checked=> true %> ③ 
+                      <% else %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice3 %> ③
+                      <% end %>
+                      <%= f.label :choices, multiplechoices[2].sentence, class: "choice3" %></div>
+                    </div> 
+                  <% end %>
+                  <% if multiplechoices[3]!=nil %>
+                    <div class="row">
+                      <% if fkaito!=nil && fkaito.answerstring=="4" %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice4, :checked=> true %> ④ 
+                      <% else %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice4 %> ④
+                      <% end %>
+                      <%= f.label :choices, multiplechoices[3].sentence, class: "choice4" %></div>
+                    </div> 
+                  <% end %>
+                  <% if multiplechoices[4]!=nil %>
+                    <div class="row">
+                      <% if fkaito!=nil && fkaito.answerstring=="5" %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice5, :checked=> true %> ⑤ 
+                      <% else %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice5 %> ⑤
+                      <% end %>
+                      <%= f.label :choices, multiplechoices[4].sentence, class: "choice5" %></div>
+                    </div> 
+                  <% end %>
+                  <% if multiplechoices[5]!=nil %>
+                    <div class="row">
+                      <% if fkaito!=nil && fkaito.answerstring=="6" %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice6, :checked=> true %> ⑥ 
+                      <% else %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice6 %> ⑥
+                      <% end %>
+                      <%= f.label :choices, multiplechoices[5].sentence, class: "choice6" %></div>
+                    </div> 
+                  <% end %>
+                  <% if multiplechoices[6]!=nil %>
+                    <div class="row">
+                      <% if fkaito!=nil && fkaito.answerstring=="7" %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice7, :checked=> true %> ⑦ 
+                      <% else %>
+                        <div class="col-12"><%= f.radio_button :choices, :choice7 %> ⑦
+                      <% end %>
+                      <%= f.label :choices, multiplechoices[6].sentence, class: "choice7" %></div>
+                    </div> 
+                  <% end %>
+                <% end %>
+              <% else %>
+                <% multiplecounter=0 %>
+                <% if fkaito!=nil %>
+                  <% answersplit= fkaito.answerstring.split(',') %>
+                <% end %>
+                <% multiplechoices.each do |kc| %>
+                  <div class="row">
+                    <% multiplecounter+=1 %>
+                    <div class="col-11 pl-5">
+                      <% if answersplit!=nil %>
+                        <% if answersplit.include? multiplecounter.to_s %>
+                          <%= f.check_box :cbchoice, :checked=>true, multiple: true %>
+                        <% else %>
+                          <%= f.check_box :cbchoice, multiple: true %> 
+                        <% end %>
+                      <% else %>
+                        <%= f.check_box :cbchoice, multiple: true %> 
+                      <% end %>
+                      <%= multiplecounter %>. 
+                      <%= kc.sentence %>
+                    </div>                  
+                  </div>
+                <% end %>
+              <% end %>
+            
+            <%= f.submit "記録、次の問題", class: "btn btn-outline-secondary btn-block" %>
+          <% end %>
+        </div>
+        <% if answered == @fukusu.numofexam %>
+          <div class="card-footer pb-0 pt-0">
+            <div class="row">
+              <div class="col-11 pt-2">
+                <%= link_to "回答で申し込む）", kenteiend_path(:id => @fukusu.id), class: "btn btn-outline-success mt-1 btn-block", role: "button" %>
+              </div>
+              <div class="col-1 pl-0">
+                <%= image_tag("endtest.gif", alt:"yokyu icon", size: "90x65", id: "yokyu_icon") %></br>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">

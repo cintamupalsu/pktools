@@ -5,7 +5,16 @@
         新規テスト
       </div>
       <div class="card-body pb-0">
-        <%= form_for(:shinkitest, url: newtest_path) do |f| %>
+        <% if @error_messages.length>0 %>
+          <div class="row">
+            <div class="col-12">
+              <div class="badge badge-danger text-wrap">
+                <%= @error_messages %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <%= form_for(:fukusu, url: newtest_path) do |f| %>
           <div class="row">
             <div class="col-9">
               <div class="input-group mb-3">

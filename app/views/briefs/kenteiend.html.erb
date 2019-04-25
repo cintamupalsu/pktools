@@ -1,0 +1,63 @@
+<% provide(:title,"文章管理") %>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <aside class="col-1">
+      <%= render 'sidemenu' %>
+    </aside>
+    <div class="col-11">
+      <div class="card ml-1">
+        <div class="card-header">
+          <div class="row">
+            <div class="col-4">
+              <%= @fukusu.fname %>
+            </div>
+            <div class="col-2">
+              結果： <%=(@fuser.resultfloat*100).to_i%>点
+            </div>
+            <div class="col-6">
+              ★: <%=@fuser.result%>
+            </div>
+          </div>
+        </div>
+        <% counter=0 %>
+        <% @fukusu.fmondais.each do |fmondai| %>
+          <% counter+=1 %>
+          <% fkaito=Fkaito.where("user_id=? AND fukusu_id=? AND fmondai_id=?", current_user.id, @fukusu.id, fmondai.id).first %>
+          <% if fkaito.correct %>
+            <div class="card-body">
+          <% else %>
+            <div class="card-body bg-danger text-white">
+          <% end %>
+            <% kmondai=Kmondai.find(fmondai.kmondai_id) %>
+            <div class="row">
+              <div class="col-12">
+                <%= counter %>. <%= kmondai.question %>
+              </div>
+            </div>
+        
+            <div class="row">
+              <div class="col-1 pl-0 pr-0 text-center">
+                <% if fkaito.correct %>
+                  <%= image_tag("chibi02.gif", alt:"yokyu icon", size: "90x65", id: "yokyu_icon") %></br>
+                  <small><%= fkaito.answerstring %>番は〇です。</small>
+                <% else %>
+                  <%= image_tag("chibi01.gif", alt:"yokyu icon", size: "90x65", id: "yokyu_icon") %></br>
+                  <small><%= fkaito.answerstring %>番は×です。</small>
+                <% end %>
+              </div>
+              <div class="col-11">
+                <% kchoices = Kchoice.where("kmondai_id=?",kmondai.id).order("number") %>
+                <% kchoices.each do |kchoice| %>
+                  <%= kchoice.number %>. <%= kchoice.sentence %></br>
+                <% end %>
+              </div>
+            </div>
+          
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">

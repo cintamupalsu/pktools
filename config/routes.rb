@@ -13,6 +13,9 @@ Rails.application.routes.draw do
   post   '/choosemondai',       to: 'briefs#choosemondai'
   post   '/chooseuser',         to: 'briefs#chooseuser'
   get    '/managetest',         to: 'briefs#managetest'
+  get    '/kenteitest',         to: 'briefs#kenteitest'
+  post   '/kenteitest',         to: 'briefs#kenteitest'
+  get    '/kenteiend',          to: 'briefs#kenteiend'
   
   get    '/kpi',                to: 'kpi#index'
   get    '/kpi_assessement',    to: 'kpi#assessement'
