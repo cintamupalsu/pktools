@@ -1,1 +1,41 @@
-kanri
+<div class="card mt-1 mb-1" id="performance_card">
+  <div class="card-header">
+    テスト管理
+  </div>
+  <div class="card-body">
+    <div class="row text-center">
+      <div class="col-1">
+        №
+      </div>
+      <div class="col-7">
+        テスト名
+      </div>
+      <div class="col-2">
+        問題数
+      </div>
+      <div class="col-2">
+        削除
+      </div>
+    </div>
+    <% testcounter=0 %>
+    <% @fukusus.each do |fukusu| %>
+      <div class="row border-top">
+        <div class="col-1 pt-1 text-center">
+          <% testcounter+=1 %>
+          <%= testcounter %>
+        </div>
+        <div class="col-7 pt-1">
+          <%= fukusu.fname %>
+        </div>
+        <div class="col-2 pt-1 text-center">
+          <%= fukusu.numofexam %>
+        </div>
+        <div class="col-2 text-center">
+          <% link_to "編集", edit_test_path(:id => fukusu.id), class: "btn btn-outline-secondary", role: "button" %>
+          <%= link_to "削除", test_delete_path(:id => fukusu.id), class: "btn btn-outline-danger", role: "button", method: :delete, data: { confirm: "You sure?" } %>
+        </div>
+      </div>
+    <% end %>
+    <% image_tag("bottomline.jpg", alt:"yokyu icon", width: "30%", id: "yokyu_icon") %>
+  </div>
+</div>

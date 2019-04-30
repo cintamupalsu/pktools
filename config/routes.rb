@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   
+  get    '/reports',            to: 'reports#index'
+  post   '/userkpi',            to: 'reports#userkpi'
+  
   get    '/briefs',             to: 'briefs#index'
   get    '/kentei',             to: 'briefs#kentei'
   post   '/kentei_excel',       to: 'briefs#kentei_excel'
@@ -16,6 +19,9 @@ Rails.application.routes.draw do
   get    '/kenteitest',         to: 'briefs#kenteitest'
   post   '/kenteitest',         to: 'briefs#kenteitest'
   get    '/kenteiend',          to: 'briefs#kenteiend'
+  get    '/edit_test',          to: 'briefs#edit_test'
+  delete '/test_delete',        to: 'briefs#test_delete'
+
   
   get    '/kpi',                to: 'kpi#index'
   get    '/kpi_assessement',    to: 'kpi#assessement'

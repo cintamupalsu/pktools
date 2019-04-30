@@ -7,7 +7,7 @@
   
   <% if (fukusu.fkaitos.count==0  || (fukusu.fkaitos.count>0 && fukusu.fkaitos[0].kettei==false)) && Fuser.where("fukusu_id=? AND user_id=?", fukusu.id, current_user.id).first!=nil %>
     <div class="col-4">
-      <div class="card">
+      <div class="card mb-1">
         <div class="card-header">
           <%= fukusu.fname %>
         </div>

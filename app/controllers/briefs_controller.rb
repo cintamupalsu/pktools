@@ -242,6 +242,7 @@ class BriefsController < ApplicationController
   def managetest
     @selected_item=7
     @naiyo=2
+    @fukusus= Fukusu.all.order("created_at DESC")
     render "exam"
   end
   
@@ -311,6 +312,18 @@ class BriefsController < ApplicationController
     
   end
   
+  def edit_test
+    @selected_item=7
+    @naiyo=5
+    render "exam"
+  end
+  
+  def test_delete
+    Fukusu.find(params[:id]).destroy
+    flash[:success] = "テストを削除しました"
+    redirect_to managetest_url
+  end
+
   private
   
   def excelupload_params

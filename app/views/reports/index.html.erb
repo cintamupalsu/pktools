@@ -1,0 +1,25 @@
+<% provide(:title,"報告KPI") %>
+  <div class="row">
+    <aside class="col-1">
+      <%= render 'sidemenu' %>
+    </aside>
+    <div class="col-11 pl-4">
+      <div class="card">
+        <div class="card-header text-center">
+          ユーザKPI
+        </div>
+        <div class="card-body
+          
+          <%= form_for(:reportkpiuserselect, url: userkpi_path) do |f| %>
+            <% @users.each do |user| %>
+              <div class="row pl-3">
+                <div class="col-12"><%= f.radio_button :choices, user.id %>
+                <%= f.label :choices, user.email, class: "user" %></div>
+              </div>
+            <% end %>
+            <%= f.submit "表示", class: "btn btn-outline-primary btn-block" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
