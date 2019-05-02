@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   
   get    '/reports',            to: 'reports#index'
   post   '/userkpi',            to: 'reports#userkpi'
+  post   '/userkgi',            to: 'reports#postuserkgi'
+  get    '/userkgi',            to: 'reports#userkgi'
   
   get    '/briefs',             to: 'briefs#index'
   get    '/kentei',             to: 'briefs#kentei'
