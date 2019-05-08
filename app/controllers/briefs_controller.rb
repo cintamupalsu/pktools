@@ -38,6 +38,7 @@ class BriefsController < ApplicationController
   def kentei
     @selected_item=4
     @selected_date=Time.zone.now.to_date
+    @kenteidummy=true
     if Kmondai.count>0
       dailyexcercise = Dailyexcercise.where("DATE(daily)='#{@selected_date.to_date}'").first
       @answered=Kenteikaitou.where("user_id=? AND DATE(datetest)='#{@selected_date.to_date}'",current_user.id).first
