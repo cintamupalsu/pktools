@@ -121,6 +121,7 @@ class BriefsController < ApplicationController
       @kentei=Kmondai.find(dailyexcercise.kmondai_id)
       @kchoice=@kentei.kchoices[0]
     end
+    @kenteidummy=true
     render 'kentei'
   end
   
