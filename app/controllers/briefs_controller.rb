@@ -140,7 +140,8 @@ class BriefsController < ApplicationController
                                    order: worksheet[row][6].value,
                                    suborder: worksheet[row][7].value,
                                    answer: ans,
-                                   level: level)
+                                   level: level,
+                                   demasu: false)
           else
             kmondai.update_attributes(question: question, 
                                    oriquestion: raw_question,
@@ -433,7 +434,14 @@ class BriefsController < ApplicationController
     randomnumber=Random.rand(1..Kmondai.count)
     #selected_date = Date.parse(decideexercise_params['decideddate'])
     #selected_date = Time.zone.now.to_date
-    kentei= Kmondai.where("number=?", randomnumber).first
+    
+    # check new excercise
+    kentei = Kmondai.where(demasu: false).first
+    if kentei==nil
+      kentei = Kmondai.where("number=?", randomnumber).first
+      kentei.update_attributes(demasu: true)
+    end
+    kentei.update_attributes(demasu: true)
     Dailyexcercise.create!(kmondai_id: kentei.id,
                            user_id: current_user.id, 
                            daily: selected_date+9.hours)

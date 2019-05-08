@@ -34,11 +34,18 @@ class ReportsController < ApplicationController
     exams=Fukusu.where('',users).first
     
     @nameselected={}
-    (0..checkbox.count-1).each do |i|
-      if checkbox[i]==1
-        username= users[i].email.split('@')
-        @nameselected[users[i].id]=username[0]
+    
+    if userkgi_params['selected_users']==nil 
+      
+      (0..checkbox.count-1).each do |i|
+        if checkbox[i]==1
+          username= users[i].email.split('@')
+          @nameselected[users[i].id]=username[0]
+        end
       end
+      
+    else
+      
     end
     
     if userkgi_params['year']==nil
@@ -80,7 +87,7 @@ class ReportsController < ApplicationController
   private
   
   def userkgi_params
-    params.require(:userkgi).permit(:cbchoice=>[])
+    params.require(:userkgi).permit(:selected_users, :year, :cbchoice=>[])
   end
 
   def check_box_bug(param_checkbox)

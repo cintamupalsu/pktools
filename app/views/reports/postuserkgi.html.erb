@@ -10,8 +10,30 @@
   </aside>
   <div class="col-11 pl-4">
     <div class="card">
-      <div class="card-header text-center">
-        KGI
+      <div class="card-header text-center pb-0">
+        <div class="row">
+          <div class="col-8">
+            KGI
+          </div>
+          <div class="col-4">
+          <%= form_for(:userkgi, url: userkgi_path) do |f| %>
+             <%= f.hidden_field :selected_users, value: @selected_users %>
+             <div class="row">
+                <div class="col-10">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <%= f.label :year, "問題数", class:"input-group-text"  %>
+                    </div>
+                    <%= f.select :year, (1999..2999).collect { |p| [p, p] }, {}, {class: 'custom-select'} %>
+                  </div>
+                </div>
+                <div class="col-2 pt-1 pl-0">
+                  <%= f.submit "変更", class: "btn btn-outline-secondary btn-sm " %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
       <div class="card-body">
         <div id="container_1"></div>
@@ -67,7 +89,7 @@ Highcharts.chart('container_1', {
     },
     series: [
       <% (0..@series.count-1).each do |i| %>
-        { name : '<%=@exams[i].fname%> (<%=@heikin[i]%>)',
+        { name : '<%=@exams[i].fname%> (<%=@heikin[i].to_i%>)',
           data: [
             <% (0..@series[i].count-1).each do |j| %>
               <%= @series[i][j] %>
