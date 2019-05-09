@@ -29,31 +29,43 @@ class ReportsController < ApplicationController
   
   def postuserkgi
     @selected_item=2
-    checkbox=check_box_bug(userkgi_params['cbchoice'])
+    checkbox={}
+    if userkgi_params['cbchoice']!="" && userkgi_params['cbchoice']!=nil
+      checkbox=check_box_bug(userkgi_params['cbchoice'])
+    else
+      cp=userkgi_params['prev_selected'].split(',')
+      (0..cp.count-1).each do |i|
+        checkbox[i] =cp[i].to_i
+      end
+    end
+    
     users=User.all.order('email')
     exams=Fukusu.where('',users).first
     
     @nameselected={}
-    
-    if userkgi_params['selected_users']==nil 
-      
-      (0..checkbox.count-1).each do |i|
-        if checkbox[i]==1
-          username= users[i].email.split('@')
-          @nameselected[users[i].id]=username[0]
-        end
+    @checkbox=""
+
+    (0..checkbox.count-1).each do |i|
+      if checkbox[i]==1
+        @checkbox+="1"
+        username= users[i].email.split('@')
+        @nameselected[users[i].id]=username[0]
+      else
+        @checkbox+="0"
       end
-      
-    else
-      
+      if i!=checkbox.count-1
+        @checkbox+=","
+      end
     end
     
     if userkgi_params['year']==nil
       @selected_date_1= Date.strptime(DateTime.now.year.to_s+"/4/1","%Y/%m/%d")
       @selected_date_2= Date.strptime((DateTime.now.year+1).to_s+"/3/30","%Y/%m/%d")
     else
+      year=userkgi_params['year'].to_i
+      @selected_date_1= Date.strptime(year.to_s+"/4/1","%Y/%m/%d")
+      @selected_date_2= Date.strptime((year+1).to_s+"/3/30","%Y/%m/%d")
     end
-    
     
     @exams=Fukusu.where("DATE(created_at)>='#{@selected_date_1}' AND DATE(created_at)<='#{@selected_date_2}'")
     
@@ -87,7 +99,7 @@ class ReportsController < ApplicationController
   private
   
   def userkgi_params
-    params.require(:userkgi).permit(:selected_users, :year, :cbchoice=>[])
+    params.require(:userkgi).permit(:year, :prev_selected, :cbchoice=>[])
   end
 
   def check_box_bug(param_checkbox)

@@ -17,12 +17,12 @@
           </div>
           <div class="col-4">
           <%= form_for(:userkgi, url: userkgi_path) do |f| %>
-             <%= f.hidden_field :selected_users, value: @selected_users %>
+             <%= f.hidden_field :prev_selected, value: @checkbox %>
              <div class="row">
                 <div class="col-10">
                   <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                      <%= f.label :year, "問題数", class:"input-group-text"  %>
+                      <%= f.label :year, "年度", class:"input-group-text"  %>
                     </div>
                     <%= f.select :year, (1999..2999).collect { |p| [p, p] }, {}, {class: 'custom-select'} %>
                   </div>
