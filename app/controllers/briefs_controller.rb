@@ -333,6 +333,13 @@ class BriefsController < ApplicationController
     flash[:success] = "テストを削除しました"
     redirect_to managetest_url
   end
+  
+  def manageexam
+    @kmondais=Kmondai.all
+    @selected_item=7
+    @naiyo=6
+    render "exam"
+  end
 
   private
   

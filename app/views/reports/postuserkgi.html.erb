@@ -24,7 +24,7 @@
                     <div class="input-group-prepend">
                       <%= f.label :year, "年度", class:"input-group-text"  %>
                     </div>
-                    <%= f.select :year, (1999..2999).collect { |p| [p, p] }, {}, {class: 'custom-select'} %>
+                    <%= f.select :year, (1999..2999).collect { |p| [p, p] }, {:selected => @year}, {class: 'custom-select'} %>
                   </div>
                 </div>
                 <div class="col-2 pt-1 pl-0">

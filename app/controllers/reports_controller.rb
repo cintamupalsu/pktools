@@ -61,10 +61,12 @@ class ReportsController < ApplicationController
     if userkgi_params['year']==nil
       @selected_date_1= Date.strptime(DateTime.now.year.to_s+"/4/1","%Y/%m/%d")
       @selected_date_2= Date.strptime((DateTime.now.year+1).to_s+"/3/30","%Y/%m/%d")
+      @year=DateTime.now.year
     else
       year=userkgi_params['year'].to_i
       @selected_date_1= Date.strptime(year.to_s+"/4/1","%Y/%m/%d")
       @selected_date_2= Date.strptime((year+1).to_s+"/3/30","%Y/%m/%d")
+      @year=year
     end
     
     @exams=Fukusu.where("DATE(created_at)>='#{@selected_date_1}' AND DATE(created_at)<='#{@selected_date_2}'")
@@ -96,10 +98,60 @@ class ReportsController < ApplicationController
     render "postuserkgi"
   end
   
+  def user_k_dailyreport
+    @users=User.all.order("email")
+    @selected_item=3
+    @selected_date_1=DateTime.now.to_date
+    @selected_date_2=DateTime.now.to_date
+    @year=DateTime.now.year
+  end 
+  
+  def kenteidailyreport
+    @selected_item=3
+    users=User.all.order("email")
+    checkbox=check_box_bug(kenteimondai_params['cbchoice'])
+    if kenteimondai_params['selected_date_1']==''
+      @selected_date_1=DateTime.now.to_date
+    else
+      @selected_date_1=kenteimondai_params['selected_date_1'].to_date
+    end
+    if kenteimondai_params['selected_date_2']==''
+      @selected_date_2=DateTime.now.to_date
+    else
+      @selected_date_2=kenteimondai_params['selected_date_2'].to_date
+    end
+    @users = {}
+    @usertableregister = {}
+    counter=0
+    (0..checkbox.count-1).each do |i|
+      if checkbox[i]==1
+        name=users[i].email.split('@')
+        @users[counter]=name[0]
+        @usertableregister[users[i].id]=counter
+        counter+=1
+      end
+    end
+    arrayuserid=Array.new(counter)
+    counter=0
+    (0..checkbox.count-1).each do |i|
+      if checkbox[i]==1
+        arrayuserid[counter]=users[i].id
+        counter+=1
+      end
+    end
+    @series=Kenteikaitou.where("user_id IN (?) AND DATE(datetest)>='#{@selected_date_1}' AND DATE(datetest)<='#{@selected_date_2}'",arrayuserid)
+  
+    render 'kenteidailyreport'
+  end
+  
   private
   
   def userkgi_params
     params.require(:userkgi).permit(:year, :prev_selected, :cbchoice=>[])
+  end
+  
+  def kenteimondai_params
+    params.require(:kenteimondai).permit(:selected_date_1, :selected_date_2, :cbchoice=>[])
   end
 
   def check_box_bug(param_checkbox)

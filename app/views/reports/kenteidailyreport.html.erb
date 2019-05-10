@@ -1,0 +1,80 @@
+<% provide(:title,"検定問題報告") %>
+</div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/xrange.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<div class="container-fluid">
+<div class="row">
+  <aside class="col-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-11 pl-4">
+    <div class="card">
+      <div class="card-body">
+        <div id="graph"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  Highcharts.chart('graph', {
+    chart: {
+        type: 'xrange'
+    },
+    title: {
+        text: '検定問題報告'
+    },
+    xAxis: {
+        type: 'datetime'
+    },
+    yAxis: {
+        title: {
+            text: ''
+        },
+        categories: [
+          <% counter=0 %>
+          <% @users.each do |k,v| %>
+            '<%= v %>'
+            <% if counter!=@users.count-1 %>
+              , 
+            <% end %>
+            <% counter+=1 %>
+          <% end %>
+
+          ],
+        reversed: true
+    },
+    series: [{
+        name: '<%=@selected_date_1%>から<%=@selected_date_2%>まで',
+        // pointPadding: 0,
+        // groupPadding: 0,
+        borderColor: 'gray',
+        pointWidth: 20,
+        data: [
+          <% counter=0 %>
+          <% total = @series.count %>
+          <% @series.each do |serie| %>
+            {
+              x: Date.UTC(<%=serie.datetest.year%>,<%=serie.datetest.month-1%>,<%=serie.datetest.day%>),
+              x2: Date.UTC(<%=(serie.datetest+1.day).year%>,<%=(serie.datetest+1.day).month-1%>,<%=(serie.datetest+1.day).day%>),
+              y: <%= @usertableregister[serie.user_id]%>,
+              <% if serie.correct==true %>
+                partialFill: 1
+              <% else %>
+                partialFill: 0
+              <% end %>
+            }
+            <% counter+=1 %>
+            <% if counter!=total %>
+              ,
+            <% end %>
+          <% end %>
+          ],
+        dataLabels: {
+            enabled: false
+        }
+    }]
+
+});
+</script>
+<div class="container">

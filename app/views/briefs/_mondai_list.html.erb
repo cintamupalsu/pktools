@@ -1,0 +1,23 @@
+<div class="row mt-1">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        問題一覧  
+      </div>
+      <div class="card-body">
+        <% kmondai_counter=0 %>
+        <% @kmondais.each do |kmondai| %>
+          <% kmondai_counter+=1 %>
+          <div class="row border-bottom">
+            <div class="col-1">
+              <%= kmondai_counter %>.
+            </div>
+            <div class="col-11">
+              <%= kmondai.question %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

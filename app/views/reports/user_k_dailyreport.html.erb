@@ -1,0 +1,47 @@
+<% provide(:title,"検定問題報告") %>
+<div class="row">
+  <aside class="col-1">
+    <%= render 'sidemenu' %>
+  </aside>
+  <div class="col-11 pl-4">
+    <div class="card">
+      <div class="card-header text-center">
+        毎日検定問題報告
+      </div>
+      <div class="card-body">
+        <%= form_for(:kenteimondai, url: kenteidailyreport_path) do |f| %>
+          <% @users.each do |user| %>
+            <div class="row pl-3">
+              <div class="col-12"><%= f.check_box :cbchoice , multiple: true %>
+              <%= user.email %></div>                  
+            </div>
+          <% end %>
+          <br/>
+          <div class="row pl-3">
+            <div class="col-3">
+              <%= f.text_field :selected_date_1, placeholder: "#{@selected_date_1.to_date}", class: 'form-control', :data => {:provide => "datepicker"}, :autocomplete => :off  %>
+            </div>
+            <div class="col-1">
+              から
+            </div>
+            <div class="col-3">
+              <%= f.text_field :selected_date_2, placeholder: "#{@selected_date_2.to_date}", class: 'form-control', :data => {:provide => "datepicker"}, :autocomplete => :off  %>
+            </div>
+            <div class="col-1">
+              まで
+            </div>
+            <div class="col-4">
+            </div>
+          </div>
+          <br/>
+          <%= f.submit "表示", class: "btn btn-outline-primary btn-block" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.datepicker').datepicker();
+  });
+</script>

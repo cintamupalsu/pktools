@@ -20,4 +20,12 @@
   <% end %>
     <%= image_tag("ico_clients.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
   </a>
+  <% if @selected_item==3 %>
+    <a href="<%=kenteidailyreport_path%>" class="card-header pl-4 pt-1 pb-1 bg-info" data-toggle="tooltip" data-placement="right" title="KGI">
+  <% else %>
+    <a href="<%=kenteidailyreport_path%>" class="card-body pl-4 pt-1 pb-1 bg-light" data-toggle="tooltip" data-placement="right" title="KGI">
+  <% end %>
+    <%= image_tag("ico_documentation.png", alt:"yokyu icon", size: "40x45", id: "yokyu_icon") %>
+  </a>
+
 </div>

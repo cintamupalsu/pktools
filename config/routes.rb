@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   post   '/userkpi',            to: 'reports#userkpi'
   post   '/userkgi',            to: 'reports#postuserkgi'
   get    '/userkgi',            to: 'reports#userkgi'
+  get    '/kenteidailyreport',  to: 'reports#user_k_dailyreport'
+  post   '/kenteidailyreport',  to: 'reports#kenteidailyreport'
   
   get    '/briefs',             to: 'briefs#index'
   get    '/kentei',             to: 'briefs#kentei'
@@ -23,6 +25,7 @@ Rails.application.routes.draw do
   get    '/kenteiend',          to: 'briefs#kenteiend'
   get    '/edit_test',          to: 'briefs#edit_test'
   delete '/test_delete',        to: 'briefs#test_delete'
+  get    '/manageexam',         to: 'briefs#manageexam'
 
   
   get    '/kpi',                to: 'kpi#index'

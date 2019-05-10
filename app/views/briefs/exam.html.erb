@@ -12,6 +12,7 @@
               <%= link_to "テスト一覧", kenteiexam_path, class: "btn btn-outline-primary btn-sm", role: "button" %>
               <%= link_to "新規テスト", newtest_path, class: "btn btn-outline-primary btn-sm", role: "button" %>
               <%= link_to "テスト管理", managetest_path, class: "btn btn-outline-primary btn-sm", role: "button" %>
+              <%= link_to "問題管理", manageexam_path, class: "btn btn-outline-secondary btn-sm", role: "button" %>
             </div>
           </div>
         </div>
@@ -26,6 +27,8 @@
         <%= render "chooseuser" %>
       <% elsif @naiyo==5 %>
         <%= render "test_edit" %>
+      <% elsif @naiyo==6 %>
+        <%= render "mondai_list" %>
       <% else %>
         <%= render "test_kanri" %>
       <% end %>
