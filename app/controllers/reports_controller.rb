@@ -188,6 +188,7 @@ class ReportsController < ApplicationController
       month2=1 
       year2+=1
     end
+    @month= month
     @selected_date_2= Date.strptime(year2.to_s+"/"+month2.to_s+"/1","%Y/%m/%d")
     
     series=Kenteikaitou.where("user_id IN (?) AND DATE(datetest)>='#{@selected_date_1}' AND DATE(datetest)<'#{@selected_date_2}'",arrayuserid).order('datetest')
@@ -196,6 +197,7 @@ class ReportsController < ApplicationController
     @mondaiid={}
     @correct={}
     @incorrect={}
+    @dayname={}
     
     (0..@matrix.count-1).each do |i|
       @matrix[i]={}
@@ -207,6 +209,7 @@ class ReportsController < ApplicationController
         @mondaiid[serie.datetest.day]=serie.kmondai.id
         @correct[serie.datetest.day]=0
         @incorrect[serie.datetest.day]=0
+        @dayname[serie.datetest.day]=nippondays(serie.datetest.strftime("%A"))
         
         if serie.datetest.strftime("%A")=="Saturday"|| serie.datetest.strftime("%A")=="Sunday"
           @holidays[serie.datetest.day]=true
@@ -256,5 +259,26 @@ class ReportsController < ApplicationController
       end
     end
     return result
+  end
+  
+  def nippondays(dayname)
+    nippondayname=''
+    case dayname
+    when "Sunday"
+      nippondayname='日'
+    when "Monday"
+      nippondayname='月'
+    when "Tuesday"
+      nippondayname='火'
+    when "Wednesday"
+      nippondayname='水'
+    when "Thursday"
+      nippondayname='木'
+    when "Friday"
+      nippondayname='金'
+    when "Saturday"
+      nippondayname='土'
+    end
+    return nippondayname
   end
 end

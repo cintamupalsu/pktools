@@ -6,7 +6,7 @@
   <div class="col-11 pl-4">
     <div class="card">
       <div class="card-header text-center">
-        Monthly Excercise Report
+        Monthly Excercise Report <%=@month%>月
       </div>
       <div class="card-body">
 
@@ -20,7 +20,7 @@
                 <% else %>
                   <th scope="col" class="text-center bg-danger">
                 <% end %>
-                <%=k%></th>
+                <%=k%>(<%=@dayname[k]%>)</th>
               <% end %>
             </tr>
           </thead>
