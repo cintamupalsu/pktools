@@ -1,0 +1,43 @@
+<% provide(:title,"報告KPI") %>
+  <div class="row">
+    <aside class="col-1">
+      <%= render 'sidemenu' %>
+    </aside>
+    <div class="col-11 pl-4">
+      <div class="card">
+        <div class="card-header text-center">
+          ユーザ選択
+        </div>
+        <div class="card-body">
+          <%= form_for(:kenteimrpt, url: kentei_m_rpt_path) do |f| %>
+            <% @users.each do |user| %>
+              <div class="row pl-3">
+                <div class="col-12"><%= f.check_box :cbchoice, checked: true , multiple: true %>
+                <%= user.email %></div>                  
+              </div>
+            <% end %>
+            </br>
+            <div class="row">
+              <div class="col-3">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <%= f.label :year, "年", class:"input-group-text"  %>
+                  </div>
+                  <%= f.select :year, (1999..2999).collect { |p| [p, p] }, {:selected => @selected_date.year}, {class: 'custom-select'} %>
+                </div>      
+              </div>
+              <div class="col-3">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <%= f.label :month, "月", class:"input-group-text"  %>
+                  </div>
+                  <%= f.select :month, (1..12).collect { |p| [p, p] }, {:selected => @selected_date.month}, {class: 'custom-select'} %>
+                </div>      
+              </div>
+            </div>
+            <%= f.submit "表示", class: "btn btn-outline-primary btn-block" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>

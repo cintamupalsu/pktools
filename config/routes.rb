@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get    '/userkgi',            to: 'reports#userkgi'
   get    '/kenteidailyreport',  to: 'reports#user_k_dailyreport'
   post   '/kenteidailyreport',  to: 'reports#kenteidailyreport'
+  get    '/kentei_m_rpt',       to: 'reports#kentei_m_rpt'
+  post   '/kentei_m_rpt',       to: 'reports#kentei_m_rpt_post'
   
   get    '/briefs',             to: 'briefs#index'
   get    '/kentei',             to: 'briefs#kentei'

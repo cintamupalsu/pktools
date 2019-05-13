@@ -144,6 +144,90 @@ class ReportsController < ApplicationController
     render 'kenteidailyreport'
   end
   
+  def kentei_m_rpt
+    @selected_item=4
+    @users=User.all.order('email')
+    @selected_date=DateTime.now.to_date
+  end
+  
+  def kentei_m_rpt_post
+    @selected_item=4
+
+    users=User.all.order('email')
+    checkbox=check_box_bug(kenteimrpt_params['cbchoice'])
+    
+    @users = {}
+    @usertableregister = {}
+    counter=0
+    (0..checkbox.count-1).each do |i|
+      if checkbox[i]==1
+        name=users[i].email.split('@')
+        @users[counter]=name[0]
+        @usertableregister[users[i].id]=counter
+        counter+=1
+      end
+    end
+    arrayuserid=Array.new(counter)
+    @matrix=Array.new(counter)
+    counter=0
+    (0..checkbox.count-1).each do |i|
+      if checkbox[i]==1
+        arrayuserid[counter]=users[i].id
+        counter+=1
+      end
+    end
+    
+
+    
+    year = kenteimrpt_params['year'].to_i
+    month = kenteimrpt_params['month'].to_i
+    @selected_date_1= Date.strptime(year.to_s+"/"+month.to_s+"/1","%Y/%m/%d")
+    year2=year
+    month2=month+1
+    if month2>12
+      month2=1 
+      year2+=1
+    end
+    @selected_date_2= Date.strptime(year2.to_s+"/"+month2.to_s+"/1","%Y/%m/%d")
+    
+    series=Kenteikaitou.where("user_id IN (?) AND DATE(datetest)>='#{@selected_date_1}' AND DATE(datetest)<'#{@selected_date_2}'",arrayuserid).order('datetest')
+    @days={}
+    @holidays={}
+    @mondaiid={}
+    @correct={}
+    @incorrect={}
+    
+    (0..@matrix.count-1).each do |i|
+      @matrix[i]={}
+    end
+    series.each do |serie|
+
+      if @days[serie.datetest.day]==nil
+        @days[serie.datetest.day]=1
+        @mondaiid[serie.datetest.day]=serie.kmondai.id
+        @correct[serie.datetest.day]=0
+        @incorrect[serie.datetest.day]=0
+        
+        if serie.datetest.strftime("%A")=="Saturday"|| serie.datetest.strftime("%A")=="Sunday"
+          @holidays[serie.datetest.day]=true
+        else
+          @holidays[serie.datetest.day]=false
+        end
+      else
+        @days[serie.datetest.day]+=1
+      end
+      @matrix[@usertableregister[serie.user_id]][serie.datetest.day]=serie.correct
+      if serie.correct==true 
+        @correct[serie.datetest.day]+=1
+      else
+        @incorrect[serie.datetest.day]+=1
+      end
+    end
+    
+    render 'kentei_m_table'
+  end 
+  
+  
   private
   
   def userkgi_params
@@ -152,6 +236,10 @@ class ReportsController < ApplicationController
   
   def kenteimondai_params
     params.require(:kenteimondai).permit(:selected_date_1, :selected_date_2, :cbchoice=>[])
+  end
+  
+  def kenteimrpt_params
+    params.require(:kenteimrpt).permit(:year, :month, :cbchoice=>[])
   end
 
   def check_box_bug(param_checkbox)
