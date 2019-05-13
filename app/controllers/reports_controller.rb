@@ -219,12 +219,15 @@ class ReportsController < ApplicationController
       else
         @days[serie.datetest.day]+=1
       end
-      @matrix[@usertableregister[serie.user_id]][serie.datetest.day]=serie.correct
-      if serie.correct==true 
-        @correct[serie.datetest.day]+=1
-      else
-        @incorrect[serie.datetest.day]+=1
+      if @matrix[@usertableregister[serie.user_id]][serie.datetest.day]==nil
+        if serie.correct==true 
+          @correct[serie.datetest.day]+=1
+        else
+          @incorrect[serie.datetest.day]+=1
+        end
       end
+      @matrix[@usertableregister[serie.user_id]][serie.datetest.day]=serie.correct
+
     end
     
     render 'kentei_m_table'
