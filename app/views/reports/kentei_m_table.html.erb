@@ -1,4 +1,6 @@
 <% provide(:title,"Monthly Excercise Report") %>
+</div>
+<div class="container-fluid">
 <div class="row">
   <aside class="col-1">
     <%= render 'sidemenu' %>
@@ -9,76 +11,105 @@
         Monthly Excercise Report <%=@month%>月
       </div>
       <div class="card-body">
-
-        <table class="table table-bordered table-responsive">
-          <thead>
-            <tr>
-              <th scope="col" class="text-center">ﾕｰｻﾞ</th>
-              <% @days.each do |k,v| %>
-                <% if !@holidays[k] %>
-                  <th scope="col" class="text-center ">
-                <% else %>
-                  <th scope="col" class="text-center bg-danger">
+        <div class="row">
+          <div class="col-2 pl-0 pr-0">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center">ﾕｰｻﾞ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% (0..@users.count-1).each do |i| %>
+                  <tr>
+                    <th scope="col"><%= @users[i]%></th>
+                  </tr>
                 <% end %>
-                <%=k%>(<%=@dayname[k]%>)</th>
-              <% end %>
-            </tr>
-          </thead>
-          <tbody>
-            <% (0..@users.count-1).each do |i| %>
-            <tr>
-              <th scope="col"><%= @users[i]%></th>
-              <% @days.each do |k,v| %>
-                <% if !@holidays[k] %>
-                  <th scope="col" class="text-center ">
-                <% else %>
-                  <th scope="col" class="text-center bg-danger">
-                <% end %>
-                <% if @matrix[i][k]!=nil %>
-                  <% if @matrix[i][k]==true %>
-                    〇
-                  <% else %>
-                    ×
+                <tr class="table-primary">
+                  <th scope="col">
+                    問題の番号
+                  </th>
+                </tr>
+                <tr class="table-success">
+                  <th scope="col">
+                    正解した人数
+                  </th>
+                </tr>
+                <tr class="table-warning">
+                  <th scope="col">
+                    間違えた人数
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-10 pl-0 pr-0">
+            <table class="table table-bordered table-responsive">
+              <thead>
+                <tr>
+               
+                  <% @days.each do |k,v| %>
+                    <% if !@holidays[k] %>
+                      <th scope="col" class="text-center ">
+                    <% else %>
+                      <th scope="col" class="text-center bg-danger">
+                    <% end %>
+                    <%=k%>(<%=@dayname[k]%>)</th>
                   <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <% (0..@users.count-1).each do |i| %>
+                <tr>
+        
+                  <% @days.each do |k,v| %>
+                    <% if !@holidays[k] %>
+                      <th scope="col" class="text-center ">
+                    <% else %>
+                      <th scope="col" class="text-center bg-danger">
+                    <% end %>
+                    <% if @matrix[i][k]!=nil %>
+                      <% if @matrix[i][k]==true %>
+                        〇
+                      <% else %>
+                        ×
+                      <% end %>
+                    <% else %>
+                      -
+                    <% end %>
+                    </th>
+                  <% end %>
+                </tr>
                 <% end %>
-                </th>
-              <% end %>
-            </tr>
-            <% end %>
-            <tr class="table-primary">
-              <th scope="col">
-                問題の番号
-              </th>
-              <% @days.each do |k,v| %>
-              <th scope="col" class="text-right">
-                <%= Kmondai.find(@mondaiid[k]).number %>
-              </th>
-              <% end %>
-            </tr>
-            <tr class="table-success">
-              <th scope="col">
-                正解した人数
-              </th>
-              <% @days.each do |k,v| %>
-                <th scope="col" class="text-right">
-                  <%= @correct[k] %>
-                </th>
-              <% end %>
-            </tr>
-            <tr class="table-warning">
-              <th scope="col">
-                間違えた人数
-              </th>
-              <% @days.each do |k,v| %>
-                <th scope="col" class="text-right">
-                  <%= @incorrect[k] %>
-                </th>
-              <% end %>
-            </tr>
-          </tbody>
-        </table>
+                <tr class="table-primary">
+                  <% @days.each do |k,v| %>
+                  <th scope="col" class="text-right">
+                    <%= Kmondai.find(@mondaiid[k]).number %>
+                  </th>
+                  <% end %>
+                </tr>
+                <tr class="table-success">
+                  <% @days.each do |k,v| %>
+                    <th scope="col" class="text-right">
+                      <%= @correct[k] %>
+                    </th>
+                  <% end %>
+                </tr>
+                <tr class="table-warning">
+                  <% @days.each do |k,v| %>
+                    <th scope="col" class="text-right">
+                      <%= @incorrect[k] %>
+                    </th>
+                  <% end %>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+<div class="container">
 
