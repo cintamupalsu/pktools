@@ -274,7 +274,7 @@ class ReportsController < ApplicationController
     fCSV.write("\n")
 
     fCSV.close()
-    filesend= File.read(fCSV.path)
+    filesend= File.read(fCSV.path,encoding: 'utf-8')
     send_data( filesend, :disposition => 'attachment', :type => 'text/plain; charset=utf-8', :filename => 'kentei.csv')
 
   end
