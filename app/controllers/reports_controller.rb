@@ -238,7 +238,8 @@ class ReportsController < ApplicationController
     mondaiid = params[:mondaiid]
     correct = params[:correct]
     incorrect = params[:incorrect]
-    fCSV=Tempfile.new(['kentei', '.csv'], encoding: 'utf-8')
+    #fCSV=Tempfile.new(['kentei', '.csv'], encoding: 'utf-8')
+    fCSV=""
     d={}
     days.each do |k,v|
       if k.length==1
@@ -249,33 +250,36 @@ class ReportsController < ApplicationController
     end
     
  
-    fCSV.write("Days")
+    #fCSV.write("Days")
+    fCSV+="日付"
     d.sort.map do |k,v|
-      fCSV.write(","+(k.to_i).to_s)
+      #fCSV.write(","+(k.to_i).to_s)
+      fCSV+=","+(k.to_i).to_s
     end
-    fCSV.write("\n")
+    #fCSV.write("\n")
+    fCSV+="\n"
     
-    fCSV.write("検定番号")
+    #fCSV.write("検定番号")
     d.sort.map do |k,v|
-      fCSV.write(","+Kmondai.find(mondaiid[(k.to_i).to_s].to_i).number.to_s)
+    #  fCSV.write(","+Kmondai.find(mondaiid[(k.to_i).to_s].to_i).number.to_s)
     end
-    fCSV.write("\n")
+    #fCSV.write("\n")
     
-    fCSV.write("正解した人数")
+    #fCSV.write("正解した人数")
     d.sort.map do |k,v|
-      fCSV.write(","+correct[(k.to_i).to_s].to_s)
+    #  fCSV.write(","+correct[(k.to_i).to_s].to_s)
     end
-    fCSV.write("\n")
+    #fCSV.write("\n")
 
-    fCSV.write("間違えた人数")
+    #fCSV.write("間違えた人数")
     d.sort.map do |k,v|
-      fCSV.write(","+incorrect[(k.to_i).to_s].to_s)
+    #  fCSV.write(","+incorrect[(k.to_i).to_s].to_s)
     end
-    fCSV.write("\n")
+    #fCSV.write("\n")
 
-    fCSV.close()
-    filesend= File.read(fCSV.path,encoding: 'utf-8')
-    send_data( filesend, :disposition => 'attachment', :type => 'text/plain; charset=utf-8', :filename => 'kentei.csv')
+    #fCSV.close()
+    #filesend= File.read(fCSV.path,encoding: 'utf-8')
+    send_data( fCSV, :disposition => 'attachment', :type => 'text/plain; charset=utf-8', :filename => 'kentei.csv')
 
   end
   
