@@ -238,7 +238,7 @@ class ReportsController < ApplicationController
     mondaiid = params[:mondaiid]
     correct = params[:correct]
     incorrect = params[:incorrect]
-    fCSV=Tempfile.new('kentei.csv')
+    fCSV=Tempfile.new(['kentei', '.csv'], encoding: 'utf-8')
     d={}
     days.each do |k,v|
       if k.length==1
@@ -249,7 +249,7 @@ class ReportsController < ApplicationController
     end
     
  
-    fCSV.write("days")
+    fCSV.write("日付")
     d.sort.map do |k,v|
       fCSV.write(","+(k.to_i).to_s)
     end
@@ -275,7 +275,7 @@ class ReportsController < ApplicationController
 
     fCSV.close()
     filesend= File.read(fCSV.path)
-    send_data( filesend, :disposition => 'attachment', :type => 'application/csv', :encoding => 'UTF-8', :filename => 'kentei.csv')
+    send_data( filesend, :disposition => 'attachment', :type => 'application/csv', :filename => 'kentei.csv')
 
   end
   
