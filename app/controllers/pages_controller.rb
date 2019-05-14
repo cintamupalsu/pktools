@@ -97,4 +97,26 @@ class PagesController < ApplicationController
     countrecords=(countrecords/50)
     return countrecords
   end
+  
+  def kango_in
+    if current_user.marshal
+      user = User.find(params[:id])
+      user.update_attributes(kango: true)
+      flash[:success] = user.email + " は看護チームとなる"
+    else
+      flash[:danger] = "You are not an admin, get away!"
+    end
+    redirect_to user_management_path
+  end
+  
+  def kango_out 
+    if current_user.marshal
+      user = User.find(params[:id])
+      user.update_attributes(kango: false)
+      flash[:success] = user.email + " は看護チームとならない"
+    else
+      flash[:danger] = "You are not an admin, get away!"
+    end
+    redirect_to user_management_path
+  end 
 end

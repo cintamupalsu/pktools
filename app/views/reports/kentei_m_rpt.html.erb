@@ -12,7 +12,11 @@
           <%= form_for(:kenteimrpt, url: kentei_m_rpt_path) do |f| %>
             <% @users.each do |user| %>
               <div class="row pl-3">
-                <div class="col-12"><%= f.check_box :cbchoice, checked: true , multiple: true %>
+                <% if user.kango %>
+                  <div class="col-12"><%= f.check_box :cbchoice, checked: true , multiple: true %>
+                <% else %>
+                  <div class="col-12"><%= f.check_box :cbchoice, multiple: true %>
+                <% end %>
                 <%= user.email %></div>                  
               </div>
             <% end %>

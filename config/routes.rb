@@ -105,6 +105,8 @@ Rails.application.routes.draw do
   get    '/detach',             to: 'pages#detach'
   get    '/activate',           to: 'pages#activate'
   get    '/promote',            to: 'pages#promote'
+  get    '/kango_in',           to: 'pages#kango_in'
+  get    '/kango_out',          to: 'pages#kango_out'
 
   devise_for :users
   root 'pages#index'

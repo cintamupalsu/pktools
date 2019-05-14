@@ -239,6 +239,7 @@ class ReportsController < ApplicationController
     mondaiid = params[:mondaiid]
     correct = params[:correct]
     incorrect = params[:incorrect]
+    month = params[:month]
     #fCSV=Tempfile.new(['kentei', '.csv'], encoding: 'utf-8')
     fCSV=""
     d={}
@@ -290,7 +291,7 @@ class ReportsController < ApplicationController
     #filesend= File.read(fCSV.path,encoding: 'utf-8')
    
     content = BOM + Iconv.conv( 'UTF-8','UTF-8//IGNORE', fCSV)
-    send_data content, :filename => 'kentei.csv'
+    send_data content, :filename => "kentei-"+month.to_s+".csv"
     #send_data( fCSV, :disposition => 'attachment', :type => 'text/plain; charset=utf-8', :filename => 'kentei.csv')
 
   end

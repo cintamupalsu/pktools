@@ -1,8 +1,16 @@
 <% @users.each do |user| %>
   <div class="row border-bottom">
     <div class="col-1 text-center"><%= user.id %></div>
-    <div class="col-7 text-left"><%= user.email %></div>
+    <div class="col-6 text-left"><%= user.email %></div>
+    <div class="col-1 text-center">
+   
+        <% if user.kango==true  %>
+          <%= link_to "×", kango_out_path(:id => user.id), class: "btn btn-outline-info btn-sm btn-block ", role: "button" %>
+        <% else %>
+          <%= link_to "〇", kango_in_path(:id => user.id), class: "btn btn-outline-success btn-sm btn-block ", role: "button" %>
+        <% end %>
 
+    </div>
     <div class="col-2 text-center">
       <% if user.marshal %>
         <% if user.id != current_user.id %>
