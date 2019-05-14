@@ -144,6 +144,7 @@ GEM
       eventmachine (~> 1.2)
       faye-websocket (~> 0.10)
       http (~> 3.3)
+    iconv (1.0.8)
     io-like (0.3.0)
     ipaddress (0.8.3)
     jbuilder (2.8.0)
@@ -298,6 +299,7 @@ DEPENDENCIES
   devise
   fog-aws
   ibm_watson
+  iconv
   jbuilder (~> 2.5)
   jquery-rails
   listen (>= 3.0.5, < 3.2)
@@ -324,4 +326,4 @@ RUBY VERSION
    ruby 2.4.5p335
 
 BUNDLED WITH
-   1.16.2
+   1.16.6

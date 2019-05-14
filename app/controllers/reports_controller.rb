@@ -1,4 +1,5 @@
 class ReportsController < ApplicationController
+  BOM = "\uFEFF"
   def index
     @selected_item=0
     @users=User.all.order('email')
@@ -279,7 +280,10 @@ class ReportsController < ApplicationController
 
     #fCSV.close()
     #filesend= File.read(fCSV.path,encoding: 'utf-8')
-    send_data( fCSV, :disposition => 'attachment', :type => 'text/plain; charset=utf-8', :filename => 'kentei.csv')
+   
+    content = BOM + Iconv.conv( 'UTF-8','UTF-8//IGNORE', fCSV)
+    send_data content, :filename => 'kentei.csv'
+    #send_data( fCSV, :disposition => 'attachment', :type => 'text/plain; charset=utf-8', :filename => 'kentei.csv')
 
   end
   
