@@ -261,20 +261,28 @@ class ReportsController < ApplicationController
     fCSV+="\n"
     
     #fCSV.write("検定番号")
+    fCSV+="検定番号"
     d.sort.map do |k,v|
     #  fCSV.write(","+Kmondai.find(mondaiid[(k.to_i).to_s].to_i).number.to_s)
+      fCSV+=","+Kmondai.find(mondaiid[(k.to_i).to_s].to_i).number.to_s
     end
     #fCSV.write("\n")
+    fCSV+="\n"
     
     #fCSV.write("正解した人数")
+    fCSV+="正解した人数"
     d.sort.map do |k,v|
     #  fCSV.write(","+correct[(k.to_i).to_s].to_s)
+      fCSV+=","+correct[(k.to_i).to_s].to_s
     end
     #fCSV.write("\n")
+    fCSV+="\n"
 
     #fCSV.write("間違えた人数")
+    fCSV+="間違えた人数"
     d.sort.map do |k,v|
     #  fCSV.write(","+incorrect[(k.to_i).to_s].to_s)
+    fCSV+=","+incorrect[(k.to_i).to_s].to_s
     end
     #fCSV.write("\n")
 
