@@ -147,14 +147,16 @@ class ReportsController < ApplicationController
   
   def kentei_m_rpt
     @selected_item=4
-    @users=User.all.order('email')
+    #@users=User.all.order('email')
+    @users=User.where('kango=?',true).order('email')
     @selected_date=DateTime.now.to_date
   end
   
   def kentei_m_rpt_post
     @selected_item=4
 
-    users=User.all.order('email')
+    #users=User.all.order('email')
+    users=User.where('kango=?',true).order('email')
     checkbox=check_box_bug(kenteimrpt_params['cbchoice'])
     
     @users = {}
