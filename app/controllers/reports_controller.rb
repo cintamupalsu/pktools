@@ -249,7 +249,7 @@ class ReportsController < ApplicationController
     end
     
  
-    fCSV.write("日付")
+    fCSV.write("Days")
     d.sort.map do |k,v|
       fCSV.write(","+(k.to_i).to_s)
     end
@@ -275,7 +275,7 @@ class ReportsController < ApplicationController
 
     fCSV.close()
     filesend= File.read(fCSV.path)
-    send_data( filesend, :disposition => 'attachment', :type => 'application/csv', :filename => 'kentei.csv')
+    send_data( filesend, :disposition => 'attachment', :type => 'text/plain; charset=utf-8', :filename => 'kentei.csv')
 
   end
   
