@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   post   '/kenteidailyreport',  to: 'reports#kenteidailyreport'
   get    '/kentei_m_rpt',       to: 'reports#kentei_m_rpt'
   post   '/kentei_m_rpt',       to: 'reports#kentei_m_rpt_post'
+  get    '/kentei_m_csv',       to: 'reports#kentei_m_csv'
   
   get    '/briefs',             to: 'briefs#index'
   get    '/kentei',             to: 'briefs#kentei'

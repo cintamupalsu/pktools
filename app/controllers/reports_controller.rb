@@ -233,6 +233,52 @@ class ReportsController < ApplicationController
     render 'kentei_m_table'
   end 
   
+  def kentei_m_csv
+    days = params[:days]
+    mondaiid = params[:mondaiid]
+    correct = params[:correct]
+    incorrect = params[:incorrect]
+    fCSV=Tempfile.new('kentei.csv')
+    d={}
+    days.each do |k,v|
+      if k.length==1
+        d["0"+k]=v
+      else
+        d[k]=v
+      end
+    end
+    
+ 
+    fCSV.write("days")
+    d.sort.map do |k,v|
+      fCSV.write(","+(k.to_i).to_s)
+    end
+    fCSV.write("\n")
+    
+    fCSV.write("検定番号")
+    d.sort.map do |k,v|
+      fCSV.write(","+Kmondai.find(mondaiid[(k.to_i).to_s].to_i).number.to_s)
+    end
+    fCSV.write("\n")
+    
+    fCSV.write("正解した人数")
+    d.sort.map do |k,v|
+      fCSV.write(","+correct[(k.to_i).to_s].to_s)
+    end
+    fCSV.write("\n")
+
+    fCSV.write("間違えた人数")
+    d.sort.map do |k,v|
+      fCSV.write(","+incorrect[(k.to_i).to_s].to_s)
+    end
+    fCSV.write("\n")
+
+    fCSV.close()
+    filesend= File.read(fCSV.path)
+    send_data( filesend, :disposition => 'attachment', :type => 'application/csv', :filename => 'kentei.csv')
+
+  end
+  
   
   private
   

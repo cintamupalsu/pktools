@@ -52,6 +52,7 @@ gem 'bootstrap-will_paginate'
 gem 'delayed_job_active_record'
 gem 'rmagick' #if error try=> $sudo apt-get install imagemagick libmagick++-dev
 gem 'bootstrap-datepicker-rails'
+gem 'rubyzip'
 
 # heroku run rake jobs:work
 # if bcrypt error try=> gem pristine --all
