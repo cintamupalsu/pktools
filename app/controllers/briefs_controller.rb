@@ -482,9 +482,17 @@ class BriefsController < ApplicationController
   
   def saveanswer(c_date, answer, kmondai)
     if kmondai.answer==answer 
-      Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: true, datetest: c_date.to_date+9.hours, answer: answer)
+      if !kenteikaitou=Kenteikaitou.where("user_id=? AND kmondai_id=? AND DATE(datetest)=='#{c_date.to_date+9.hours}'",current_user.id, kmondai.id).first
+        Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: true, datetest: c_date.to_date+9.hours, answer: answer)
+      else
+        kenteikaitou.update_attributes(correct: true)
+      end
     else
-      Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: false, datetest: c_date.to_date+9.hours, answer: answer)
+      if !kenteikaitou=Kenteikaitou.where("user_id=? AND kmondai_id=? AND DATE(datetest)=='#{c_date.to_date+9.hours}'",current_user.id, kmondai.id).first
+        Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: false, datetest: c_date.to_date+9.hours, answer: answer)
+      else
+        kenteikaitou.update_attributes(correct: false)
+      end
     end
   end
   

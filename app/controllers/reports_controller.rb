@@ -3,6 +3,8 @@ class ReportsController < ApplicationController
   def index
     @selected_item=0
     @users=User.all.order('email')
+    @selected_date_1= Date.strptime(DateTime.now.year.to_s+"/"+DateTime.now.month.to_s+"/1","%Y/%m/%d")
+    @selected_date_2= Date.strptime((@selected_date_1+1.month).year.to_s+"/"+(@selected_date_1+1.month).month.to_s+"/1","%Y/%m/%d")
   end
   
   def userkpi
