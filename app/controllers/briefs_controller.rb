@@ -482,17 +482,17 @@ class BriefsController < ApplicationController
   
   def saveanswer(c_date, answer, kmondai)
     if kmondai.answer==answer 
-      if !kenteikaitou=Kenteikaitou.where("user_id=? AND kmondai_id=? AND DATE(datetest)=='#{c_date.to_date+9.hours}'",current_user.id, kmondai.id).first
+      #if !kenteikaitou=Kenteikaitou.where("user_id=? AND kmondai_id=? AND DATE(datetest)=='#{c_date.to_date+9.hours}'",current_user.id, kmondai.id).first
         Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: true, datetest: c_date.to_date+9.hours, answer: answer)
-      else
-        kenteikaitou.update_attributes(correct: true)
-      end
+      #else
+      #  kenteikaitou.update_attributes(correct: true)
+      #end
     else
-      if !kenteikaitou=Kenteikaitou.where("user_id=? AND kmondai_id=? AND DATE(datetest)=='#{c_date.to_date+9.hours}'",current_user.id, kmondai.id).first
+      #if !kenteikaitou=Kenteikaitou.where("user_id=? AND kmondai_id=? AND DATE(datetest)=='#{c_date.to_date+9.hours}'",current_user.id, kmondai.id).first
         Kenteikaitou.create(user_id: current_user.id, kmondai_id: kmondai.id, correct: false, datetest: c_date.to_date+9.hours, answer: answer)
-      else
-        kenteikaitou.update_attributes(correct: false)
-      end
+      #else
+      #  kenteikaitou.update_attributes(correct: false)
+      #end
     end
   end
   
@@ -502,11 +502,11 @@ class BriefsController < ApplicationController
     if answerstring==kmondai.answer
       correct=true
     end
-    fkaito=Fkaito.where("fukusu_id=? AND fmondai_id=? AND user_id=?", fukusu.id, fmondai.id, current_user.id).first
-    if fkaito==nil
+    #fkaito=Fkaito.where("fukusu_id=? AND fmondai_id=? AND user_id=?", fukusu.id, fmondai.id, current_user.id).first
+    #if fkaito==nil
       Fkaito.create(user_id: current_user.id, fukusu_id: fukusu.id, kmondai_id: kmondai.id, fmondai_id: fmondai.id, answerstring: answerstring, kettei: kettei, correct: correct)
-    else
-      fkaito.update_attributes(answerstring: answerstring, kettei: kettei, correct: correct)
-    end
+    #else
+   #   fkaito.update_attributes(answerstring: answerstring, kettei: kettei, correct: correct)
+    #end
   end
 end
