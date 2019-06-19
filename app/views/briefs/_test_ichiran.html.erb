@@ -5,7 +5,9 @@
     <% col_counter+=1 %>
   <% end %> 
   
-  <% if (fukusu.fkaitos.count==0  || (fukusu.fkaitos.count>0 && fukusu.fkaitos[0].kettei==false)) && Fuser.where("fukusu_id=? AND user_id=?", fukusu.id, current_user.id).first!=nil %>
+  <% #if (fukusu.fkaitos.count==0  || (fukusu.fkaitos.count>0 && fukusu.fkaitos[0].kettei==false)) && Fuser.where("fukusu_id=? AND user_id=?", fukusu.id, current_user.id).first!=nil %>
+	<% fkaito = Fkaito.where("fukusu_id = ? AND user_id = ? AND kettei = ?", fukusu.id, current_user.id, true).first %>
+	<% if fkaito==nil %>
     <div class="col-4">
       <div class="card mb-1">
         <div class="card-header">

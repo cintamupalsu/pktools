@@ -27,7 +27,8 @@ class ReportsController < ApplicationController
   
   def userkgi
     @selected_item=2
-    @users=User.all.order('email')
+    #@users=User.all.order('email')
+    @users=User.where('kango=?',true).order('email')
   end
   
   def postuserkgi
