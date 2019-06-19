@@ -43,7 +43,8 @@
                   <small><%= fkaito.answerstring %>番は〇です。</small>
                 <% else %>
                   <%= image_tag("chibi01.gif", alt:"yokyu icon", size: "90x65", id: "yokyu_icon") %></br>
-                  <small><%= fkaito.answerstring %>番は×です。</small>
+                  <small><%= fkaito.answerstring %>番は×です。</small><br/>
+									<small>正しい答えは<%= kmondai.answer %>番で御座います。</small>
                 <% end %>
               </div>
               <div class="col-11">
