@@ -43,7 +43,8 @@ class ReportsController < ApplicationController
       end
     end
     
-    users=User.all.order('email')
+    #users=User.all.order('email')
+    users=User.where('kango=?',true).order('email')
     exams=Fukusu.where('',users).first
     
     @nameselected={}

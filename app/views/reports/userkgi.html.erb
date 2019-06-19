@@ -12,7 +12,7 @@
         <%= form_for(:userkgi, url: userkgi_path) do |f| %>
           <% @users.each do |user| %>
             <div class="row pl-3">
-              <div class="col-12"><%= f.check_box :cbchoice , multiple: true %>
+              <div class="col-12"><%= f.check_box :cbchoice , checked: true , multiple: true %>
               <%= user.email %></div>                  
             </div>
           <% end %>
